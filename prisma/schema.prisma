@@ -1,8 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// 命名採取駝峰式
 
 generator client {
   provider = "prisma-client-js"
@@ -14,22 +10,54 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(0) 
+  id        Int      @id @default(autoincrement()) 
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
   role      Role     @default(USER)
-  posts     Post[]
+  posts     Post[]  //PS，愷
+  comments  Comment[] //PS，愷
 }
 
+//貼文，PS，愷
 model Post {
   id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  content   String
+  imageUrl  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  published Boolean  @default(false)
-  title     String   @db.VarChar(255)
-  author    User?    @relation(fields: [authorId], references: [id])
-  authorId  Int?
+  commentsCount Int     @default(0)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  status    Status   @default(NORMAL)
+  comments  Comment[] 
+
+  @@index([authorId])
+}
+
+//貼文評論，PS，愷
+model Comment {
+  id          Int      @id @default(autoincrement())
+  content     String
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  postId      Int
+  authorId    Int
+  post        Post     @relation(fields: [postId], references: [id])
+  author      User     @relation(fields: [authorId], references: [id])
+  status      Status   @default(NORMAL)
+
+  @@index([postId])
+  @@index([authorId])
+}
+
+//PS，愷
+enum Status {
+  NORMAL
+  REPORTED
+  REMOVED
 }
 
 enum Role {
