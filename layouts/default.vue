@@ -7,12 +7,12 @@
         </div>
         <div class="title-side">
           <NuxtLink to="/post" class="link-btn btn">Post</NuxtLink>
-          <NuxtLink to="/advertisement" class="link-btn btn">AD</NuxtLink>
-          <NuxtLink to="/visitation" class="link-btn btn">Visitation</NuxtLink>
+          <NuxtLink to="/" class="link-btn btn">AD</NuxtLink>
+          <NuxtLink to="/" class="link-btn btn">Visitation</NuxtLink>
           <NuxtLink to="/about" class="link-btn btn">About</NuxtLink>
         </div>
         <div class="title-login">
-          <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+          <NuxtLink to="/" class="login-btn btn">Login</NuxtLink>
         </div>
       </nav>
     </header>
