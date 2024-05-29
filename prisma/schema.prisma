@@ -14,6 +14,7 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
+  password  String   
   role      Role     @default(USER)
   posts     Post[]  //PS，愷
   comments  Comment[] //PS，愷

@@ -2,6 +2,7 @@
     <div>
       <button @click="createUser">Create User</button>
       <!-- 其他內容 -->
+      <HelloWorld />
     </div>
   </template>
   
