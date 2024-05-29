@@ -15,7 +15,9 @@
     "vue-router": "^4.3.2"
   },
   "devDependencies": {
+    "@element-plus/nuxt": "^1.0.9",
     "@prisma/client": "^5.13.0",
+    "element-plus": "^2.7.3",
     "prisma": "^5.13.0"
   }
 }

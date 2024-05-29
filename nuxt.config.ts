@@ -2,4 +2,7 @@
 export default defineNuxtConfig({
   // 其他配置
   devtools: { enabled: true },
+  modules: [
+    '@element-plus/nuxt'
+  ],
 })

@@ -15,9 +15,12 @@ model User {
   email     String   @unique
   name      String?
   password  String   
-  role      Role     @default(USER)
+  role      Role     
   posts     Post[]  //PS，愷
   comments  Comment[] //PS，愷
+  advertise Advertise[]
+  photo     Photo[]
+  board     Board[]
 }
 
 //貼文，PS，愷
@@ -33,7 +36,7 @@ model Post {
   authorId  Int
   status    Status   @default(NORMAL)
   comments  Comment[] 
-
+  test      Int
   @@index([authorId])
 }
 
@@ -64,4 +67,61 @@ enum Status {
 enum Role {
   USER
   ADMIN
+}
+
+//廣告，AS，白、游
+model Advertise {   //廣告
+  id        Int      @id @default(autoincrement())   //廣告ID
+  createdAt DateTime @default(now())   //刊登時間
+  updatedAt DateTime @updatedAt        //更新時間
+  title     String   @db.VarChar(255)  //廣告標題
+  author    User     @relation(fields: [authorId], references: [id])   //廣告作者
+  authorId  Int      //作者ID
+  phone     Int      //電話
+
+  photo     Photo[]  //相片
+
+  rental_rm String   //出租房數
+  buildtype String   //房屋類型
+  rm_type   String   //出租類型
+  rent_low  Int      //租金_最低
+  rent_high Int      //租金_最高
+  deposit   String   //押金
+  other_fee String?  //其他費用
+
+  floor     String?  //建物樓層*  樓;層;坪;
+  indp_mete String   //獨立電表
+  part_mate String   //隔間材質
+  gender    String   //性別要求
+  Smoke_fre String   //無菸租屋
+  
+  identity  String?  //身份要求
+  indr_equi String?  //屋內設備  //*(這一個換成各式家具 Boolean)
+  pub_equi  String?  //公共設備
+  condition String?  //屋況說明
+
+  heater    String?  //熱水器
+  safe_faci String?  //安全設施
+  certified String?  //證明文件 
+}
+
+//廣告中的相片，AS，白、游
+model Photo {   //相片集*
+  id        Int     @id @default(autoincrement())   //相片ID
+  author    User    @relation(fields: [authorId], references: [id])   //相片作者
+  authorId  Int   //作者ID
+  advertiseId Int   //廣告ID
+  advertise Advertise @relation(fields: [advertiseId], references: [id])   //相片所屬廣告
+  pic       Bytes //相片
+}
+
+//佈告欄，AS，白、游
+model Board {   //佈告欄
+  id        Int      @id @default(autoincrement())   //佈告欄ID
+  createdAt DateTime @default(now())   //刊登時間
+  updatedAt DateTime @updatedAt        //更新時間
+  author    User     @relation(fields: [authorId], references: [id])   //佈告欄作者
+  authorId  Int   //作者ID
+  title     String   //佈告欄標題
+  content   String?  //佈告欄內文
 }
