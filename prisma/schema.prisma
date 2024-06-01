@@ -10,53 +10,54 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement()) 
-  createdAt DateTime @default(now())
-  email     String   @unique
-  name      String?
-  password  String   
-  role      Role     
-  posts     Post[]  //PS，愷
-  comments  Comment[] //PS，愷
-  advertise Advertise[]
-  adphoto     AdPhoto[]
-  postphoto PostPhoto[]
-  board     Board[]
-  studentVisits Visit_record[] @relation(name: "StudentVisits")
-  teacherVisits Visit_record[] @relation(name: "TeacherVisits")
-  StudentVisits_reservation Visit_table[] @relation(name: "StudentVisits_reservation")
-  TeacherVisits_reservation Visit_table[] @relation(name: "TeacherVisits_reservation")
+  id                        Int            @id @default(autoincrement())
+  createdAt                 DateTime       @default(now())
+  email                     String         @unique
+  name                      String?
+  password                  String
+  role                      Role
+  posts                     Post[] //PS，愷
+  comments                  Comment[] //PS，愷
+  advertise                 Advertise[]
+  adphoto                   AdPhoto[]
+  postphoto                 PostPhoto[]
+  board                     Board[]
+  studentVisits             Visit_record[] @relation(name: "StudentVisits")
+  teacherVisits             Visit_record[] @relation(name: "TeacherVisits")
+  StudentVisits_reservation Visit_table[]  @relation(name: "StudentVisits_reservation")
+  TeacherVisits_reservation Visit_table[]  @relation(name: "TeacherVisits_reservation")
 }
 
 //貼文，PS，愷
 model Post {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
+  id        Int         @id @default(autoincrement())
+  title     String      @db.VarChar(255)
   content   String
   imageUrl  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
   postPhoto PostPhoto[]
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User        @relation(fields: [authorId], references: [id])
   authorId  Int
-  status    Status   @default(NORMAL)
-  comments  Comment[] 
+  status    Status      @default(NORMAL)
+  comments  Comment[]
   test      Int
+
   @@index([authorId])
 }
 
 //貼文評論，PS，愷
 model Comment {
-  id          Int      @id @default(autoincrement())
-  content     String
-  imageUrl    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  postId      Int
-  authorId    Int
-  post        Post     @relation(fields: [postId], references: [id])
-  author      User     @relation(fields: [authorId], references: [id])
-  status      Status   @default(NORMAL)
+  id        Int      @id @default(autoincrement())
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  postId    Int
+  authorId  Int
+  post      Post     @relation(fields: [postId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
+  status    Status   @default(NORMAL)
 
   @@index([postId])
   @@index([authorId])
@@ -75,104 +76,106 @@ enum Role {
 }
 
 //廣告，AS，白、游
-model Advertise {   //廣告
-  id        Int      @id @default(autoincrement())   //廣告ID
-  createdAt DateTime @default(now())   //刊登時間
-  updatedAt DateTime @updatedAt        //更新時間
-  title     String   @db.VarChar(255)  //廣告標題
-  author    User     @relation(fields: [authorId], references: [id])   //廣告作者
-  authorId  Int      //作者ID
-  phone     Int      //電話
+model Advertise {
+  id        Int      @id @default(autoincrement()) //廣告ID
+  createdAt DateTime @default(now()) //刊登時間
+  updatedAt DateTime @updatedAt //更新時間
+  title     String   @db.VarChar(255) //廣告標題
+  author    User     @relation(fields: [authorId], references: [id]) //廣告作者
+  authorId  Int //作者ID
+  phone     Int //電話
+  noroom    Boolean //目前滿租
+  reserve   Boolean //可預約
 
-  adphoto     AdPhoto[]  //相片
+  adphoto AdPhoto[] //相片
 
-  rental_rm String   //出租房數
-  buildtype String   //房屋類型
-  rm_type   String   //出租類型
-  rent_low  Int      //租金_最低
-  rent_high Int      //租金_最高
-  deposit   String   //押金
-  other_fee String?  //其他費用
+  rental_rm String //出租房數
+  buildtype String //房屋類型
+  rm_type   String //出租類型
+  rent_low  Int //租金_最低
+  rent_high Int //租金_最高
+  deposit   String //押金
+  other_fee String? //其他費用
 
-  floor     String?  //建物樓層*  樓;層;坪;
-  indp_mete String   //獨立電表
-  part_mate String   //隔間材質
-  gender    String   //性別要求
-  Smoke_fre String   //無菸租屋
-  
-  identity  String?  //身份要求
+  floor     String? //建物樓層*  樓;層;坪;
+  indp_mete String //獨立電表
+  part_mate String //隔間材質
+  gender    String //性別要求
+  Smoke_fre String //無菸租屋
+
+  identity String? //身份要求
 
   //屋內設備
-  telev     Boolean  //電視
-  fridge    Boolean  //冰箱
-  aircond   Boolean  //冷氣
-  washmch   Boolean  //洗衣機
-  clothdry  Boolean  //烘衣機
-  waterdisp Boolean  //飲水機
-  wardrobe  Boolean  //衣櫃
-  singlebed Boolean  //單人床
-  doublebea Boolean  //雙人床
-  desk      Boolean  //書桌
-  internet  Boolean  //寬頻網路
+  telev     Boolean //電視
+  fridge    Boolean //冰箱
+  aircond   Boolean //冷氣
+  washmch   Boolean //洗衣機
+  clothdry  Boolean //烘衣機
+  waterdisp Boolean //飲水機
+  wardrobe  Boolean //衣櫃
+  singlebed Boolean //單人床
+  doublebea Boolean //雙人床
+  desk      Boolean //書桌
+  internet  Boolean //寬頻網路
 
-  pub_equi  String?  //公共設備
-  condition String?  //屋況說明
+  pub_equi  String? //公共設備
+  condition String? //屋況說明
 
-  heater    String?  //熱水器
-  safe_faci String?  //安全設施
-  certified String?  //證明文件 
+  heater    String? //熱水器
+  safe_faci String? //安全設施
+  certified String? //證明文件 
 }
 
 //廣告中的相片，AS，白、游
-model AdPhoto {   //相片集*
-  id        Int     @id @default(autoincrement())   //相片ID
-  author    User    @relation(fields: [authorId], references: [id])   //相片作者
-  authorId  Int   //作者ID
-  advertise Advertise  @relation(fields: [advertiseId], references: [id])  //相片所屬廣告
-  advertiseId  Int   //廣告ID
-  pic       Bytes //相片
+model AdPhoto {
+  id          Int       @id @default(autoincrement()) //相片ID
+  author      User      @relation(fields: [authorId], references: [id]) //相片作者
+  authorId    Int //作者ID
+  advertise   Advertise @relation(fields: [advertiseId], references: [id]) //相片所屬廣告
+  advertiseId Int //廣告ID
+  pic         Bytes //相片
 }
 
 //貼文中的相片，PS，劉
-model PostPhoto {   //相片集*
-  id        Int     @id @default(autoincrement())   //相片ID
-  author    User    @relation(fields: [authorId], references: [id])   //相片作者
-  authorId  Int   //作者ID
-  post Post  @relation(fields: [postId], references: [id])  //相片所屬廣告
-  postId  Int   //廣告ID
-  pic       Bytes //相片
+model PostPhoto {
+  id       Int   @id @default(autoincrement()) //相片ID
+  author   User  @relation(fields: [authorId], references: [id]) //相片作者
+  authorId Int //作者ID
+  post     Post  @relation(fields: [postId], references: [id]) //相片所屬廣告
+  postId   Int //廣告ID
+  pic      Bytes //相片
 }
 
 //佈告欄，AS，白、游
-model Board {   //佈告欄
-  id        Int      @id @default(autoincrement())   //佈告欄ID
-  createdAt DateTime @default(now())   //刊登時間
-  updatedAt DateTime @updatedAt        //更新時間
-  author    User     @relation(fields: [authorId], references: [id])   //佈告欄作者
-  authorId  Int   //作者ID
-  title     String   //佈告欄標題
-  content   String?  //佈告欄內文
+model Board {
+  id        Int      @id @default(autoincrement()) //佈告欄ID
+  createdAt DateTime @default(now()) //刊登時間
+  updatedAt DateTime @updatedAt //更新時間
+  author    User     @relation(fields: [authorId], references: [id]) //佈告欄作者
+  authorId  Int //作者ID
+  title     String //佈告欄標題
+  content   String? //佈告欄內文
 }
 
-model Visit_table{
-  id Int @id @default(autoincrement())
-  studentId Int 
-  teacherId Int 
-  student User @relation(name: "StudentVisits_reservation",fields: [studentId],references:[id])
-  teacher User @relation(name: "TeacherVisits_reservation",fields: [teacherId],references:[id])
-  visit_date DateTime?
+model Visit_table {
+  id            Int       @id @default(autoincrement())
+  studentId     Int
+  teacherId     Int
+  student       User      @relation(name: "StudentVisits_reservation", fields: [studentId], references: [id])
+  teacher       User      @relation(name: "TeacherVisits_reservation", fields: [teacherId], references: [id])
+  visit_date    DateTime?
   visit_address String?
-  checked Int @default(0)
+  checked       Int       @default(0)
 }
 
-model Visit_record{
-  id Int @id @default(autoincrement())
-  studentId Int 
-  teacherId Int 
-  student User @relation(name: "StudentVisits",fields: [studentId],references:[id])
-  teacher User @relation(name: "TeacherVisits",fields: [teacherId],references:[id])
+model Visit_record {
+  id           Int      @id @default(autoincrement())
+  studentId    Int
+  teacherId    Int
+  student      User     @relation(name: "StudentVisits", fields: [studentId], references: [id])
+  teacher      User     @relation(name: "TeacherVisits", fields: [teacherId], references: [id])
   info_teacher String?
   info_student String?
-  date_create DateTime @default(now())
-  date_update DateTime @updatedAt
+  date_create  DateTime @default(now())
+  date_update  DateTime @updatedAt
 }
