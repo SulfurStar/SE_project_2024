@@ -5,7 +5,7 @@ definePageMeta({
 </script>
 
 <template>
-  <div>Page: post</div>
+  <div>Page: advertisement</div>
 </template>
 
 <style scoped></style>
