@@ -14,7 +14,7 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
-  role      Role     @default(USER)
+  role      Role     
   posts     Post[]  //PS，愷
   comments  Comment[] //PS，愷
 }
@@ -64,3 +64,4 @@ enum Role {
   USER
   ADMIN
 }
+

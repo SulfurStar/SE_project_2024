@@ -5,6 +5,7 @@
       <nav>
         <NuxtLink to="/">Homeee</NuxtLink>
         <NuxtLink to="/about">About</NuxtLink>
+        <NuxtLink to="/login">Login</NuxtLink>
       </nav>
     </header>
     <main>
