@@ -12,5 +12,7 @@ export default defineNuxtConfig({
     },
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
-
+  plugins: [
+    '~/plugins/vue3-infinite-scroll.js'
+  ]
 });

@@ -1,0 +1,68 @@
+<template>
+    <el-card class="post-card">
+        <div class="post-header">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <p class="post-author">by {{ post.author.name }}</p>
+            <p class="post-status">Status: {{ post.status }}</p>
+        </div>
+        <div class="post-body">
+            <p class="post-content">{{ post.content }}</p>
+            <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
+        </div>
+        <div class="post-footer">
+            <p class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</p>
+        </div>
+    </el-card>
+</template>
+
+<script>
+export default {
+  name: 'PostCard',
+  props: {
+    post: {
+      type: Object,
+      required: true
+    }
+  }
+}
+</script>
+
+<style scoped>
+.post-card {
+    margin-bottom: 20px;
+}
+.post-header, .post-footer {
+    padding: 16px;
+    background-color: #f9f9f9;
+}
+.post-header {
+    border-bottom: 1px solid #eaeaea;
+}
+.post-title {
+    margin: 0;
+    font-size: 1.5em;
+    color: #333;
+}
+.post-author, .post-status {
+    margin: 4px 0;
+    font-size: 0.9em;
+    color: #666;
+}
+.post-body {
+    padding: 16px;
+}
+.post-content {
+    margin: 0 0 16px;
+    color: #333;
+}
+.post-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.post-footer {
+    text-align: right;
+    font-size: 0.8em;
+    color: #999;
+}
+</style>
