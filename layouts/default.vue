@@ -15,27 +15,32 @@
         </div>
         <div class="title-login">
           <!-- 登入才顯示頭像 -->
-          <template v-if="user">
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <div class="mr-2">
-                  <Avatar>
-                    <AvatarImage :src="user.picture" alt="User avatar" />
-                  </Avatar>
-                </div>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem @click="goToProfile"
-                  >Profile</DropdownMenuItem
-                >
-                <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+          <template v-if="isLoading">
+            <LoadingSpinner />
           </template>
           <template v-else>
-            <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+            <template v-if="user">
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <div class="mr-2">
+                    <Avatar>
+                      <AvatarImage :src="user.picture" alt="User avatar" />
+                    </Avatar>
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem @click="goToProfile"
+                    >Profile</DropdownMenuItem
+                  >
+                  <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </template>
+            <template v-else>
+              <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+            </template>
           </template>
         </div>
       </nav>
@@ -56,8 +61,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-const user = useState("user");
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
+const user = useState("user");
+const isLoading = useState("isLoading");
 const goToProfile = () => {
   navigateTo("/profile");
 };
