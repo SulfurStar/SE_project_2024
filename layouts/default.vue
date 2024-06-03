@@ -8,7 +8,7 @@
           >
         </div>
         <div class="title-side">
-          <NuxtLink to="/post" class="link-btn btn">Post</NuxtLink>
+          <NuxtLink to="/posts" class="link-btn btn">Post</NuxtLink>
           <NuxtLink to="/advertisement" class="link-btn btn">AD</NuxtLink>
           <NuxtLink to="/visitation" class="link-btn btn">Visitation</NuxtLink>
           <NuxtLink to="/about" class="link-btn btn">About</NuxtLink>

@@ -1,19 +1,21 @@
 <template>
+    <NuxtLink :to="`/posts/${post.id}`">
     <el-card class="post-card">
-        <div class="post-header">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <p class="post-author">by {{ post.author.name }}</p>
-            <!-- <p class="post-status">Status: {{ post.status }}</p> -->
-        </div>
-        <!-- <div class="post-body">
-        <p class="post-content">{{ post.content }}</p>
-        <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
-        </div> -->
-        <div class="post-footer">
-            <el-icon :size="20" color="" class="report-icon"><WarningFilled /></el-icon>
-            <div class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</div>
-        </div>
+            <div class="post-header">
+                <h2 class="post-title">{{ post.title }}</h2>
+                <p class="post-author">by {{ post.author.name }}</p>
+                <!-- <p class="post-status">Status: {{ post.status }}</p> -->
+            </div>
+            <!-- <div class="post-body">
+            <p class="post-content">{{ post.content }}</p>
+            <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
+            </div> -->
+            <div class="post-footer">
+                <el-icon :size="20" color="" class="report-icon"><WarningFilled /></el-icon>
+                <div class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</div>
+            </div>
     </el-card>
+    </NuxtLink>
 </template>
 
 <script>
