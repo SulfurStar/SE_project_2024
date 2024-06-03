@@ -14,7 +14,29 @@
           <NuxtLink to="/about" class="link-btn btn">About</NuxtLink>
         </div>
         <div class="title-login">
-          <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+          <!-- 登入才顯示頭像 -->
+          <template v-if="user">
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <div class="mr-2">
+                  <Avatar>
+                    <AvatarImage :src="user.picture" alt="User avatar" />
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem @click="goToProfile"
+                  >Profile</DropdownMenuItem
+                >
+                <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </template>
+          <template v-else>
+            <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+          </template>
         </div>
       </nav>
     </header>
@@ -25,7 +47,26 @@
 </template>
 
 <script setup>
-// 在這裡可以添加佈局級別的腳本設置
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+const user = useState("user");
+
+const goToProfile = () => {
+  navigateTo("/profile");
+};
+
+const logout = async () => {
+  await fetch("/api/auth/google-logout");
+  user.value = null;
+  await navigateTo("/");
+};
 </script>
 
 <style scoped>
@@ -88,7 +129,9 @@ header {
 
 .btn:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5), 0 0 0 4px #6b7280;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.5),
+    0 0 0 4px #6b7280;
 }
 
 .link-btn {

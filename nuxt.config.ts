@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     '@element-plus/nuxt',
-    '@nuxtjs/tailwindcss'
+    '@nuxtjs/tailwindcss',
+    'shadcn-nuxt',
   ],
   runtimeConfig: {
     public: {
@@ -12,5 +13,7 @@ export default defineNuxtConfig({
     },
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
-
+  devServer: {
+    port: 3000,
+  },
 });
