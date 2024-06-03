@@ -10,10 +10,12 @@
         <GoogleLogin :callback="callback" prompt />
       </ClientOnly>
       <AlertDialog v-if="showAlert">
-        <AlertDialogTrigger as-child>
+        <AlertDialogTrigger>
           <button ref="alertTrigger" class="hidden">Show Dialog</button>
         </AlertDialogTrigger>
-        <AlertDialogContent>
+        <AlertDialogContent
+          class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
+        >
           <AlertDialogTitle class="flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -31,7 +33,9 @@
             </svg>
             <span class="ml-2">登入成功</span>
           </AlertDialogTitle>
-          <AlertDialogAction @click="handleConfirm">確認</AlertDialogAction>
+          <AlertDialogAction class="mt-4" @click="handleConfirm"
+            >確認</AlertDialogAction
+          >
         </AlertDialogContent>
       </AlertDialog>
     </div>
@@ -69,7 +73,6 @@ const callback = async (response) => {
 
   const user = useState("user"); // 共享狀態
   user.value = data.value;
-
   // 登入成功後顯示提示框
   if (user.value) {
     showAlert.value = true;
@@ -79,7 +82,8 @@ const callback = async (response) => {
 // 監聽 showAlert 的變化，自動觸發 AlertDialogTrigger
 watch(showAlert, async (newVal) => {
   if (newVal) {
-    await nextTick();
+    await nextTick(); // 等待元素渲染完成
+    console.log(alertTrigger.value);
     if (alertTrigger.value) {
       alertTrigger.value.click();
     }

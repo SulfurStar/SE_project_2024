@@ -64,7 +64,7 @@ const goToProfile = () => {
 
 const logout = async () => {
   await fetch("/api/auth/google-logout");
-  user.value = null;
+  user.value = null; // 登出後清空 user
   await navigateTo("/");
 };
 </script>
