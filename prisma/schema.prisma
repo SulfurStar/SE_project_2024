@@ -41,7 +41,6 @@ model Post {
   authorId  Int
   status    Status      @default(NORMAL)
   comments  Comment[]
-  test      Int
 
   @@index([authorId])
 }
