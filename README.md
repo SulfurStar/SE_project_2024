@@ -1,3 +1,8 @@
+##記得要在.env加上
+GOOGLE_CLIENT_ID="304202112701-1doq31goet0kh83svbrteq5d5v0s88tb.apps.googleusercontent.com"
+GOOGLE_Client_Secret="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"
+
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.

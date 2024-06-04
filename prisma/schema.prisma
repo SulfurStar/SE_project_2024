@@ -71,9 +71,12 @@ enum Status {
 }
 
 enum Role {
-  USER
+  TEACHER
+  STUDENT
+  LANDLORD
   ADMIN
 }
+
 
 //廣告，AS，白、游
 model Advertise {
