@@ -9,7 +9,6 @@ export default defineEventHandler(() => {
       email: 'ryanchien8125@gmail.com',
       name: 'Ryan Chien',
       role: 'ADMIN',
-      password: '123456'
     }
   })
 
