@@ -4,6 +4,7 @@
     <!-- 其他內容 -->
     <!-- <HelloWorld /> -->
     <!-- <el-button>button</el-button>  -->
+    index
   </div>
 </template>
 

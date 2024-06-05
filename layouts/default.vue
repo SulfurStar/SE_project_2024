@@ -5,12 +5,12 @@
       <header :class="{ 'header-expanded': isSidebarExpanded }">
         <nav>
           <div class="title-main">
-            <NuxtLink to="/" class="title-homepage"
+            <!-- <NuxtLink to="/" class="title-homepage"
               >高雄大學學生校外住宿管理系統
-              </NuxtLink>
+              </NuxtLink> -->
+              <TopBar />
           </div>
-          <div class="title-login">
-            <!-- 登入才顯示頭像 -->
+          <!-- <div class="title-login">
             <template v-if="isLoading">
               <LoadingSpinner />
             </template>
@@ -38,7 +38,7 @@
                 <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
               </template>
             </template>
-          </div>
+          </div> -->
         </nav>
       </header>
       <main>
@@ -49,35 +49,35 @@
 </template>
 
 <script setup>
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuLabel,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { Avatar, AvatarImage } from "@/components/ui/avatar";
+// import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SideBar from "@/components/SideBar.vue";
 
-const user = useState("user");
-const isLoading = useState("isLoading");
+// const user = useState("user");
+// const isLoading = useState("isLoading");
 const isSidebarExpanded = ref(true);
 
 const toggleSidebar = () => {
   isSidebarExpanded.value = !isSidebarExpanded.value;
 };
 
-const goToProfile = () => {
-  navigateTo("/profile");
-};
+// const goToProfile = () => {
+//   navigateTo("/profile");
+// };
 
-const logout = async () => {
-  await fetch("/api/auth/google-logout");
-  user.value = null; // 登出後清空 user
-  await navigateTo("/");
-};
+// const logout = async () => {
+//   await fetch("/api/auth/google-logout");
+//   user.value = null; // 登出後清空 user
+//   await navigateTo("/");
+// };
 </script>
 
 <style scoped>
@@ -128,9 +128,7 @@ nav {
 
 header {
   width: 100%;
-  background-color: #000000;
   color: white;
-  padding: 10px 0;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   transition:
     width 0.3s,
