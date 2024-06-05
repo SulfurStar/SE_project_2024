@@ -3,10 +3,10 @@
     <div class="toggle-btn-container">
       <!-- 切換側邊欄展開/收起狀態的按鈕 -->
       <el-button v-if="isCollapse" class="toggle-btn" @click="toggleSidebar">
-        <el-icon><Expand /></el-icon>
+        <el-icon class="hover:text-blue-500"><Expand /></el-icon>
       </el-button>
       <el-button v-else class="toggle-btn" @click="toggleSidebar">
-        <el-icon><Fold /></el-icon>
+        <el-icon class="hover:text-blue-500"><Fold /></el-icon>
       </el-button>
     </div>
     <el-menu
@@ -16,25 +16,35 @@
     >
       <!-- 菜單項目 -->
       <el-menu-item index="1">
-        <el-icon @click="navigateTo('/advertisement')"><MapLocation /></el-icon>
+        <el-icon
+          class="hover:text-blue-500"
+          @click="navigateTo('/advertisement')"
+          ><MapLocation
+        /></el-icon>
         <template #title>
           <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
         </template>
       </el-menu-item>
       <el-menu-item index="2">
-        <el-icon @click="navigateTo('/posts')"><ChatLineRound /></el-icon>
+        <el-icon class="hover:text-blue-500" @click="navigateTo('/posts')"
+          ><ChatLineRound
+        /></el-icon>
         <template #title>
-          <NuxtLink to="/post" class="menu-link">貼文區</NuxtLink>
+          <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
         </template>
       </el-menu-item>
       <el-menu-item index="3">
-        <el-icon @click="navigateTo('/visitation')"><Document /></el-icon>
+        <el-icon class="hover:text-blue-500" @click="navigateTo('/visitation')"
+          ><Document
+        /></el-icon>
         <template #title>
           <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
         </template>
       </el-menu-item>
       <el-menu-item index="4">
-        <el-icon @click="navigateTo('/about')"><More /></el-icon>
+        <el-icon class="hover:text-blue-500" @click="navigateTo('/about')"
+          ><More
+        /></el-icon>
         <template #title>
           <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
         </template>
@@ -45,8 +55,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-
-import { Document, Expand, Fold } from "@element-plus/icons-vue";
+import {
+  Document,
+  Expand,
+  Fold,
+  MapLocation,
+  ChatLineRound,
+  More,
+} from "@element-plus/icons-vue";
 
 // 定義組件的 props
 const props = defineProps({
