@@ -11,7 +11,7 @@
 <script setup>
 onMounted(() => {
   // console.log("Component mounted");
-  setPageLayout();
+  // setPageLayout();
 });
 // export default {
 //   methods: {
