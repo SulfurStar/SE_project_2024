@@ -1,53 +1,50 @@
 <template>
-  <div>
-    <header>
-      <nav>
-        <div class="title-main">
-          <NuxtLink to="/" class="title-homepage"
-            >高雄大學學生校外住宿管理系統</NuxtLink
-          >
-        </div>
-        <div class="title-side">
-          <NuxtLink to="/post" class="link-btn btn">Post</NuxtLink>
-          <NuxtLink to="/advertisement" class="link-btn btn">AD</NuxtLink>
-          <NuxtLink to="/visitation" class="link-btn btn">Visitation</NuxtLink>
-          <NuxtLink to="/about" class="link-btn btn">About</NuxtLink>
-        </div>
-        <div class="title-login">
-          <!-- 登入才顯示頭像 -->
-          <template v-if="isLoading">
-            <LoadingSpinner />
-          </template>
-          <template v-else>
-            <template v-if="user">
-              <DropdownMenu>
-                <DropdownMenuTrigger>
-                  <div class="mr-2">
-                    <Avatar>
-                      <AvatarImage :src="user.picture" alt="User avatar" />
-                    </Avatar>
-                  </div>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem @click="goToProfile"
-                    >Profile</DropdownMenuItem
-                  >
-                  <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+  <div :class="['layout', { 'sidebar-expanded': isSidebarExpanded }]">
+    <SideBar :is-expanded="isSidebarExpanded" @toggle-sidebar="toggleSidebar" />
+    <div class="main-content">
+      <header :class="{ 'header-expanded': isSidebarExpanded }">
+        <nav>
+          <div class="title-main">
+            <NuxtLink to="/" class="title-homepage"
+              >高雄大學學生校外住宿管理系統</NuxtLink
+            >
+          </div>
+          <div class="title-login">
+            <!-- 登入才顯示頭像 -->
+            <template v-if="isLoading">
+              <LoadingSpinner />
             </template>
             <template v-else>
-              <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+              <template v-if="user">
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <div class="mr-2">
+                      <Avatar>
+                        <AvatarImage :src="user.picture" alt="User avatar" />
+                      </Avatar>
+                    </div>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem @click="goToProfile"
+                      >Profile</DropdownMenuItem
+                    >
+                    <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </template>
+              <template v-else>
+                <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
+              </template>
             </template>
-          </template>
-        </div>
-      </nav>
-    </header>
-    <main>
-      <slot />
-    </main>
+          </div>
+        </nav>
+      </header>
+      <main>
+        <slot />
+      </main>
+    </div>
   </div>
 </template>
 
@@ -62,9 +59,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import SideBar from "@/components/SideBar.vue";
 
 const user = useState("user");
 const isLoading = useState("isLoading");
+const isSidebarExpanded = ref(true);
+
+const toggleSidebar = () => {
+  isSidebarExpanded.value = !isSidebarExpanded.value;
+};
+
 const goToProfile = () => {
   navigateTo("/profile");
 };
@@ -77,7 +81,28 @@ const logout = async () => {
 </script>
 
 <style scoped>
-/* 在這裡可以添加佈局級別的樣式 */
+.layout {
+  display: flex;
+  height: 100vh;
+}
+
+.layout.sidebar-expanded .main-content {
+  width: 100%; /* 側邊欄展開時，main-content 的寬度 */
+}
+
+.layout .main-content {
+  width: 100%;
+  transition:
+    width 0.3s,
+    margin-left 0.3s; /* 添加過渡效果 */
+}
+
+.header-expanded {
+  width: 100%; /* 側邊欄展開時，header 的寬度 */
+  transition:
+    width 0.3s,
+    margin-left 0.3s; /* 添加過渡效果 */
+}
 
 nav a {
   margin: 0 10px;
@@ -91,30 +116,27 @@ nav {
   align-items: center;
   justify-content: space-between;
 }
+
 .title-main {
   flex: 1;
 }
-.title-side {
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-}
+
 .title-login {
   display: inline-flex;
   align-items: center;
 }
-/* nav a.router-link-active {
-  font-weight: bold;
-} */
+
 header {
-  width: auto;
+  width: 100%;
   background-color: #000000;
   color: white;
   padding: 10px 0;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  transition:
+    width 0.3s,
+    margin-left 0.3s; /* 添加過渡效果 */
 }
+
 .title-homepage {
   font-size: 2.5em;
 }
@@ -146,11 +168,43 @@ header {
   float: right;
   margin-right: 20px;
 }
+
 .login-btn {
   font-size: 1.5em;
   float: right;
   margin-right: 20px;
   background-color: #ffffff;
   color: black;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  .main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .header-expanded {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .title-main {
+    font-size: 1.5em;
+  }
+
+  .title-login {
+    font-size: 1em;
+  }
+
+  .btn,
+  .login-btn {
+    font-size: 1em;
+    padding: 0.25rem 0.5rem;
+  }
 }
 </style>

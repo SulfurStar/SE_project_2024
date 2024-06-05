@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-full">
     <!-- <button @click="createUser">Create User</button>-->
     <!-- 其他內容 -->
     <!-- <HelloWorld /> -->
@@ -8,8 +8,6 @@
 </template>
 
 <script setup>
-// const user = useState("user"); // 共享狀態
-
 onMounted(() => {
   // console.log("Component mounted");
   setPageLayout();

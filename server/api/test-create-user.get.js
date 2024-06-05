@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const prismaClient = new PrismaClient()
+const prismaClient = new PrismaClient();
 
 export default defineEventHandler(() => {
   const user = prismaClient.user.create({
@@ -11,7 +11,7 @@ export default defineEventHandler(() => {
       role: 'ADMIN',
       password: '123456'
     }
-  })
+  });
 
-  return user
-})
+  return user;
+});
