@@ -22,7 +22,7 @@
         </template>
       </el-menu-item>
       <el-menu-item index="2">
-        <el-icon @click="navigateTo('/post')"><ChatLineRound /></el-icon>
+        <el-icon @click="navigateTo('/posts')"><ChatLineRound /></el-icon>
         <template #title>
           <NuxtLink to="/post" class="menu-link">貼文區</NuxtLink>
         </template>

@@ -15,9 +15,10 @@ export default defineNuxtConfig({
   },
   plugins: [
     '~/plugins/vue3-infinite-scroll.js'
-  ]
+  ],
   devServer: {
     port: 3000,
   },
+  
   // ssr: false,
 });
