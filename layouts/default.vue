@@ -6,8 +6,8 @@
         <nav>
           <div class="title-main">
             <NuxtLink to="/" class="title-homepage"
-              >高雄大學學生校外住宿管理系統</NuxtLink
-            >
+              >高雄大學學生校外住宿管理系統
+              </NuxtLink>
           </div>
           <div class="title-login">
             <!-- 登入才顯示頭像 -->

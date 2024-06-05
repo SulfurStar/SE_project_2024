@@ -9,13 +9,17 @@ export default defineNuxtPlugin((nuxtApp) => {
   if (process.client) {
     const savedUser = localStorage.getItem('user');
     if (savedUser) {
-      const parsedUser = JSON.parse(savedUser);
-      const currentTime = new Date().getTime();
-
-      if (parsedUser.expiration && parsedUser.expiration > currentTime) {
-        user.value = parsedUser.data;
-      } else {
-        localStorage.removeItem('user'); // 如果過期，移除數據
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        const currentTime = new Date().getTime();
+        if (parsedUser && parsedUser.expiration && parsedUser.expiration > currentTime) {
+          user.value = parsedUser.data;
+        } else {
+          localStorage.removeItem('user'); // 如果過期，移除數據
+        }
+      } catch (error) {
+        console.error("Error parsing user data from localStorage", error);
+        localStorage.removeItem('user'); // 清除無效數據
       }
     }
     isLoading.value = false;
