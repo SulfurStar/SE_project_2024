@@ -5,40 +5,8 @@
       <header :class="{ 'header-expanded': isSidebarExpanded }">
         <nav>
           <div class="title-main">
-            <!-- <NuxtLink to="/" class="title-homepage"
-              >高雄大學學生校外住宿管理系統
-              </NuxtLink> -->
-              <TopBar />
+            <TopBar />
           </div>
-          <!-- <div class="title-login">
-            <template v-if="isLoading">
-              <LoadingSpinner />
-            </template>
-            <template v-else>
-              <template v-if="user">
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <div class="mr-2">
-                      <Avatar>
-                        <AvatarImage :src="user.picture" alt="User avatar" />
-                      </Avatar>
-                    </div>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem @click="goToProfile"
-                      >Profile</DropdownMenuItem
-                    >
-                    <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </template>
-              <template v-else>
-                <NuxtLink to="/login" class="login-btn btn">Login</NuxtLink>
-              </template>
-            </template>
-          </div> -->
         </nav>
       </header>
       <main>

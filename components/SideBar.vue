@@ -54,7 +54,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
 import {
   Document,
   Expand,
@@ -76,15 +75,7 @@ const props = defineProps({
 const emit = defineEmits(["toggleSidebar"]);
 
 // 控制側邊欄是否收起
-const isCollapse = ref(props.isExpanded);
-
-// 監聽 props 的變化，更新 isCollapse 的值
-watch(
-  () => props.isExpanded,
-  (newVal) => {
-    isCollapse.value = !newVal;
-  }
-);
+const isCollapse = computed(() => !props.isExpanded);
 
 // 切換側邊欄展開/收起狀態
 const toggleSidebar = () => {
