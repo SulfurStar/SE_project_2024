@@ -1,0 +1,79 @@
+name: Azure Static Web Apps CI/CD
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - master
+
+jobs:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build and Deploy Job
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+    strategy:
+      matrix:
+        node-version: [20.x]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+          lfs: false
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3 # docs https://pnpm.io/continuous-integration#github-actions
+        with:
+          version: 8 # Optional: specify a pnpm version
+      - name: "Setup: Cached Dependencies"
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: /home/runner/.local/share/pnpm/store/v3
+          key: modules-${{ hashFiles('pnpm-lock.yaml') }}
+      - name: "Setup: CI Environment (NodeJS: ${{ matrix.node-version }}, ubuntu-latest)"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: "https://registry.npmjs.org"
+      - name: "Setup: Install Dependencies"
+        run: pnpm install --no-frozen-lockfile
+      - name: "Run Build"
+        run: "pnpm run build --preset=azure"
+      - name: "Move staticwebapp.config.json"
+        run: "mv staticwebapp.config.json .output/public/staticwebapp.config.json"
+      - name: "Make _ipx folder"
+        run: "mkdir .output/public/_ipx"
+      - name: "Copy assets to _ipx (AZURE STATIC WEB APPS BUG)"
+        run: "cp assets/images .output/public/_ipx/_ -r"
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_Client_Secret: ${{ secrets.GOOGLE_Client_Secret }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ASHY_POND_0B9638400 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          # 如果您需要完整控制前端應用程式的組建，您可以略過自動建置，並部署在上一個步驟中建置的應用程式。
+          # 若要略過建置前端應用程式：
+          # - 設定 app_location 為您要部署檔案的位置。
+          # - 將 skip_app_build 設定為 true。
+          # - 設定 output_location 為空字串 （ '' ）。
+          app_location: ".output/public" # App source code path
+          api_location: ".output/server" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          skip_app_build: true
+          skip_api_build: true
+          ###### End of Repository/Build Configurations ######
