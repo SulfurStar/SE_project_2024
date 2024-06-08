@@ -1,3 +1,5 @@
+// 管理使用者登入狀態(重整頁面後仍保留登入狀態、過期時間)
+
 export default defineNuxtPlugin((nuxtApp) => {
   const user = useState('user');
   const isLoading = useState('isLoading', () => true);

@@ -83,7 +83,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useFetch, useState } from "#imports";
 
 const showAlert = ref(false);
 const alertTrigger = ref(null);
@@ -91,25 +90,32 @@ const router = useRouter();
 
 const callback = async (response) => {
   if (!response?.credential) {
-    // 登入失敗
+    // 登录失败
     return;
   }
 
-  const { data } = await useFetch("/api/auth/google-credential", {
-    method: "POST",
-    body: {
-      credential: response.credential,
-    },
-  });
+  try {
+    const { data } = await useFetch("/api/auth/google-credential", {
+      method: "POST",
+      body: {
+        credential: response.credential,
+      },
+    });
 
-  const user = useState("user"); // 共享狀態
-  user.value = data.value;
-  // 登入成功後顯示提示框
-  if (user.value) {
-    showAlert.value = true;
+    const user = useState("user"); // 共享状态
+    if (data.value.exists) {
+      // 用户存在，存储Google的头像和数据库中的用户信息
+      user.value = { ...data.value.user, avatar: data.value.avatar };
+      // 显示提示框
+      showAlert.value = true;
+    } else {
+      // 用户不存在，重定向到 landlord_register 页面
+      router.push("/landlord_register");
+    }
+  } catch (error) {
+    console.error("Error in callback:", error);
   }
 };
-
 // 監聽 showAlert 的變化，自動觸發 AlertDialogTrigger
 watch(showAlert, async (newVal) => {
   if (newVal) {

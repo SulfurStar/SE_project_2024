@@ -68,7 +68,7 @@ const handleConfirm = () => {
             <DropdownMenuTrigger>
               <div class="mr-2">
                 <Avatar>
-                  <AvatarImage :src="user.picture" alt="User avatar" />
+                  <AvatarImage :src="user.avatar" alt="User avatar" />
                 </Avatar>
               </div>
             </DropdownMenuTrigger>
