@@ -9,60 +9,29 @@
         <el-icon class="hover:text-blue-500"><Fold /></el-icon>
       </el-button>
     </div>
-    <el-menu
-      default-active="2"
-      class="el-menu-vertical-demo h-full"
-      :collapse="isCollapse"
-    >
+    <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
-      <el-menu-item index="1">
-        <el-icon
-          class="hover:text-blue-500"
-          @click="navigateTo('/advertisement')"
-          ><MapLocation
-        /></el-icon>
-        <template #title>
-          <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
-        </template>
+      <el-menu-item index="1" class="hover-item">
+        <el-icon @click="navigateTo('/advertisement')"><MapLocation /></el-icon>
+        <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="2">
-        <el-icon class="hover:text-blue-500" @click="navigateTo('/posts')"
-          ><ChatLineRound
-        /></el-icon>
-        <template #title>
-          <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
-        </template>
+      <el-menu-item index="2" class="hover-item">
+        <el-icon @click="navigateTo('/posts')"><ChatLineRound /></el-icon>
+        <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="3">
-        <el-icon class="hover:text-blue-500" @click="navigateTo('/visitation')"
-          ><Document
-        /></el-icon>
-        <template #title>
-          <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
-        </template>
+      <el-menu-item index="3" class="hover-item">
+        <el-icon @click="navigateTo('/visitation')"><Document /></el-icon>
+        <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="4">
-        <el-icon class="hover:text-blue-500" @click="navigateTo('/about')"
-          ><More
-        /></el-icon>
-        <template #title>
-          <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
-        </template>
+      <el-menu-item index="4" class="hover-item">
+        <el-icon @click="navigateTo('/about')"><More /></el-icon>
+        <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
       </el-menu-item>
     </el-menu>
   </div>
 </template>
 
 <script setup lang="ts">
-import {
-  Document,
-  Expand,
-  Fold,
-  MapLocation,
-  ChatLineRound,
-  More,
-} from "@element-plus/icons-vue";
-
 // 定義組件的 props
 const props = defineProps({
   isExpanded: {
@@ -75,7 +44,7 @@ const props = defineProps({
 const emit = defineEmits(["toggleSidebar"]);
 
 // 控制側邊欄是否收起
-const isCollapse = computed(() => !props.isExpanded);
+const isCollapse = computed(() => props.isExpanded);
 
 // 切換側邊欄展開/收起狀態
 const toggleSidebar = () => {
@@ -96,9 +65,9 @@ const toggleSidebar = () => {
 
 .toggle-btn-container {
   display: flex;
-  justify-content: flex-end; /* 將按鈕置於右側 */
+  justify-content: flex-start; /* 將按鈕置於左側 */
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 3px;
 }
 
 .toggle-btn {
@@ -139,5 +108,25 @@ const toggleSidebar = () => {
   transition:
     width 0.3s,
     opacity 0.5s; /* 添加過渡效果 */
+}
+
+/* 只在鼠標滑過時變色 */
+.el-icon:hover {
+  color: #3b82f6; /* Tailwind CSS 的 blue-500 顏色 */
+}
+
+/* 當側邊欄收起時，hover選項會出現文字框 */
+.el-menu--collapse .hover-item:hover .menu-link {
+  width: auto;
+  opacity: 1;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px 10px; /* 調整內邊距以減少高度 */
+  margin: 0 40px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  position: absolute;
+  z-index: 1000; /* 使文字框顯示在最上層 */
+  line-height: 2; /* 調整行高以使文字垂直居中 */
 }
 </style>
