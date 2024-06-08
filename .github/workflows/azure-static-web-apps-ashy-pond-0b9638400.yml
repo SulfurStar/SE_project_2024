@@ -14,11 +14,6 @@ jobs:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
-    env:
-      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
-      GOOGLE_Client_Secret: ${{ secrets.GOOGLE_Client_Secret }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      DIRECT_URL: ${{ secrets.DIRECT_URL }}
     strategy:
       matrix:
         node-version: [20.x]
@@ -28,6 +23,11 @@ jobs:
           submodules: true
           lfs: false
       - name: Setup pnpm
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_Client_Secret: ${{ secrets.GOOGLE_Client_Secret }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
         uses: pnpm/action-setup@v3 # docs https://pnpm.io/continuous-integration#github-actions
         with:
           version: 8 # Optional: specify a pnpm version
