@@ -73,10 +73,10 @@ const handleConfirm = () => {
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>我的帳號</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem @click="goToProfile">Profile</DropdownMenuItem>
-              <DropdownMenuItem @click="logout">Logout</DropdownMenuItem>
+              <DropdownMenuItem @click="goToProfile">個人檔案</DropdownMenuItem>
+              <DropdownMenuItem @click="logout">登出</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </template>

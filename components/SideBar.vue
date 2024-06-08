@@ -28,17 +28,27 @@
         class="hover-item"
         @click="navigateTo('/visitation')"
       >
-        <el-icon><Document /></el-icon>
+        <el-icon><Phone /></el-icon>
         <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
       </el-menu-item>
       <el-menu-item index="4" class="hover-item" @click="navigateTo('/about')">
         <el-icon><More /></el-icon>
         <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
       </el-menu-item>
+      <el-menu-item
+        v-if="user && user.role === 'ADMIN'"
+        index="5"
+        class="hover-item"
+        @click="navigateTo('/create_account')"
+      >
+        <el-icon><DocumentAdd /></el-icon>
+        <NuxtLink to="/create_account" class="menu-link">創建帳號</NuxtLink>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
-<script setup lang="ts">
+
+<script setup>
 // 定義組件的 props
 const props = defineProps({
   isExpanded: {
@@ -57,6 +67,7 @@ const isCollapse = computed(() => props.isExpanded);
 const toggleSidebar = () => {
   emit("toggleSidebar");
 };
+const user = useState("user");
 </script>
 
 <style scoped>
