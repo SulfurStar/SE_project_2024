@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
       return { exists: true, user, avatar: payload.picture };
     } else {
       // 返回Google用户信息以便前端进行进一步处理
-      return { exists: false, payload };
+      return { exists: false, user, avatar: payload.picture, email: payload.email, name: payload.name};
     }
   } catch (error) {
     console.error('Error in Google credential API:', error);

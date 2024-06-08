@@ -11,26 +11,33 @@
     </div>
     <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
-      <el-menu-item index="1" class="hover-item">
-        <el-icon @click="navigateTo('/advertisement')"><MapLocation /></el-icon>
+      <el-menu-item
+        index="1"
+        class="hover-item"
+        @click="navigateTo('/advertisement')"
+      >
+        <el-icon><MapLocation /></el-icon>
         <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="2" class="hover-item">
-        <el-icon @click="navigateTo('/posts')"><ChatLineRound /></el-icon>
+      <el-menu-item index="2" class="hover-item" @click="navigateTo('/posts')">
+        <el-icon><ChatLineRound /></el-icon>
         <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="3" class="hover-item">
-        <el-icon @click="navigateTo('/visitation')"><Document /></el-icon>
+      <el-menu-item
+        index="3"
+        class="hover-item"
+        @click="navigateTo('/visitation')"
+      >
+        <el-icon><Document /></el-icon>
         <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="4" class="hover-item">
-        <el-icon @click="navigateTo('/about')"><More /></el-icon>
+      <el-menu-item index="4" class="hover-item" @click="navigateTo('/about')">
+        <el-icon><More /></el-icon>
         <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
       </el-menu-item>
     </el-menu>
   </div>
 </template>
-
 <script setup lang="ts">
 // 定義組件的 props
 const props = defineProps({

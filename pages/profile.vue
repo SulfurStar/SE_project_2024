@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-const user = useState("user");
+const user = useState("user").value;
 </script>
 
 <style scoped>

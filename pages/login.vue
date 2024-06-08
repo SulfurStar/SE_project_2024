@@ -74,8 +74,6 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick } from "vue";
-import { useRouter } from "vue-router";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -109,6 +107,13 @@ const callback = async (response) => {
       // 显示提示框
       showAlert.value = true;
     } else {
+      user.value = {
+        ...data.value.user,
+        avatar: data.value.avatar,
+        email: data.value.email,
+        name: data.value.name,
+      };
+      console.log("user", user.value);
       // 用户不存在，重定向到 landlord_register 页面
       router.push("/landlord_register");
     }

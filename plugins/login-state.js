@@ -35,6 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         localStorage.setItem('user', JSON.stringify(newUser));
         localStorage.setItem('expiration', new Date(expirationTime).toISOString());
       } else {
+        user.value = null;
         localStorage.removeItem('user');
         localStorage.removeItem('expiration');
       }
