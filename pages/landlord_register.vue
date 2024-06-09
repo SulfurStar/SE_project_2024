@@ -9,7 +9,6 @@
           type="email"
           required
           placeholder="Email"
-          readonly
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
         />
       </div>
@@ -20,7 +19,6 @@
           type="text"
           required
           placeholder="Name"
-          readonly
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
         />
       </div>
@@ -30,13 +28,12 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
 const email = ref("");
 const name = ref("");
 const router = useRouter();
-const user = useState("user");
-email.value = user.value.email;
-name.value = user.value.name;
-console.log(email.value, name.value);
 
 const register = async () => {
   try {
@@ -49,11 +46,12 @@ const register = async () => {
     });
 
     if (response.ok) {
+      // 假設 ElMessage 是某個訊息提示組件
       ElMessage({
         message: "註冊成功",
         type: "success",
       });
-      router.push("/");
+      router.push("/login");
     } else {
       const error = await response.json();
       ElMessage({
@@ -68,7 +66,9 @@ const register = async () => {
     });
   }
 };
+
 </script>
+
 
 <style scoped>
 .register-container {
