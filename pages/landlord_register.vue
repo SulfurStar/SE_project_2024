@@ -10,6 +10,7 @@
           required
           placeholder="Email"
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          readonly
         />
       </div>
       <div class="form-group">
@@ -20,6 +21,7 @@
           required
           placeholder="Name"
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          readonly
         />
       </div>
       <button type="submit">Register</button>
@@ -28,12 +30,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const email = ref("");
 const name = ref("");
 const router = useRouter();
+
+const user = useState("user");
+email.value = user.value.email;
+name.value = user.value.name;
 
 const register = async () => {
   try {
@@ -51,7 +57,9 @@ const register = async () => {
         message: "註冊成功",
         type: "success",
       });
-      router.push("/login");
+      // 把role加入user的資料中
+      user.value.role = "LANDLORD";
+      router.push("/");
     } else {
       const error = await response.json();
       ElMessage({
@@ -66,9 +74,7 @@ const register = async () => {
     });
   }
 };
-
 </script>
-
 
 <style scoped>
 .register-container {

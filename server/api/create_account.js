@@ -5,6 +5,13 @@ import multer from 'multer';
 import csv from 'csv-parser';
 
 const prisma = new PrismaClient();
+
+prisma.$connect()
+  .then(() => console.log('Prisma connected successfully'))
+  .catch(err => {
+    console.error('Error connecting to Prisma:', err);
+  });
+
 const upload = multer();
 
 export default defineEventHandler(async (event) => {
@@ -12,13 +19,18 @@ export default defineEventHandler(async (event) => {
     // 使用 multer 來處理文件上傳
     const form = await new Promise((resolve, reject) => {
       upload.single('file')(event.req, event.res, (err) => {
-        if (err) return reject(err);
+        if (err) {
+          console.error('File upload error:', err);
+          return reject(err);
+        }
+        console.log('File uploaded successfully:', event.req.file);
         resolve(event.req.file);
       });
     });
 
-    // 如果沒有上傳文件，拋出錯誤
+    // 如果没有上传文件，抛出错误
     if (!form) {
+      console.error('No file uploaded');
       throw createError({
         statusCode: 400,
         statusMessage: 'No file uploaded',
@@ -61,6 +73,18 @@ export default defineEventHandler(async (event) => {
         statusCode: 500,
         statusMessage: `Database error: ${error.message}`,
       });
+    } else if (error instanceof Prisma.PrismaClientInitializationError) {
+      console.error('Prisma initialization error:', error.message);
+      throw createError({
+        statusCode: 500,
+        statusMessage: `Prisma initialization error: ${error.message}`,
+      });
+    } else if (error instanceof Prisma.PrismaClientRustPanicError) {
+      console.error('Prisma Rust panic error:', error.message);
+      throw createError({
+        statusCode: 500,
+        statusMessage: `Prisma panic error: ${error.message}`,
+      });
     }
 
     throw createError({
@@ -71,7 +95,6 @@ export default defineEventHandler(async (event) => {
     await prisma.$disconnect(); // 確保 Prisma 連接在操作完成後關閉
   }
 });
-
 
 // 解析 CSV 文件的函數
 const parseCSV = (buffer) => {
