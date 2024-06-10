@@ -1,45 +1,13 @@
 <template>
-  <div class="flex flex-col items-center justify-center px-4 py-6">
+  <div class="login-container">
+    <div class="flex flex-col items-center justify-center px-4 py-6">
     <div class="flex w-full max-w-md flex-col items-center justify-center">
-      <!-- ---------------------------------------------Login 表單--------------------------------------------- -->
-      <div class="login-container">
-        <h1>Login</h1>
-        <form @submit.prevent="handleLogin">
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              id="email"
-              v-model="email"
-              type="email"
-              required
-              placeholder="Enter your email"
-            />
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input
-              id="password"
-              v-model="password"
-              type="password"
-              required
-              placeholder="Enter your password"
-            />
-          </div>
-          <button type="submit">Login</button>
-          <div class="form-footer">
-            <button class="link-button" @click.prevent="handleForgotPassword">
-              Forgot Password?
-            </button>
-            <button class="link-button" @click.prevent="handleRegister">
-              Register
-            </button>
-          </div>
-        </form>
-        <!----------------------------------------------- Login 表單--------------------------------------------- -->
-      </div>
+
+      <!-- google登入按鈕 -->
       <ClientOnly>
         <GoogleLogin :callback="callback" prompt />
       </ClientOnly>
+      <!--  條件渲染的提示框 -->
       <AlertDialog v-if="showAlert">
         <AlertDialogTrigger>
           <button ref="alertTrigger" class="hidden">Show Dialog</button>
@@ -69,8 +37,17 @@
           >
         </AlertDialogContent>
       </AlertDialog>
+      <!-- ---------------------------------------------register--------------------------------------------- -->
+      <div>
+        <button class="link-button" @click.prevent="handleRegister">
+          Register
+        </button>
+      </div>
+      <!----------------------------------------------- register--------------------------------------------- -->
     </div>
   </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -85,6 +62,8 @@ import {
 const showAlert = ref(false);
 const alertTrigger = ref(null);
 const router = useRouter();
+
+
 
 const callback = async (response) => {
   if (!response?.credential) {
@@ -138,11 +117,16 @@ const handleConfirm = () => {
   router.push("/");
 };
 
-definePageMeta({
-  layout: false,
-});
+// 處理註冊按鈕點擊事件
+const handleRegister = () => {
+  router.push("/landlord_register");
+};
+
+
+
 </script>
 
+<!-- ______________________________________樣式____________________________________________ -->
 <style scoped>
 .login-container {
   max-width: 400px;
