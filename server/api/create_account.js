@@ -53,14 +53,25 @@ export default defineEventHandler(async (event) => {
     return createdUsers; // 返回已創建的用戶數據
   } catch (error) {
     console.error('Error in create_accounts API:', error);
+
+    // 捕获详细的错误信息并返回
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      console.error('Prisma error code:', error.code);
+      throw createError({
+        statusCode: 500,
+        statusMessage: `Database error: ${error.message}`,
+      });
+    }
+
     throw createError({
       statusCode: 500,
-      statusMessage: 'Internal Server Error',
+      statusMessage: `Internal Server Error: ${error.message}`,
     });
   } finally {
     await prisma.$disconnect(); // 確保 Prisma 連接在操作完成後關閉
   }
 });
+
 
 // 解析 CSV 文件的函數
 const parseCSV = (buffer) => {
