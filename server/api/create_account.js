@@ -1,8 +1,5 @@
-import { Readable } from 'stream';
 import { PrismaClient } from '@prisma/client';
-import { defineEventHandler, createError } from 'h3';
-import multer from 'multer';
-import csv from 'csv-parser';
+import { defineEventHandler, createError, readBody } from 'h3';
 
 const prisma = new PrismaClient();
 
@@ -12,33 +9,10 @@ prisma.$connect()
     console.error('Error connecting to Prisma:', err);
   });
 
-const upload = multer();
-
 export default defineEventHandler(async (event) => {
   try {
-    // 使用 multer 來處理文件上傳
-    const form = await new Promise((resolve, reject) => {
-      upload.single('file')(event.req, event.res, (err) => {
-        if (err) {
-          console.error('File upload error:', err);
-          return reject(err);
-        }
-        console.log('File uploaded successfully:', event.req.file);
-        resolve(event.req.file);
-      });
-    });
-
-    // 如果没有上传文件，抛出错误
-    if (!form) {
-      console.error('No file uploaded');
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'No file uploaded',
-      });
-    }
-
-    const fileBuffer = form.buffer; // 獲取文件緩衝區
-    const users = await parseCSV(fileBuffer); // 解析 CSV 文件內容
+    const body = await readBody(event); // 獲取請求體中的數據
+    const users = body;
 
     const createdUsers = [];
     for (const user of users) {
@@ -64,28 +38,7 @@ export default defineEventHandler(async (event) => {
 
     return createdUsers; // 返回已創建的用戶數據
   } catch (error) {
-    console.error('Error in create_accounts API:', error);
-
-    // 捕获详细的错误信息并返回
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      console.error('Prisma error code:', error.code);
-      throw createError({
-        statusCode: 500,
-        statusMessage: `Database error: ${error.message}`,
-      });
-    } else if (error instanceof Prisma.PrismaClientInitializationError) {
-      console.error('Prisma initialization error:', error.message);
-      throw createError({
-        statusCode: 500,
-        statusMessage: `Prisma initialization error: ${error.message}`,
-      });
-    } else if (error instanceof Prisma.PrismaClientRustPanicError) {
-      console.error('Prisma Rust panic error:', error.message);
-      throw createError({
-        statusCode: 500,
-        statusMessage: `Prisma panic error: ${error.message}`,
-      });
-    }
+    console.error('Error in create_accounts API', error);
 
     throw createError({
       statusCode: 500,
@@ -95,16 +48,3 @@ export default defineEventHandler(async (event) => {
     await prisma.$disconnect(); // 確保 Prisma 連接在操作完成後關閉
   }
 });
-
-// 解析 CSV 文件的函數
-const parseCSV = (buffer) => {
-  return new Promise((resolve, reject) => {
-    const users = [];
-    const stream = Readable.from(buffer.toString());
-    stream
-      .pipe(csv())
-      .on('data', (data) => users.push(data))
-      .on('end', () => resolve(users))
-      .on('error', (error) => reject(error));
-  });
-};

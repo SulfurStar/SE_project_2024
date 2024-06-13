@@ -21,6 +21,7 @@
     "lucide-vue-next": "^0.381.0",
     "multer": "^1.4.5-lts.1",
     "nuxt": "^3.11.2",
+    "papaparse": "^5.4.1",
     "radix-vue": "^1.8.2",
     "shadcn-nuxt": "^0.10.4",
     "tailwind-merge": "^2.3.0",
