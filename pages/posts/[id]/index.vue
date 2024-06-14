@@ -3,7 +3,15 @@
     <div class="content">
       <div class="PostCard">
         <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink>
-        <PostCard :post="post" />
+        <PostCard :post="post" :authorname="authorName" />
+      </div>
+      <div class="comment">
+        {{ comments }}
+          <!-- <div v-if="comments">
+            <div v-for="comment in comments" :key="comment.id">
+               <PostTitleCard :comment="comment" />
+            </div>
+          </div> -->
       </div>
     </div>
   </div>
@@ -19,11 +27,34 @@
   
   const route = useRoute();
   const post = ref(null);
+  const authorName = ref(null);
+  const comments = ref(null);
+
+  const params = {
+    postId: route.params.id
+  };
   
   onMounted(async () => {
     const postId = route.params.id;
-    const response = await fetch(`/api/posts/${postId}`);
-    post.value = await response.json();
+    const response = await fetch(`/api/posts/${postId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+    const data = await response.json();
+    post.value = data.post;
+    authorName.value = data.authorName;
+
+    const responseComment = await fetch('/api/posts/get-comment-by-Id', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    });
+    comments.value = await responseComment.json();
   });
 </script>
 

@@ -13,6 +13,9 @@ export default defineEventHandler(async (event) => {
                 in: thestatus && Array.isArray(thestatus) ? thestatus : ['NORMAL'],
             },
         },
+        orderBy: {
+            createdAt: 'desc',
+        },
     });
 
     return posts;

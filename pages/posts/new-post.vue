@@ -1,44 +1,50 @@
 <template>
-  <div class="header">
-    <h1>新增貼文</h1>
-  </div>
-  <div class="new-post-container">
-    <div class="the-form">
-      <el-form ref="postForm" :model="post" :rules="rules" label-width="100px">
-        <el-form-item label="標題" prop="title">
-          <el-input v-model="post.title" placeholder="輸入貼文標題"></el-input>
-        </el-form-item>
-        <el-form-item label="內容" prop="content">
-          <el-input type="textarea" v-model="post.content" placeholder="輸入貼文內容"></el-input>
-        </el-form-item>
-        <el-form-item label="圖片" prop="image">
-          <el-upload
-            class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
-            list-type="picture"
-            :on-success="handleSuccess"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-            :limit="1"
-            :auto-upload="false">
-            <el-button size="small" type="primary">選擇圖片</el-button>
-            <template v-slot:tip>
-              <div class="el-upload__tip">只能上傳 jpg/png 文件
-              </div>
-            </template>
-          </el-upload>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="success" @click="submitForm">提交</el-button>
-          <el-button @click="resetForm">重置</el-button>
-        </el-form-item>
-      </el-form>
+  <div>
+    <div class="header">
+      <h1>新增貼文</h1>
+    </div>
+    <div class="new-post-container">
+      <div class="the-form">
+        <el-form ref="postForm" :model="post" :rules="rules" label-width="100px">
+          <el-form-item label="標題" prop="title">
+            <el-input v-model="post.title" placeholder="輸入貼文標題"></el-input>
+          </el-form-item>
+          <el-form-item label="內容" prop="content">
+            <el-input v-model="post.content" type="textarea" placeholder="輸入貼文內容"></el-input>
+          </el-form-item>
+          <el-form-item label="圖片" prop="image">
+            <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              list-type="picture"
+              :on-success="handleSuccess"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+              :limit="1"
+              :auto-upload="false">
+              <el-button size="small" type="primary">選擇圖片</el-button>
+              <template #tip>
+                <div class="el-upload__tip">只能上傳 jpg/png 文件
+                </div>
+              </template>
+            </el-upload>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="success" @click="submitForm">提交</el-button>
+            <el-button @click="resetForm">重置</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from 'vue';
+
+// definePageMeta({
+//   middleware: "auth",
+// });
 
 export default {
   setup() {
@@ -46,7 +52,7 @@ export default {
       title: '',
       content: '',
       image: ''
-    })
+    });
 
     const rules = {
       title: [
@@ -60,33 +66,33 @@ export default {
       image: [
         { required: true, message: '請上傳圖片', trigger: 'change' }
       ]
-    }
+    };
 
-    const fileList = ref([])
+    const fileList = ref([]);
 
     const handleSuccess = (response, file, fileList) => {
-      post.value.image = response.url
-    }
+      post.value.image = response.url;
+    };
 
     const handleRemove = (file, fileList) => {
-      post.value.image = ''
-    }
+      post.value.image = '';
+    };
 
     const submitForm = () => {
       this.$refs.postForm.validate((valid) => {
         if (valid) {
           // 發送請求以提交表單數據
-          console.log('表單數據: ', post.value)
+          console.log('表單數據: ', post.value);
         } else {
-          console.log('表單驗證失敗!')
-          return false
+          console.log('表單驗證失敗!');
+          return false;
         }
-      })
-    }
+      });
+    };
 
     const resetForm = () => {
-      this.$refs.postForm.resetFields()
-    }
+      this.$refs.postForm.resetFields();
+    };
 
     return {
       post,
@@ -96,9 +102,9 @@ export default {
       handleRemove,
       submitForm,
       resetForm
-    }
+    };
   }
-}
+};
 </script>
 
 <style scoped>
