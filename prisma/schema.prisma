@@ -1,7 +1,7 @@
 // 命名採取駝峰式
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["multiSchema"]
 }
 
@@ -14,26 +14,26 @@ datasource db {
 
 // _____________________________________________更改的部分____________________________________________________
 model User {
-  id                        Int            @id @default(autoincrement())
-  createdAt                 DateTime       @default(now())
-  email                     String         @unique
-  name                      String?
-  role                      Role
+  id                     Int      @id @default(autoincrement())
+  createdAt              DateTime @default(now())
   // 基本資料
-  sexsual                   String?
-  phone                     String?
-  homeAddress               String?
-  homeTel                   String?
-  emergencyContact          String?
-  emergencyContactNumber    String?
+  email                  String   @unique
+  name                   String?
+  role                   Role
+  sexual                 String?
+  phone                  String?
   // 學生額外資料
-  studentID                 String?
-  grade                     Int?
-  teacher                   Int? //紀錄該學生的導師ID
+  homeAddress            String?
+  homeTel                String?
+  emergencyContact       String?
+  emergencyContactNumber String?
+  studentID              String?
+  grade                  Int?
+  teacher                Int? //紀錄該學生的導師ID
   // 教授額外資料
-  jobTitle                  String?
-  officeTel                 String?
-  officeAddress             String?
+  jobTitle               String?
+  officeTel              String?
+  officeAddress          String?
 
   posts                     Post[] //PS，愷
   comments                  Comment[] //PS，愷
@@ -41,31 +41,33 @@ model User {
   adphoto                   AdPhoto[]
   postphoto                 PostPhoto[]
   board                     Board[]
-  studentVisits             Visit_record[] @relation(name: "StudentVisits")
-  teacherVisits             Visit_record[] @relation(name: "TeacherVisits")
-  StudentVisits_reservation Visit_table[]  @relation(name: "StudentVisits_reservation")
-  TeacherVisits_reservation Visit_table[]  @relation(name: "TeacherVisits_reservation")
+  studentVisits             Visit_record[]      @relation(name: "StudentVisits")
+  teacherVisits             Visit_record[]      @relation(name: "TeacherVisits")
+  StudentVisits_reservation Visit_table[]       @relation(name: "StudentVisits_reservation")
+  TeacherVisits_reservation Visit_table[]       @relation(name: "TeacherVisits_reservation")
   studentHousingInfo        StudentHousingInfo?
+
   @@schema("public")
 }
 
 model StudentHousingInfo {
-  id            Int      @id @default(autoincrement())
-  studentId     Int      // 學生學號
-  address       String?   // 住宿地址
-  academicYear  Int?      // 學年
-  semester      Int?      // 學期
-  landlordName  String?   // 房東姓名
-  landlordPhone String?   // 房東連絡電話
-  rent          Float?    // 月租金
-  roomateName     String?   // 同住室友
-  roomatePhone     String?   // 同住室友電話
-
+  id             Int     @id @default(autoincrement())
+  studentId      Int // 學生學號
+  address        String? // 住宿地址
+  academicYear   Int? // 學年
+  semester       Int? // 學期
+  landlordName   String? // 房東姓名
+  landlordPhone  String? // 房東連絡電話
+  rent           Float? // 月租金
+  roommatesName  String? // 同住室友資料
+  roommatesPhone String?
   // 設定StudentHousingInfo和user為一對一關係
-  userId        Int      @unique
-  user          User     @relation(fields: [userId], references: [id])
+  userId         Int     @unique
+  user           User    @relation(fields: [userId], references: [id])
+
   @@schema("public")
 }
+
 // _____________________________________________更改的部分____________________________________________________
 
 //貼文，PS，愷
@@ -109,6 +111,7 @@ enum Status {
   NORMAL
   REPORTED
   REMOVED
+
   @@schema("public")
 }
 
@@ -117,9 +120,9 @@ enum Role {
   STUDENT
   LANDLORD
   ADMIN
+
   @@schema("public")
 }
-
 
 //廣告，AS，白、游
 model Advertise {
@@ -170,6 +173,10 @@ model Advertise {
   heater    String? //熱水器
   safe_faci String? //安全設施
   certified String? //證明文件 
+
+  houseAge String? //屋齡
+  endAt    DateTime? //下架時間
+
   @@schema("public")
 }
 
@@ -181,6 +188,7 @@ model AdPhoto {
   advertise   Advertise @relation(fields: [advertiseId], references: [id]) //相片所屬廣告
   advertiseId Int //廣告ID
   pic         Bytes //相片
+
   @@schema("public")
 }
 
@@ -192,6 +200,7 @@ model PostPhoto {
   post     Post  @relation(fields: [postId], references: [id]) //相片所屬廣告
   postId   Int //廣告ID
   pic      Bytes //相片
+
   @@schema("public")
 }
 
@@ -204,6 +213,7 @@ model Board {
   authorId  Int //作者ID
   title     String //佈告欄標題
   content   String? //佈告欄內文
+
   @@schema("public")
 }
 
@@ -216,6 +226,7 @@ model Visit_table {
   visit_date    DateTime?
   visit_address String?
   checked       Int       @default(0)
+
   @@schema("public")
 }
 
@@ -229,5 +240,6 @@ model Visit_record {
   info_student String?
   date_create  DateTime @default(now())
   date_update  DateTime @updatedAt
+
   @@schema("public")
 }
