@@ -2,11 +2,11 @@
     <el-card class="post-card">
         <div class="post-header">
             <h2 class="post-title">{{ post.title }}</h2>
-            <p class="post-author">by {{ post.author.name }}</p>
-            <p class="post-status">Status: {{ post.status }}</p>
+            <p class="post-author">by {{ authorname }}</p>
+            <!-- <p class="post-status">Status: {{ post.status }}</p> -->
         </div>
         <div class="post-body">
-            <p class="post-content">{{ post.content }}</p>
+            <div class="post-content">{{ post.content }}</div>
             <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
         </div>
         <div class="post-footer">
@@ -16,15 +16,21 @@
 </template>
 
 <script>
+// import auth from '~/middleware/auth';
+
 export default {
   name: 'PostCard',
   props: {
     post: {
       type: Object,
       required: true
+    },
+    authorname: {
+      type: String,
+      required: true
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -64,5 +70,11 @@ export default {
     text-align: right;
     font-size: 0.8em;
     color: #999;
+}
+.post-content {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  overflow: hidden;
 }
 </style>
