@@ -13,18 +13,18 @@
 </template>
   
 <script setup>
-  import PostCard from '~/components/PostCard.vue'
-  import { useRoute } from 'vue-router'
-  import { ref, onMounted } from 'vue'
+  import { useRoute } from 'vue-router';
+  import { ref, onMounted } from 'vue';
+  import PostCard from '~/components/PostCard.vue';
   
-  const route = useRoute()
-  const post = ref(null)
+  const route = useRoute();
+  const post = ref(null);
   
   onMounted(async () => {
-    const postId = route.params.id
-    const response = await fetch(`/api/posts/${postId}`)
-    post.value = await response.json()
-  })
+    const postId = route.params.id;
+    const response = await fetch(`/api/posts/${postId}`);
+    post.value = await response.json();
+  });
 </script>
 
 <style >

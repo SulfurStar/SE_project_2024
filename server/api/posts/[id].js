@@ -4,12 +4,12 @@
 //     const results = await executeQuery(query, [id])
 //     return results[0]
 //   })
-// import { PrismaClient } from '@prisma/client'
+// import { PrismaClient } from '@prisma/client';
 
-// const prismaClient = new PrismaClient()
+// const prismaClient = new PrismaClient();
 
 export default defineEventHandler((event) => {
-    const { id } = event.context.params
+    const { id } = event.context.params;
     const dummyPost = {
         id: 1,
         title: "這邊宿舍真的超推!!!",
@@ -18,6 +18,6 @@ export default defineEventHandler((event) => {
         createdAt: "2024-06-01T00:00:00Z",
         author: { name: "小明" },
         status: "NORMAL"
-      }
-    return dummyPost
-})
+      };
+    return dummyPost;
+});
