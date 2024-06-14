@@ -1,21 +1,36 @@
-// api/updateEmail.js
+// pages/api/updateEmail.js
+
 import { PrismaClient } from '@prisma/client';
+import { readBody, eventHandler } from 'h3';
 
 const prisma = new PrismaClient();
 
-export default async function handler(req, res) {
-  const { userId, newEmail } = req.body;
+export default eventHandler(async (event) => {
+  if (event.req.method === 'POST') {
+    try {
+      const body = await readBody(event);
+      const { userId, newEmail } = body;
 
-  try {
-    const user = await prisma.user.update({
-      where: { id: userId },
-      data: { email: newEmail },
-    });
+      const updatedUser = await prisma.user.update({
+        where: { id: userId },
+        data: { email: newEmail },
+      });
 
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json({ error: 'Error updating email' });
-  } finally {
-    await prisma.$disconnect();
+      return {
+        status: 200,
+        body: { message: 'Profile updated successfully', user: updatedUser }
+      };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      return {
+        status: 500,
+        body: { error: 'Error updating profile' }
+      };
+    }
+  } else {
+    return {
+      status: 405,
+      body: { error: 'Method not allowed' }
+    };
   }
-}
+});
