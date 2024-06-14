@@ -3,7 +3,7 @@
     <el-card class="post-card">
             <div class="post-header">
                 <h2 class="post-title">{{ post.title }}</h2>
-                <p class="post-author">by {{ post.author.name }}</p>
+                <p class="post-author">by {{ post.authorId }}</p>
                 <!-- <p class="post-status">Status: {{ post.status }}</p> -->
             </div>
             <!-- <div class="post-body">
@@ -27,7 +27,7 @@ export default {
       required: true
     }
   }
-}
+};
 </script>
 
 <style scoped>
