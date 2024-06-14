@@ -28,20 +28,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useState } from '@vueuse/core';
 import { Button } from 'shadcn-vue';
 
-const user = ref(null);
-const email = ref('');
+const user = useState("user");
+const email = ref(user.value ? user.value.email : '');
 const router = useRouter();
-
-onMounted(async () => {
-  const response = await fetch('/api/updateEmail'); // 替换为你的获取用户数据的 API 路径
-  const userData = await response.json();
-  user.value = userData;
-  email.value = userData.email;
-});
 
 const updateProfile = async () => {
   const response = await fetch('/api/updateEmail', {
@@ -58,6 +52,8 @@ const updateProfile = async () => {
   const data = await response.json();
 
   if (response.ok) {
+    // 更新成功后同步状态
+    user.value.email = email.value;
     console.log('Profile updated successfully:', data);
     router.push('/profile');
   } else {
