@@ -30,11 +30,62 @@ export default defineEventHandler(async (event) => {
     });
 
     if (user) {
-      // 返回数据库中的用户信息和Google的头像
-      return { exists: true, user, avatar: payload.picture };
+      const userData = {
+        exists: true,
+        avatar: payload.picture,
+        email: user.email,
+        role: user.role,
+      };
+      switch (user.role) {
+        case 'ADMIN':
+          return userData;
+        case 'STUDENT':
+          return {
+            ...userData,
+            name: payload.name,
+            sexual: user.sexual,
+            phone: user.phone,
+            homeAddress: user.homeAddress,
+            homeTel: user.homeTel,
+            emergencyContact: user.emergencyContact,
+            emergencyContactNumber: user.emergencyContactNumber,
+            studentID: user.studentID,
+            grade: user.grade,
+            teacher: user.teacher,
+          };
+        case 'TEACHER':
+          return {
+            ...userData,
+            name: user.name,
+            sexual: user.sexual,
+            phone: user.phone,
+            jobTitle: user.jobTitle,
+            officeTel: user.officeTel,
+            officeAddress: user.officeAddress,
+          };
+        case 'LANDLORD':
+          return {
+            ...userData,
+            name: user.name,
+            sexual: user.sexual,
+            phone: user.phone,
+          };
+        default:
+          return {
+            ...userData,
+            name: user.name,
+            sexual: user.sexual,
+            phone: user.phone,
+          };
+      }
     } else {
       // 返回Google用户信息以便前端进行进一步处理
-      return { exists: false, user, avatar: payload.picture, email: payload.email, name: payload.name};
+      return {
+        exists: false,
+        avatar: payload.picture,
+        email: payload.email,
+        name: payload.name,
+      };
     }
   } catch (error) {
     console.error('Error in Google credential API:', error);

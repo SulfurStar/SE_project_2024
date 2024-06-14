@@ -3,29 +3,39 @@
     <h1>User Profile</h1>
     <div v-if="user">
       <img :src="user.avatar" alt="User Avatar" class="avatar" />
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Name:</strong> {{ user.name }}</p>
-      <p><strong>Role:</strong> {{ user.role }}</p>
-
-      <!-- Add other user fields as needed -->
+      <ul>
+        <div v-for="(value, key) in user" :key="key">
+          <li v-if="key !== 'avatar' && key !== 'exists'">
+            <strong>{{ key }}:</strong> {{ value }}
+          </li>
+        </div>
+      </ul>
+      <!-- Add similar sections for posts, comments, advertise, etc. -->
       <div v-if="user.posts && user.posts.length">
         <h2>Posts</h2>
         <ul>
           <li v-for="post in user.posts" :key="post.id">{{ post.title }}</li>
         </ul>
       </div>
-      <!-- Add similar sections for comments, advertise, etc. -->
+
+      <!-- Edit Profile Button -->
+      <el-button type="primary" @click="goToEditProfile"
+        >編輯個人資料</el-button
+      >
     </div>
     <div v-else>
       <p>Loading user data...</p>
     </div>
   </div>
 </template>
-
 <script setup>
 const user = useState("user");
-</script>
+const router = useRouter();
 
+const goToEditProfile = () => {
+  router.push("/edit_profile");
+};
+</script>
 <style scoped>
 .profile-container {
   max-width: 600px;
@@ -67,5 +77,16 @@ li {
   background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
+
+button {
+  width: 30%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 1rem;
 }
 </style>

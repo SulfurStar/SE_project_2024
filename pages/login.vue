@@ -1,53 +1,51 @@
 <template>
   <div class="login-container">
     <div class="flex flex-col items-center justify-center px-4 py-6">
-    <div class="flex w-full max-w-md flex-col items-center justify-center">
-
-      <!-- google登入按鈕 -->
-      <ClientOnly>
-        <GoogleLogin :callback="callback" prompt />
-      </ClientOnly>
-      <!--  條件渲染的提示框 -->
-      <AlertDialog v-if="showAlert">
-        <AlertDialogTrigger>
-          <button ref="alertTrigger" class="hidden">Show Dialog</button>
-        </AlertDialogTrigger>
-        <AlertDialogContent
-          class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
-        >
-          <AlertDialogTitle class="flex items-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-emerald-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <span class="ml-2">登入成功</span>
-          </AlertDialogTitle>
-          <AlertDialogAction class="mt-4" @click="handleConfirm"
-            >確認</AlertDialogAction
+      <div class="flex w-full max-w-md flex-col items-center justify-center">
+        <!-- google登入按鈕 -->
+        <ClientOnly>
+          <GoogleLogin :callback="callback" prompt />
+        </ClientOnly>
+        <!--  條件渲染的提示框 -->
+        <AlertDialog v-if="showAlert">
+          <AlertDialogTrigger>
+            <button ref="alertTrigger" class="hidden">Show Dialog</button>
+          </AlertDialogTrigger>
+          <AlertDialogContent
+            class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
           >
-        </AlertDialogContent>
-      </AlertDialog>
-      <!-- ---------------------------------------------register--------------------------------------------- -->
-      <div>
-        <button class="link-button" @click.prevent="handleRegister">
-          Register
-        </button>
+            <AlertDialogTitle class="flex items-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 text-emerald-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              <span class="ml-2">登入成功</span>
+            </AlertDialogTitle>
+            <AlertDialogAction class="mt-4" @click="handleConfirm"
+              >確認</AlertDialogAction
+            >
+          </AlertDialogContent>
+        </AlertDialog>
+        <!-- ---------------------------------------------register--------------------------------------------- -->
+        <div>
+          <button class="link-button" @click.prevent="handleRegister">
+            Register
+          </button>
+        </div>
+        <!----------------------------------------------- register--------------------------------------------- -->
       </div>
-      <!----------------------------------------------- register--------------------------------------------- -->
     </div>
   </div>
-  </div>
-
 </template>
 
 <script setup>
@@ -62,8 +60,6 @@ import {
 const showAlert = ref(false);
 const alertTrigger = ref(null);
 const router = useRouter();
-
-
 
 const callback = async (response) => {
   if (!response?.credential) {
@@ -82,17 +78,15 @@ const callback = async (response) => {
     const user = useState("user"); // 共享状态
     if (data.value.exists) {
       // 用户存在，存储Google的头像和数据库中的用户信息
-      user.value = { ...data.value.user, avatar: data.value.avatar };
+      user.value = {
+        ...data.value,
+      };
       // 显示提示框
       showAlert.value = true;
     } else {
       user.value = {
-        ...data.value.user,
-        avatar: data.value.avatar,
-        email: data.value.email,
-        name: data.value.name,
+        ...data.value,
       };
-      console.log("user", user.value);
       // 用户不存在，重定向到 landlord_register 页面
       router.push("/landlord_register");
     }
@@ -121,9 +115,6 @@ const handleConfirm = () => {
 const handleRegister = () => {
   router.push("/landlord_register");
 };
-
-
-
 </script>
 
 <!-- ______________________________________樣式____________________________________________ -->
