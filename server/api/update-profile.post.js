@@ -7,9 +7,18 @@ export default defineEventHandler(async (event) => {
     const userData = await readBody(event);
     delete userData.exists;
     delete userData.avatar;
+
     // 确保传入的数据包含用户 email
     if (!userData.email) {
       throw new Error('User email is required');
+    }
+
+    // 检查并转换 grade 字段的值
+    if (userData.grade) {
+      userData.grade = parseInt(userData.grade, 10);
+      if (isNaN(userData.grade)) {
+        throw new TypeError('Invalid grade value');
+      }
     }
 
     // 从数据库中获取现有的用户数据
@@ -31,6 +40,4 @@ export default defineEventHandler(async (event) => {
       success: true,
       data: updatedUser,
     };
-
-  
 });

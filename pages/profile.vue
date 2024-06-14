@@ -5,8 +5,8 @@
       <img :src="user.avatar" alt="User Avatar" class="avatar" />
       <ul>
         <div v-for="(value, key) in user" :key="key">
-          <li v-if="key !== 'avatar' && key !== 'exists'">
-            <strong>{{ key }}:</strong> {{ value }}
+          <li v-if="!excludeData.includes(key)">
+            <strong>{{ key }}:</strong> {{ formatValue(value) }}
           </li>
         </div>
       </ul>
@@ -28,14 +28,24 @@
     </div>
   </div>
 </template>
+
 <script setup>
 const user = useState("user");
 const router = useRouter();
+const excludeData = ["avatar", "exists", "id"];
 
 const goToEditProfile = () => {
   router.push("/edit_profile");
 };
+
+const formatValue = (value) => {
+  if (value === null || value === undefined) {
+    return "N/A";
+  }
+  return String(value);
+};
 </script>
+
 <style scoped>
 .profile-container {
   max-width: 600px;

@@ -32,6 +32,7 @@ export default defineEventHandler(async (event) => {
     if (user) {
       const userData = {
         exists: true,
+        id: user.id,
         avatar: payload.picture,
         email: user.email,
         role: user.role,

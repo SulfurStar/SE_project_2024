@@ -5,22 +5,34 @@
       <div v-for="(value, key) in user" :key="key">
         <div v-if="!excludeKeys.includes(key)">
           <label :for="key">{{ key }}</label>
-          <input :id="key" v-model="user[key]" />
+          <input :id="key" v-model="user[key]" :pattern="getPattern(key)" />
         </div>
       </div>
       <button type="submit">確認修改</button>
     </form>
   </div>
 </template>
+
 <script setup>
 const user = useState("user");
 const router = useRouter();
-const excludeKeys = ["avatar", "exists", "role"];
+const excludeKeys = ["avatar", "exists", "role", "id"];
 
-if (user.value.role === "STUDENT") {
-  excludeKeys.push("name");
-  excludeKeys.push("email");
-}
+onMounted(() => {
+  if (user.value && user.value.role === "STUDENT") {
+    excludeKeys.push("name");
+    excludeKeys.push("email");
+  }
+});
+
+const getPattern = (key) => {
+  switch (key) {
+    case "grade":
+      return "\\d*"; // 數字
+    default:
+      return null;
+  }
+};
 
 const updateProfile = async () => {
   try {
@@ -46,6 +58,7 @@ const updateProfile = async () => {
   }
 };
 </script>
+
 <style scoped>
 .edit-profile-container {
   max-width: 600px;
