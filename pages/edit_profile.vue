@@ -1,9 +1,11 @@
 <template>
-  <div class="profile-container">
-    <h1>User Profile</h1>
+  <div class="edit_profile-container">
+    <h1>修改資料</h1>
     <div v-if="user">
       <img :src="user.avatar" alt="User Avatar" class="avatar" />
-      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Email:</strong> 
+      <input v-model="email" type="email" />
+      </p>
       <p><strong>Name:</strong> {{ user.name }}</p>
       <p><strong>Role:</strong> {{ user.role }}</p>
 
@@ -17,7 +19,7 @@
       <!-- Add similar sections for comments, advertise, etc. -->
 
       <!-- Edit Profile Button -->
-      <Button @click="goToEditProfile">Edit Profile</Button>
+      <Button @click="updateProfile">確認</Button>
     </div>
     <div v-else>
       <p>Loading user data...</p>
@@ -26,15 +28,46 @@
 </template>
 
 <script setup>
-const user = useState("user");
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { Button } from 'shadcn-vue';
+
+const user = ref(null);
+const email = ref('');
 const router = useRouter();
-const goToEditProfile = () => {
-  router.push('/edit_profile');
+
+onMounted(async () => {
+  const response = await fetch('/api/updateEmail'); // 替换为你的获取用户数据的 API 路径
+  const userData = await response.json();
+  user.value = userData;
+  email.value = userData.email;
+});
+
+const updateProfile = async () => {
+  const response = await fetch('/api/updateEmail', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId: user.value.id,
+      newEmail: email.value,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (response.ok) {
+    console.log('Profile updated successfully:', data);
+    router.push('/profile');
+  } else {
+    console.error('Error updating profile:', data.error);
+  }
 };
 </script>
 
 <style scoped>
-.profile-container {
+.edit_profile-container {
   max-width: 600px;
   margin: 0 auto;
   padding: 2rem;
@@ -75,11 +108,21 @@ li {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+
 button {
   background: none;
   border: none;
   color: #007bff;
   cursor: pointer;
   text-decoration: underline;
+}
+
+input {
+  width: 60%;
+  padding: 0.3rem;
+  border: 1px solid #f3f3f3;
+  border-radius: 4px;
+  background-color: #f7f1e2;
+  margin-top: 0.5rem;   
 }
 </style>
