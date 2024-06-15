@@ -3,23 +3,30 @@
     <div class="post-header">
       <h2 class="post-title">{{ post.title }}</h2>
       <p class="post-author">by {{ authorname }}</p>
-      <!-- <p class="post-status">Status: {{ post.status }}</p> -->
       <p v-if="post.reportedReason" class="post-reason">
         Reported Reason: {{ post.reportedReason }}
       </p>
     </div>
     <div class="post-body">
       <div class="post-content">{{ post.content }}</div>
-      <img
-        v-if="post.imageUrl"
-        :src="post.imageUrl"
-        alt="Post Image"
-        class="post-image"
-      />
+      <div v-if="postWithImageUrls.imageUrls.length" class="post-images">
+        <img
+          v-for="(url, index) in postWithImageUrls.imageUrls"
+          :key="index"
+          :src="url"
+          alt="Post Image"
+          class="post-image"
+        />
+      </div>
     </div>
     <div class="post-footer">
       <div class="options">
-        <el-icon v-if="post.authorId === userid" :size="20" color="" class="icon" >
+        <el-icon
+          v-if="post.authorId === userid"
+          :size="20"
+          color=""
+          class="icon"
+        >
           <NuxtLink :to="`/posts/${post.id}/edit`"><EditPen /></NuxtLink>
         </el-icon>
       </div>
@@ -30,28 +37,30 @@
   </el-card>
 </template>
 
-<script>
-
-export default {
-  name: "PostCard",
-  props: {
-    post: {
-      type: Object,
-      required: true,
-    },
-    authorname: {
-      type: String,
-      required: true,
-    },
-    userid: {
-      type: String,
-      required: false,
-      default: null,
-    },
+<script setup>
+const props = defineProps({
+  post: {
+    type: Object,
+    required: true,
   },
-};
+  authorname: {
+    type: String,
+    required: true,
+  },
+  userid: {
+    type: String,
+    required: false,
+    default: null,
+  },
+});
 
-
+// 將圖片URL字符串拆分成數組
+const postWithImageUrls = computed(() => {
+  return {
+    ...props.post,
+    imageUrls: props.post.imageUrl ? props.post.imageUrl.split(",") : [],
+  };
+});
 </script>
 
 <style scoped>
@@ -89,6 +98,7 @@ export default {
   width: 100%;
   height: auto;
   border-radius: 8px;
+  margin-bottom: 8px;
 }
 .post-footer {
   display: flex;

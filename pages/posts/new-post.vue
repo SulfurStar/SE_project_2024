@@ -24,13 +24,13 @@
               placeholder="輸入貼文內容"
             ></el-input>
           </el-form-item>
-          <el-form-item label="圖片" prop="image">
+          <el-form-item label="圖片" prop="images">
             <el-upload
               class="upload-demo"
               :before-upload="beforeUpload"
               list-type="picture"
               :file-list="fileList"
-              :limit="1"
+              multiple
             >
               <el-button size="small" type="primary">選擇圖片</el-button>
               <template #tip>
@@ -93,6 +93,7 @@
     </AlertDialog>
   </div>
 </template>
+
 <script setup>
 import { ref, watch, nextTick } from "vue";
 import { useRouter } from "vue-router";
@@ -120,7 +121,7 @@ const success = ref(false);
 const post = ref({
   title: "",
   content: "",
-  image: "",
+  images: [],
 });
 
 watch(showAlert, async (newVal) => {
@@ -146,7 +147,7 @@ const rules = {
     { required: true, message: "請輸入內容", trigger: "blur" },
     { min: 10, message: "內容不能少於 10 個字", trigger: "blur" },
   ],
-  image: [{ required: true, message: "請上傳圖片", trigger: "change" }],
+  images: [{ required: true, message: "請上傳圖片", trigger: "change" }],
 };
 
 const fileList = ref([]);
@@ -154,7 +155,7 @@ const fileList = ref([]);
 const beforeUpload = async (file) => {
   const imageUrl = await uploadImage(file);
   if (imageUrl) {
-    post.value.image = imageUrl;
+    post.value.images.push(imageUrl);
     return true;
   }
   return false;
@@ -191,6 +192,7 @@ const uploadImage = async (file) => {
     return null;
   }
 };
+
 const postForm = ref(null);
 
 const submitForm = async () => {
@@ -200,9 +202,9 @@ const submitForm = async () => {
       title: post.value.title,
       content: post.value.content,
       authorId: user.value.id,
-      image: post.value.image,
+      images: post.value.images.join(","),
     };
-    console.log("提交的參數:", params);
+    console.log("提交的參數:", params.images);
     const response = await fetch("/api/posts/create-new-posts", {
       method: "POST",
       headers: {
@@ -230,6 +232,8 @@ const submitForm = async () => {
 
 const resetForm = () => {
   postForm.value.resetFields();
+  post.value.images = [];
+  fileList.value = [];
 };
 </script>
 
