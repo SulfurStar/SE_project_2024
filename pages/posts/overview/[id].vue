@@ -65,6 +65,7 @@ onMounted(async () => {
     const responseData = await responsePost.json();
     if (responseData.statusCode === 200) {
       posts.value = responseData.body;
+      console.log("posts:", posts.value);
     } else {
       console.error("Failed to fetch posts:", responseData);
     }
