@@ -1,5 +1,5 @@
 // server/api/users/[id].js
-
+//用來刪除user
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();

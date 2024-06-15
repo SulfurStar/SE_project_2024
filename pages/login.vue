@@ -36,13 +36,7 @@
             >
           </AlertDialogContent>
         </AlertDialog>
-        <!-- ---------------------------------------------register--------------------------------------------- -->
-        <div>
-          <button class="link-button" @click.prevent="handleRegister">
-            Register
-          </button>
-        </div>
-        <!----------------------------------------------- register--------------------------------------------- -->
+
       </div>
     </div>
   </div>
@@ -111,10 +105,7 @@ const handleConfirm = () => {
   router.push("/");
 };
 
-// 處理註冊按鈕點擊事件
-const handleRegister = () => {
-  router.push("/landlord_register");
-};
+
 </script>
 
 <!-- ______________________________________樣式____________________________________________ -->

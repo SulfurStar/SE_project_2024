@@ -3,7 +3,8 @@ import { PrismaClient } from '@prisma/client';
 const prismaClient = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const { skip, take , thestatus, ids } = await readBody(event);
+    const { skip, take, thestatus, ids } = await readBody(event);
+
     try {
         const whereClause = {
             status: {
@@ -25,15 +26,16 @@ export default defineEventHandler(async (event) => {
                 createdAt: 'desc',
             },
         });
+
         return {
             statusCode: 200,
-            body: posts
+            body: posts,
         };
     } catch (error) {
         console.error('Error getting posts:', error);
         return {
             statusCode: 500,
-            body: 'Internal Server Error'
+            body: 'Internal Server Error',
         };
     }
 });

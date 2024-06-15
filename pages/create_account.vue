@@ -26,7 +26,7 @@ import Papa from "papaparse"; // 使用 PapaParse 來解析 CSV 文件
 
 // 定義頁面元數據，包括中間件
 definePageMeta({
-  middleware: "auth",
+  middleware: ["auth", "admin"],
 });
 
 // 加載狀態

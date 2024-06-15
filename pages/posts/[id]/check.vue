@@ -4,6 +4,10 @@
       <div class="PostCard">
         <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink>
         <PostCard :post="post" :authorname="authorName" />
+        <div class="button-group">
+          <el-button type="success" @click="approvePost">審核通過</el-button>
+          <el-button type="danger" @click="rejectPost">審核失敗</el-button>
+        </div>
       </div>
       <div class="comment">
         <div v-if="comments">
@@ -18,10 +22,10 @@
     <p>Loading...</p>
   </div>
 </template>
-
 <script setup>
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import { ElMessage } from "element-plus";
 import PostCard from "~/components/PostCard.vue";
 
 const route = useRoute();
@@ -55,9 +59,62 @@ onMounted(async () => {
   });
   comments.value = await responseComment.json();
 });
-</script>
 
-<style>
+const approvePost = async () => {
+  try {
+    const response = await fetch(`/api/posts/${params.postId}/approve`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    if (result.success) {
+      ElMessage({
+        message: "審核完畢",
+        type: "success",
+      });
+      post.value.status = "APPROVED";
+      navigateTo(`/posts/management/1`);
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    ElMessage({
+      message: "審核錯誤",
+      type: "error",
+    });
+  }
+};
+
+const rejectPost = async () => {
+  try {
+    const response = await fetch(`/api/posts/${params.postId}/reject`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    if (result.success) {
+      ElMessage({
+        message: "審核錯誤",
+        type: "success",
+      });
+      post.value.status = "REJECTED";
+      navigateTo(`/posts/management/1`);
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (error) {
+    ElMessage({
+      message: "審核失敗",
+      type: "error",
+    });
+  }
+};
+</script>
+<style scoped>
 .content {
   width: auto;
   display: flex;
@@ -74,5 +131,11 @@ onMounted(async () => {
   width: 100%;
   max-width: 800px;
   padding: 20px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
 </style>
