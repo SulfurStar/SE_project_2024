@@ -131,35 +131,42 @@
         <el-icon><More /></el-icon>
         <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
       </el-menu-item>
-      <el-menu-item
+      <el-sub-menu
         v-if="user && user.role === 'ADMIN'"
         index="5"
         class="hover-item"
-        @click="navigateTo('/create_account')"
       >
-        <el-icon><DocumentAdd /></el-icon>
-        <NuxtLink to="/create_account" class="menu-link">創建帳號</NuxtLink>
-      </el-menu-item>
-      <el-menu-item
-        v-if="user && user.role === 'ADMIN'"
-        index="6"
-        class="hover-item"
-        @click="navigateTo('/delete_account')"
-      >
-        <el-icon><DeleteIcon /></el-icon>
-        <NuxtLink to="/delete_account" class="menu-link">刪除帳號</NuxtLink>
-      </el-menu-item>
-      <el-menu-item
-        v-if="user && user.role === 'ADMIN'"
-        index="7"
-        class="hover-item"
-        @click="navigateTo('/admin_edit_user')"
-      >
-        <el-icon><PenBoxIcon /></el-icon>
-        <NuxtLink to="/admin_edit_user" class="menu-link"
-          >修改使用者資料</NuxtLink
+        <template #title>
+          <el-icon><Setting /></el-icon>
+          <span>管理帳號</span>
+        </template>
+        <el-menu-item
+          index="5-1"
+          class="hover-item"
+          @click="navigateTo('/create_account')"
         >
-      </el-menu-item>
+          <el-icon><DocumentAdd /></el-icon>
+          <NuxtLink to="/create_account" class="menu-link">創建帳號</NuxtLink>
+        </el-menu-item>
+        <el-menu-item
+          index="5-2"
+          class="hover-item"
+          @click="navigateTo('/delete_account')"
+        >
+          <el-icon><DeleteIcon /></el-icon>
+          <NuxtLink to="/delete_account" class="menu-link">刪除帳號</NuxtLink>
+        </el-menu-item>
+        <el-menu-item
+          index="5-3"
+          class="hover-item"
+          @click="navigateTo('/admin_edit_user')"
+        >
+          <el-icon><PenBoxIcon /></el-icon>
+          <NuxtLink to="/admin_edit_user" class="menu-link"
+            >修改使用者資料</NuxtLink
+          >
+        </el-menu-item>
+      </el-sub-menu>
     </el-menu>
   </div>
 </template>
