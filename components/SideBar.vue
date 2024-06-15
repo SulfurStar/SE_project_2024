@@ -24,7 +24,7 @@
         <!-- 佈告欄審核(總)Bd_verify 管理員限定頁面 -->
         <el-menu-item 
         v-if="user && (user.role === 'ADMIN')"
-        index="1-2"a
+        index="1-2"
         @click="navigteTo('/Ad')"
         >佈告欄審核
         </el-menu-item>
@@ -69,7 +69,7 @@
         >我的佈告欄
         </el-menu-item>
 
-      </el-menu-item>
+      </el-sub-menu>
 
       <el-sub-menu index="2" class="hover-item" @click="navigateTo('/posts')">
         <template #title>
