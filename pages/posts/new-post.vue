@@ -29,7 +29,6 @@
               class="upload-demo"
               :before-upload="beforeUpload"
               list-type="picture"
-              :on-success="handleSuccess"
               :file-list="fileList"
               :limit="1"
             >
@@ -156,8 +155,7 @@ const beforeUpload = async (file) => {
   const imageUrl = await uploadImage(file);
   if (imageUrl) {
     post.value.image = imageUrl;
-    handleSuccess(imageUrl, file, fileList.value);
-    return false; // 阻止上傳
+    return true;
   }
   return false;
 };
@@ -193,11 +191,6 @@ const uploadImage = async (file) => {
     return null;
   }
 };
-
-const handleSuccess = (response, file, fileList) => {
-  post.value.image = response;
-};
-
 const postForm = ref(null);
 
 const submitForm = async () => {
