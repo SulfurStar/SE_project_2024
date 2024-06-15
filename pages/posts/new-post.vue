@@ -41,13 +41,17 @@
 
 <script>
 import { ref } from 'vue';
-
-// definePageMeta({
-//   middleware: "auth",
-// });
+import auth from '~/middleware/auth';
 
 export default {
   setup() {
+    definePageMeta({
+      middleware: "auth",
+    });
+
+    const user = useState('user');
+    console.log(user.value.);
+
     const post = ref({
       title: '',
       content: '',
@@ -63,9 +67,9 @@ export default {
         { required: true, message: '請輸入內容', trigger: 'blur' },
         { min: 10, message: '內容不能少於 10 個字', trigger: 'blur' }
       ],
-      image: [
-        { required: true, message: '請上傳圖片', trigger: 'change' }
-      ]
+      // image: [
+      //   { required: true, message: '請上傳圖片', trigger: 'change' }
+      // ]
     };
 
     const fileList = ref([]);
@@ -78,11 +82,40 @@ export default {
       post.value.image = '';
     };
 
+    const postForm = ref(null);
+
     const submitForm = () => {
-      this.$refs.postForm.validate((valid) => {
+      postForm.value.validate(async (valid) => {
         if (valid) {
-          // 發送請求以提交表單數據
-          console.log('表單數據: ', post.value);
+          try {
+            const params = {
+              title: post.value.title,
+              content: post.value.content,
+              authorId: 1,
+              image: post.value.image
+            };
+            console.log('params:', params);
+            const response = await fetch('/api/posts/create-new-posts', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(params)
+            });
+
+            const responseData = await response.json();
+            if (response.ok && responseData.statusCode === 200) {
+              console.log('成功創建新帖子:', responseData.body);
+              // 這裡你可以添加成功處理邏輯，例如導航到新創建的帖子的頁面
+            } else {
+              console.error('創建帖子失敗:', responseData.body || responseData);
+              // 這裡你可以添加失敗處理邏輯，例如顯示錯誤消息
+            }
+          } catch (error) {
+            console.error('請求失敗:', error);
+            // 這裡你可以添加請求失敗的處理邏輯
+          }
+          // console.log('表單數據: ', post.value.title);
         } else {
           console.log('表單驗證失敗!');
           return false;
@@ -91,7 +124,7 @@ export default {
     };
 
     const resetForm = () => {
-      this.$refs.postForm.resetFields();
+      postForm.value.resetFields();
     };
 
     return {
@@ -101,7 +134,8 @@ export default {
       handleSuccess,
       handleRemove,
       submitForm,
-      resetForm
+      resetForm,
+      postForm
     };
   }
 };

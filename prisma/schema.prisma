@@ -77,12 +77,13 @@ model Post {
   content   String
   imageUrl  String?
   createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  updatedAt DateTime    @updatedAt @default(now())
   postPhoto PostPhoto[]
   author    User        @relation(fields: [authorId], references: [id])
   authorId  Int
   status    Status      @default(NORMAL)
   comments  Comment[]
+  reportedReason String?
 
   @@index([authorId])
   @@schema("public")
@@ -100,6 +101,7 @@ model Comment {
   post      Post     @relation(fields: [postId], references: [id])
   author    User     @relation(fields: [authorId], references: [id])
   status    Status   @default(NORMAL)
+  reportedReason String?
 
   @@index([postId])
   @@index([authorId])

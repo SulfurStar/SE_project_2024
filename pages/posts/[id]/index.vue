@@ -6,12 +6,11 @@
         <PostCard :post="post" :authorname="authorName" />
       </div>
       <div class="comment">
-        {{ comments }}
-          <!-- <div v-if="comments">
+          <div v-if="comments">
             <div v-for="comment in comments" :key="comment.id">
-               <PostTitleCard :comment="comment" />
+              <CommentCard :comment="comment" />
             </div>
-          </div> -->
+          </div>
       </div>
     </div>
   </div>
@@ -66,6 +65,12 @@
   align-items: center;
 }
 .content .PostCard {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+}
+
+.content .comment {
   width: 100%;
   max-width: 800px;
   padding: 20px;
