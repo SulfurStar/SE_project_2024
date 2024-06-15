@@ -38,18 +38,18 @@ const currentPage = ref(1);
 currentPage.value = route.params.id || 1;
 
 const handlePageChange = (page) => {
-  router.push(`/posts/overview/${page}`);
+  router.push(`/posts/management/${page}`);
 };
 
 const params = {
   skip: currentPage.value * 10 - 10 || 0,
   take: 10,
-  thestatus: ["NORMAL", "REPORTED"],
+  thestatus: ["REPORTED"],
   ids: null,
 };
 
 const params2 = {
-  thestatus: ["NORMAL", "REPORTED"],
+  thestatus: ["REPORTED"],
 };
 
 onMounted(async () => {
