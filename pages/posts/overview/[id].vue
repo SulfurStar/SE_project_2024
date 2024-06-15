@@ -1,26 +1,27 @@
 <template>
-    <div class="content">
-        <div class="infinite-scroll">
-            <div v-if="posts">
-                <div v-for="post in posts" :key="post.id">
-                    <PostTitleCard :post="post" />
-                </div>
-            </div>
-            <div v-else>
-                <p>Loading...</p>
-            </div>
+  <div class="content">
+    <div class="infinite-scroll">
+      <div v-if="posts">
+        <div v-for="post in posts" :key="post.id">
+          <PostTitleCard :post="post" />
         </div>
-        <div class="pagination">
-            <div v-if="numberOfPosts">
-                <el-pagination 
-                    background 
-                    layout="prev, pager, next" 
-                    :total="numberOfPosts * 10" 
-                    :current-page="currentPage * 1" 
-                    @current-change="handlePageChange" />
-            </div>
-        </div>
+      </div>
+      <div v-else>
+        <p>Loading...</p>
+      </div>
     </div>
+    <div class="pagination">
+      <div v-if="numberOfPosts">
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="numberOfPosts * 10"
+          :current-page="currentPage * 1"
+          @current-change="handlePageChange"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -37,9 +38,9 @@
 
     currentPage.value = route.params.id || 1;
 
-    const handlePageChange = (page) => {
-        router.push(`/posts/overview/${page}`);
-    };
+const handlePageChange = (page) => {
+  router.push(`/posts/overview/${page}`);
+};
 
     const params = {
         skip: currentPage.value * 10 - 10 || 0,
@@ -72,20 +73,23 @@
             console.error('Failed to fetch posts: HTTP status', responsePost.status);
         }
 
-        const responseNumberOfPost = await fetch('/api/posts/get-number-of-posts', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(params2)
-        });
-        numberOfPosts.value = await responseNumberOfPost.json();
-        numberOfPosts.value = Math.ceil(numberOfPosts.value / 10);
-    });
+  const responseNumberOfPost = await fetch("/api/posts/get-number-of-posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params2),
+  });
+  numberOfPosts.value = await responseNumberOfPost.json();
+  numberOfPosts.value = Math.ceil(numberOfPosts.value / 10);
+});
 
+definePageMeta({
+  middleware: "auth",
+});
 </script>
 
-<style >
+<style>
 .content {
   width: auto;
   display: flex;
