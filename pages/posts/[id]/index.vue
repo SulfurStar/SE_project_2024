@@ -4,6 +4,7 @@
       <div class="PostCard">
         <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
         <el-button v-if="userId == authorId" type="error" @click="deletePost">刪除貼文</el-button>
+        <el-button v-if="userId != authorId" type="error" @click="reportPost">檢舉貼文</el-button>
         <PostCard :post="post" :authorname="authorName" :userid="userId"/>
       </div>
       <div class="comment">
@@ -55,6 +56,47 @@ const deletePost = async () => {
     ElMessage.error("Failed to delete post");
   }
 };
+
+// function to ask for the resons to report post by alert with input
+const reportPost = async () => {
+  const { value: reason } = await ElMessageBox.prompt("請輸入檢舉原因", "檢舉貼文", {
+    confirmButtonText: "檢舉",
+    cancelButtonText: "取消",
+  });
+  if (reason) {
+    const response = await fetch(`/api/posts/report-post`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ...params, reason }), // params: {postId: route.params.id, reason: reason}
+    });
+    const data = await response.json();
+    if (data.success) {
+      ElMessage.success("Post reported successfully");
+    } else {
+      ElMessage.error("Failed to report post");
+    }
+  }
+};
+
+
+// function to report post
+// const reportPost = async () => {
+//   const response = await fetch(`/api/posts/report-post`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(params),
+//   });
+//   const data = await response.json();
+//   if (data.success) {
+//     ElMessage.success("Post reported successfully");
+//   } else {
+//     ElMessage.error("Failed to report post");
+//   }
+// };
 
 onMounted(async () => {
 
