@@ -34,8 +34,8 @@ const params = {
 };
 
 onMounted(async () => {
-  const postId = route.params.id;
-  const response = await fetch(`/api/posts/${postId}`, {
+
+  const response = await fetch(`/api/posts/get-single-post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
