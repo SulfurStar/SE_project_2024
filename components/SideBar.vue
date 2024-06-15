@@ -11,67 +11,72 @@
     </div>
     <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
-    
-      <el-sub-menu index="1" class="hover-item" @click="navigateTo('/advertisement')">
+
+      <el-sub-menu
+        index="1"
+        class="hover-item"
+        @click="navigateTo('/advertisement')"
+      >
         <template #title>
           <el-icon><MapLocation /></el-icon>
           <NuxtLink to="/advertisement" class="menu-link">廣告總覽</NuxtLink>
         </template>
         <!-- 以下為子菜單 -->
-        <el-menu-item index="1-1" @click="navigateTo('/Ad')">廣告總覽</el-menu-item>
-        
+        <el-menu-item index="1-1" @click="navigateTo('/Ad')"
+          >廣告總覽</el-menu-item
+        >
+
         <!-- 以下@click 後的路徑可能須做更動 -->
         <!-- 佈告欄審核(總)Bd_verify 管理員限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'ADMIN')"
-        index="1-2"
-        @click="navigteTo('/Ad')"
-        >佈告欄審核
+        <el-menu-item
+          v-if="user && user.role === 'ADMIN'"
+          index="1-2"
+          @click="navigteTo('/Ad')"
+          >佈告欄審核
         </el-menu-item>
 
         <!-- 廣告審核(總)Ad_verify 管理員限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'ADMIN')"
-        index="1-3"
-        @click="navigateTo('/Ad')"
-        >廣告審核
+        <el-menu-item
+          v-if="user && user.role === 'ADMIN'"
+          index="1-3"
+          @click="navigateTo('/Ad')"
+          >廣告審核
         </el-menu-item>
-        
+
         <!-- 廣告新增Ad_new 房東限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'LANDLORD')"
-        index="1-4"
-        @click="navigateTo('/Ad')"
-        >新增廣告
+        <el-menu-item
+          v-if="user && user.role === 'LANDLORD'"
+          index="1-4"
+          @click="navigateTo('/Ad')"
+          >新增廣告
         </el-menu-item>
 
         <!-- 廣告管理Ad_manage 房東限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'LANDLORD')"
-        index="1-5"
-        @click="navigateTo('/Ad')"
-        >我的廣告
+        <el-menu-item
+          v-if="user && user.role === 'LANDLORD'"
+          index="1-5"
+          @click="navigateTo('/Ad')"
+          >我的廣告
         </el-menu-item>
 
         <!-- 佈告欄新增Bd_new 老師限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'TEACHER')"
-        index="1-6"
-        @click="navigateTo('/Ad')"
-        >新增佈告欄
+        <el-menu-item
+          v-if="user && user.role === 'TEACHER'"
+          index="1-6"
+          @click="navigateTo('/Ad')"
+          >新增佈告欄
         </el-menu-item>
 
         <!-- 佈告欄管理Bd_manage 老師限定頁面 -->
-        <el-menu-item 
-        v-if="user && (user.role === 'TEACHER')"
-        index="1-7"
-        @click="navigateTo('/Ad')"
-        >我的佈告欄
+        <el-menu-item
+          v-if="user && user.role === 'TEACHER'"
+          index="1-7"
+          @click="navigateTo('/Ad')"
+          >我的佈告欄
         </el-menu-item>
-
       </el-sub-menu>
 
-      <el-sub-menu index="2" class="hover-item" @click="navigateTo('/posts')">
+      <el-sub-menu index="2" class="hover-item">
         <template #title>
           <el-icon><ChatLineRound /></el-icon>
           <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
@@ -145,15 +150,16 @@
         @click="navigateTo('/admin_edit_user')"
       >
         <el-icon><PenBoxIcon /></el-icon>
-        <NuxtLink to="/admin_edit_user" class="menu-link">修改使用者資料</NuxtLink>
+        <NuxtLink to="/admin_edit_user" class="menu-link"
+          >修改使用者資料</NuxtLink
+        >
       </el-menu-item>
-
     </el-menu>
   </div>
 </template>
 
 <script setup>
-import { DeleteIcon, PenBoxIcon } from 'lucide-vue-next';
+import { DeleteIcon, PenBoxIcon } from "lucide-vue-next";
 
 // 定義組件的 props
 const props = defineProps({

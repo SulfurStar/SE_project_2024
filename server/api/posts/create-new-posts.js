@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prismaClient = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const { title,content,authorId,image } = await readBody(event);
+    const { title, content, authorId, image } = await readBody(event);
     try {
         const post = await prismaClient.post.create({
             data: {
