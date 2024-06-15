@@ -3,7 +3,9 @@
     <div class="infinite-scroll">
       <div v-if="posts">
         <div v-for="post in posts" :key="post.id">
-          <PostTitleCard :post="post" />
+          <NuxtLink :to="`/posts/${post.id}`">
+            <PostTitleCard :post="post" />
+          </NuxtLink>
         </div>
       </div>
       <div v-else>

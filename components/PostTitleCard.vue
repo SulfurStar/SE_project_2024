@@ -1,5 +1,5 @@
 <template>
-    <NuxtLink :to="`/posts/${post.id}`">
+
     <el-card class="post-card">
             <div class="post-header">
                 <h2 class="post-title">{{ post.title }}</h2>
@@ -15,7 +15,7 @@
                 <div class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</div>
             </div>
     </el-card>
-    </NuxtLink>
+
 </template>
 
 <script>
