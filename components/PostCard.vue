@@ -10,6 +10,10 @@
             <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
         </div>
         <div class="post-footer">
+            <div class="options">
+                <el-icon :size="20" color="" class="icon"><EditPen /></el-icon>
+                <el-icon :size="20" color="" class="icon"><WarningFilled /></el-icon>
+            </div>
             <p class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</p>
         </div>
     </el-card>
@@ -67,6 +71,9 @@ export default {
     border-radius: 8px;
 }
 .post-footer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
     text-align: right;
     font-size: 0.8em;
     color: #999;
@@ -76,5 +83,8 @@ export default {
   overflow-wrap: break-word;
   word-wrap: break-word;
   overflow: hidden;
+}
+.options .icon{
+  margin: 8px;
 }
 </style>
