@@ -126,6 +126,15 @@ enum Role {
   @@schema("public")
 }
 
+//廣告狀態，___更改部分___
+enum Verify {
+  UNKNOWN
+  ADOPTED
+  FAILED
+
+  @@schema("public")
+}
+
 //廣告，AS，白、游
 model Advertise {
   id        Int      @id @default(autoincrement()) //廣告ID
@@ -178,6 +187,7 @@ model Advertise {
 
   houseAge String? //屋齡
   endAt    DateTime? //下架時間
+  verify   Verify@default(UNKNOWN)  //廣告狀態
 
   @@schema("public")
 }
@@ -215,6 +225,7 @@ model Board {
   authorId  Int //作者ID
   title     String //佈告欄標題
   content   String? //佈告欄內文
+  verify   Verify@default(UNKNOWN)  //佈告欄狀態
 
   @@schema("public")
 }
