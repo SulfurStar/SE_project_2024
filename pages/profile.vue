@@ -1,6 +1,6 @@
 <template>
   <div class="profile-container">
-    <h1>User Profile</h1>
+    <h1>個人檔案</h1>
     <div v-if="user">
       <img :src="user.avatar" alt="User Avatar" class="avatar" />
       <ul>

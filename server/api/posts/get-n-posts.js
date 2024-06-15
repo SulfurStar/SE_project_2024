@@ -27,7 +27,6 @@ export default defineEventHandler(async (event) => {
             },
         });
 
-        console.log('Posts:', posts);
         return {
             statusCode: 200,
             body: posts,
