@@ -3,19 +3,21 @@
     <div class="content">
       <div class="PostCard">
         <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
-        <div class="button-group">
+        <!-- <div class="button-group">
           <el-button type="success" @click="approvePost">審核通過</el-button>
           <el-button type="danger" @click="rejectPost">審核失敗</el-button>
-        </div>
+        </div> -->
         <PostCard :post="post" :authorname="authorName" />
       </div>
-      <!-- <div class="comment">
+      <div class="comment">
         <div v-if="comments">
-          <div v-for="comment in comments" :key="comment.id">
-            <CommentCard :comment="comment" />
+          <div class="button-group">
+            <el-button type="success" @click="approvePost">審核通過</el-button>
+            <el-button type="danger" @click="rejectPost">審核失敗</el-button>
           </div>
+          <CommentCard :comment="comments" />
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
   <div v-else>
@@ -37,8 +39,11 @@ const params = {
   postId: route.params.id,
 };
 
+const params2 = {
+  commentId: route.query.id,
+};
+
 onMounted(async () => {
-  const postId = route.params.id;
   const response = await fetch(`/api/posts/get-single-post`, {
     method: "POST",
     headers: {
@@ -47,22 +52,22 @@ onMounted(async () => {
     body: JSON.stringify(params),
   });
   const data = await response.json();
-  post.value = data.post;
+  comments.value = data.post;
   authorName.value = data.authorName;
-
-  const responseComment = await fetch("/api/posts/get-comment-by-Id", {
+  console.log(params2);
+  const responseComment = await fetch("/api/posts/get-single-comment", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(params),
+    body: JSON.stringify(params2),
   });
   comments.value = await responseComment.json();
 });
 
 const approvePost = async () => {
   try {
-    const response = await fetch(`/api/posts/${params.postId}/approve`, {
+    const response = await fetch(`/api/posts/${params2.commentId}/approve-comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,8 +79,8 @@ const approvePost = async () => {
         message: "審核完畢",
         type: "success",
       });
-      post.value.status = "APPROVED";
-      navigateTo(`/posts/management/1`);
+      comments.value.status = "APPROVED";
+      navigateTo(`/posts/managementComment/1`);
     } else {
       throw new Error(result.message);
     }
@@ -89,7 +94,7 @@ const approvePost = async () => {
 
 const rejectPost = async () => {
   try {
-    const response = await fetch(`/api/posts/${params.postId}/reject`, {
+    const response = await fetch(`/api/posts/${params2.commentId}/reject-comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,8 +106,8 @@ const rejectPost = async () => {
         message: "審核錯誤",
         type: "success",
       });
-      post.value.status = "REJECTED";
-      navigateTo(`/posts/management/1`);
+      comments.value.status = "REJECTED";
+      navigateTo(`/posts/managementComment/1`);
     } else {
       throw new Error(result.message);
     }

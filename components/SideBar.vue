@@ -109,7 +109,13 @@
           v-if="user && user.role === 'ADMIN'"
           index="1-4"
           @click="navigateTo('/posts/management/1')"
-          >管理貼文
+          >審核貼文
+        </el-menu-item>
+        <el-menu-item
+          v-if="user && user.role === 'ADMIN'"
+          index="1-4"
+          @click="navigateTo('/posts/managementComment/1')"
+          >審核留言
         </el-menu-item>
       </el-sub-menu>
 
