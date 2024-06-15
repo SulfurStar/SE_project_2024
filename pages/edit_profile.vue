@@ -39,18 +39,32 @@ onMounted(() => {
 
 const getPlaceholder = (key) => {
   switch (key) {
+    case "sexual":
+      return "性別";
+    case "homeAddress":
+      return "家裡住址";
     case "email":
       return "電子信箱";
     case "phone":
       return "手機號碼";
     case "homeTel":
       return "家裡電話";
+    case "emergencyContact":
+      return "緊急聯絡人"
     case "emergencyContactNumber":
       return "緊急聯絡人電話";
     case "studentID":
       return "學號";
     case "grade":
       return "年級(請輸入整數數字)";
+    case "teacher":
+      return "導師";
+    case "jobTitle":
+      return "職稱";
+    case "officeTel":
+      return "辦公室電話";
+    case "officeAddress":
+      return "辦公室地址";
     default:
       return "";
   }

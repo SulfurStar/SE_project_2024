@@ -53,13 +53,22 @@
         <el-icon><DeleteIcon /></el-icon>
         <NuxtLink to="/delete_account" class="menu-link">刪除帳號</NuxtLink>
       </el-menu-item>
+      <el-menu-item
+        v-if="user && user.role === 'ADMIN'"
+        index="7"
+        class="hover-item"
+        @click="navigateTo('/admin_edit_user')"
+      >
+        <el-icon><PenBoxIcon /></el-icon>
+        <NuxtLink to="/admin_edit_user" class="menu-link">修改使用者資料</NuxtLink>
+      </el-menu-item>
 
     </el-menu>
   </div>
 </template>
 
 <script setup>
-import { DeleteIcon } from 'lucide-vue-next';
+import { DeleteIcon, PenBoxIcon } from 'lucide-vue-next';
 
 // 定義組件的 props
 const props = defineProps({
