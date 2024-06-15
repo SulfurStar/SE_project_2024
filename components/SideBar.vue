@@ -44,11 +44,23 @@
         <el-icon><DocumentAdd /></el-icon>
         <NuxtLink to="/create_account" class="menu-link">創建帳號</NuxtLink>
       </el-menu-item>
+      <el-menu-item
+        v-if="user && user.role === 'ADMIN'"
+        index="6"
+        class="hover-item"
+        @click="navigateTo('/delete_account')"
+      >
+        <el-icon><DeleteIcon /></el-icon>
+        <NuxtLink to="/delete_account" class="menu-link">刪除帳號</NuxtLink>
+      </el-menu-item>
+
     </el-menu>
   </div>
 </template>
 
 <script setup>
+import { DeleteIcon } from 'lucide-vue-next';
+
 // 定義組件的 props
 const props = defineProps({
   isExpanded: {
