@@ -36,6 +36,8 @@ export default defineEventHandler(async (event) => {
         avatar: payload.picture,
         email: user.email,
         role: user.role,
+
+
       };
       switch (user.role) {
         case 'ADMIN':

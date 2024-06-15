@@ -16,13 +16,16 @@
 <script setup>
 const user = useState("user");
 const router = useRouter();
+// 不應顯示在表單中的屬性
 const excludeKeys = ["avatar", "exists", "role", "id"];
 
+// 讓學生無法修改name和email
 onMounted(() => {
   if (user.value && user.value.role === "STUDENT") {
     excludeKeys.push("name");
     excludeKeys.push("email");
   }
+  console.log('User data:', user.value);
 });
 
 const getPattern = (key) => {
