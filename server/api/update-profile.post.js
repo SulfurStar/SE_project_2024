@@ -21,23 +21,28 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // 从数据库中获取现有的用户数据
-    const existingUser = await prisma.user.findUnique({
-      where: { email: userData.email },
-    });
+    try {
+      // 从数据库中获取现有的用户数据
+      const existingUser = await prisma.user.findUnique({
+        where: { email: userData.email },
+      });
 
-    if (!existingUser) {
-      throw new Error('User not found');
+      if (!existingUser) {
+        throw new Error('User not found');
+      }
+
+      // 更新用户资料
+      const updatedUser = await prisma.user.update({
+        where: { email: userData.email },
+        data: userData, 
+      });
+
+      return {
+        success: true,
+        data: updatedUser,
+      };
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      throw new Error('Failed to update profile');
     }
-
-    // 更新用户资料
-    const updatedUser = await prisma.user.update({
-      where: { email: userData.email },
-      data: userData, 
-    });
-
-    return {
-      success: true,
-      data: updatedUser,
-    };
 });

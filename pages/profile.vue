@@ -5,18 +5,16 @@
       <img :src="user.avatar" alt="User Avatar" class="avatar" />
       <ul>
         <div v-for="(value, key) in user" :key="key">
-          <li v-if="!excludeData.includes(key)">
-            <strong>{{ key }}:</strong> {{ formatValue(value) }}
-          </li>
+          <div v-if="!excludeData.includes(key)">
+            <label :for="key">{{ key }}</label>
+            <input
+              readonly
+              class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+              :value="formatValue(value)"
+            />
+          </div>
         </div>
       </ul>
-      <!-- Add similar sections for posts, comments, advertise, etc. -->
-      <div v-if="user.posts && user.posts.length">
-        <h2>Posts</h2>
-        <ul>
-          <li v-for="post in user.posts" :key="post.id">{{ post.title }}</li>
-        </ul>
-      </div>
 
       <!-- Edit Profile Button -->
       <el-button type="primary" @click="goToEditProfile"
@@ -44,6 +42,10 @@ const formatValue = (value) => {
   }
   return String(value);
 };
+
+definePageMeta({
+  middleware: "auth",
+});
 </script>
 
 <style scoped>

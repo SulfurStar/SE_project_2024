@@ -5,7 +5,13 @@
       <div v-for="(value, key) in user" :key="key">
         <div v-if="!excludeKeys.includes(key)">
           <label :for="key">{{ key }}</label>
-          <input :id="key" v-model="user[key]" :pattern="getPattern(key)" />
+          <input
+            :id="key"
+            v-model="user[key]"
+            :pattern="getPattern(key)"
+            :placeholder="getPlaceholder(key)"
+            class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          />
         </div>
       </div>
       <button type="submit">確認修改</button>
@@ -14,6 +20,9 @@
 </template>
 
 <script setup>
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
+
 const user = useState("user");
 const router = useRouter();
 // 不應顯示在表單中的屬性
@@ -25,11 +34,31 @@ onMounted(() => {
     excludeKeys.push("name");
     excludeKeys.push("email");
   }
-  console.log('User data:', user.value);
+  console.log("User data:", user.value);
 });
+
+const getPlaceholder = (key) => {
+  switch (key) {
+    case "email":
+      return "電子信箱";
+    case "phone":
+      return "手機號碼";
+    case "homeTel":
+      return "家裡電話";
+    case "emergencyContactNumber":
+      return "緊急聯絡人電話";
+    case "studentID":
+      return "學號";
+    case "grade":
+      return "年級(請輸入整數數字)";
+    default:
+      return "";
+  }
+};
 
 const getPattern = (key) => {
   switch (key) {
+    case "phone":
     case "grade":
       return "\\d*"; // 數字
     default:
@@ -55,9 +84,18 @@ const updateProfile = async () => {
 
     console.log("Profile updated successfully:", data);
 
+    ElMessage({
+      message: "修改成功",
+      type: "success",
+    });
+
     router.push("/profile"); // 更新完成后跳转回个人资料页面
   } catch (error) {
     console.error("Error updating profile:", error);
+    ElMessage({
+      message: "修改失敗",
+      type: "error",
+    });
   }
 };
 </script>
