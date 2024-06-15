@@ -50,7 +50,7 @@ export default {
     });
 
     const user = useState('user');
-    console.log(user.value.);
+    console.log(user.value);
 
     const post = ref({
       title: '',

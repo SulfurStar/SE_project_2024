@@ -24,4 +24,4 @@ logs
 !.env.example
 
 # Migration files
-migrations
+# migrations
