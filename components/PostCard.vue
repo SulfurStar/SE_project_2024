@@ -3,7 +3,7 @@
     <div class="post-header">
       <h2 class="post-title">{{ post.title }}</h2>
       <p class="post-author">by {{ authorname }}</p>
-      <p class="post-status">Status: {{ post.status }}</p>
+      <!-- <p class="post-status">Status: {{ post.status }}</p> -->
       <p v-if="post.reportedReason" class="post-reason">
         Reported Reason: {{ post.reportedReason }}
       </p>
@@ -19,8 +19,10 @@
     </div>
     <div class="post-footer">
       <div class="options">
-        <el-icon :size="20" color="" class="icon"><EditPen /></el-icon>
-        <el-icon :size="20" color="" class="icon"><WarningFilled /></el-icon>
+        <el-icon v-if="post.authorId === userid" :size="20" color="" class="icon" >
+          <NuxtLink :to="`/posts/${post.id}/edit`"><EditPen /></NuxtLink>
+        </el-icon>
+        <el-icon v-if="post.authorId != userid" :size="20" color="" class="icon"><WarningFilled /></el-icon>
       </div>
       <p class="post-date">
         Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}
@@ -30,6 +32,7 @@
 </template>
 
 <script>
+
 export default {
   name: "PostCard",
   props: {
@@ -41,8 +44,15 @@ export default {
       type: String,
       required: true,
     },
+    userid: {
+      type: String,
+      required: false,
+      default: null,
+    },
   },
 };
+
+
 </script>
 
 <style scoped>
@@ -96,6 +106,6 @@ export default {
   overflow: hidden;
 }
 .options .icon {
-  margin: 8px;
+  margin-left: 8px;
 }
 </style>

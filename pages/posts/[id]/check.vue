@@ -2,7 +2,7 @@
   <div v-if="post">
     <div class="content">
       <div class="PostCard">
-        <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink>
+        <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
         <PostCard :post="post" :authorname="authorName" />
         <div class="button-group">
           <el-button type="success" @click="approvePost">審核通過</el-button>
@@ -39,7 +39,7 @@ const params = {
 
 onMounted(async () => {
   const postId = route.params.id;
-  const response = await fetch(`/api/posts/${postId}`, {
+  const response = await fetch(`/api/posts/get-single-post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

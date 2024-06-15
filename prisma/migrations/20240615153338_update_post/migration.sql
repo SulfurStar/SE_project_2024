@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "public"."Comment" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;

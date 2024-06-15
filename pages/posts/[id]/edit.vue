@@ -111,7 +111,7 @@ export default {
     };
 
     onMounted(async() => {
-      const response = await fetch(`/api/posts/${postId}`, {
+      const response = await fetch(`/api/posts/get-single-post`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
