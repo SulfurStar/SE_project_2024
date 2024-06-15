@@ -3,11 +3,11 @@
     <div class="content">
       <div class="PostCard">
         <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
-        <PostCard :post="post" :authorname="authorName" />
         <div class="button-group">
           <el-button type="success" @click="approvePost">審核通過</el-button>
           <el-button type="danger" @click="rejectPost">審核失敗</el-button>
         </div>
+        <PostCard :post="post" :authorname="authorName" />
       </div>
       <div class="comment">
         <div v-if="comments">

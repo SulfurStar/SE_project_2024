@@ -22,7 +22,6 @@
         <el-icon v-if="post.authorId === userid" :size="20" color="" class="icon" >
           <NuxtLink :to="`/posts/${post.id}/edit`"><EditPen /></NuxtLink>
         </el-icon>
-        <el-icon v-if="post.authorId != userid" :size="20" color="" class="icon"><WarningFilled /></el-icon>
       </div>
       <p class="post-date">
         Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}

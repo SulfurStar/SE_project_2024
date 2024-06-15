@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     // 使用 Prisma 更新帖子狀態
     const updatedPost = await prisma.post.update({
       where: { id: Number(id) },
-      data: { status: 'NORMAL' },
+      data: { status: 'NORMAL' , reportedReason: null},
     });
 
     return {
