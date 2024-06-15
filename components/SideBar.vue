@@ -11,12 +11,13 @@
     </div>
     <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
-    
-      <el-sub-menu index="2" class="hover-item" @click="navigateTo('/advertisement')">
-        <template #title>
-          <el-icon><MapLocation /></el-icon>
-          <NuxtLink to="/advertisement" class="menu-link">廣告總覽</NuxtLink>
-        </template>
+      <el-menu-item
+        index="1"
+        class="hover-item"
+        @click="navigateTo('/advertisement')"
+      >
+        <el-icon><MapLocation /></el-icon>
+        <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
         <!-- 以下為子菜單 -->
         <el-menu-item index="1-1" @click="navigateTo('/Ad')">廣告總覽</el-menu-item>
         
@@ -24,8 +25,8 @@
         <!-- 佈告欄審核(總)Bd_verify 管理員限定頁面 -->
         <el-menu-item 
         v-if="user && (user.role === 'ADMIN')"
-        index="1-2"
-        @click="navigateTo('/Ad')"
+        index="1-2"a
+        @click="navigteTo('/Ad')"
         >佈告欄審核
         </el-menu-item>
 
@@ -69,8 +70,8 @@
         >我的佈告欄
         </el-menu-item>
 
-      </el-sub-menu>
-      
+      </el-menu-item>
+
       <el-sub-menu index="2" class="hover-item" @click="navigateTo('/posts')">
         <template #title>
           <el-icon><ChatLineRound /></el-icon>
