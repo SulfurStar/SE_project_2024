@@ -1,23 +1,24 @@
 <template>
-    <div class="container">
-      <h2>佈告欄頁面</h2>
-      <form @submit.prevent="submitForm">
-        <label for="title">標題：</label><br/>
-        <input id="title" v-model="formData.title" type="text" readonly> {{Bd.title}} <br/>
-    
-        <label for="content">內文：</label><br/>
-        <textarea id="content" v-model="formData.content" rows="10" cols="50" readonly> {{Bd.content}} </textarea><br/>
-    
-      </form>
-    </div>
-    </template>
+  <div v-if="Bd" class="container">
+    <h2>佈告欄頁面</h2>
+    <form @submit.prevent="submitForm">
+      <label for="title">標題：</label><br/>
+      <!-- 使用 v-model 和 :value 屬性來綁定數據 -->
+      <input id="title" :value="Bd.title" type="text" readonly><br/>
+
+      <label for="content">內文：</label><br/>
+      <!-- 使用 v-model 和 :value 屬性來綁定數據 -->
+      <textarea id="content" :value="Bd.content" rows="10" cols="50" readonly></textarea><br/>
+    </form>
+  </div>
+</template>
     
     <script>
 
     import { useRoute } from "vue-router";
     import { ref, onMounted } from "vue";
-    //import Advertise from "../Advertise.vue";  //*
-    import { User } from "lucide-vue-next";
+    // import Advertise from "../Advertise.vue";  //*
+    // import { User } from "lucide-vue-next";
 
     export default {
       setup() {
@@ -46,22 +47,22 @@
       }
     };
 
-    //export default {
-      //data() {
-        //return {
-          //formData: {
-            //title: '',
-            //content: ''
-          //}
-        //};
-      //},
-      //methods: {
-        //submitForm() {
-          // //Handle form submission logic here
-          //console.log('Form submitted with data:', this.formData);
-        //}
-      //}
-    //}
+    // export default {
+    //   data() {
+    //     return {
+    //       formData: {
+    //         title: '',
+    //         content: ''
+    //       }
+    //     };
+    //   },
+    //   methods: {
+    //     submitForm() {
+    //       //Handle form submission logic here
+    //       console.log('Form submitted with data:', this.formData);
+    //     }
+    //   }
+    // }
     </script>
     
     <style scoped>
