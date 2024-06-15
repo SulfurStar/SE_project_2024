@@ -11,13 +11,12 @@
     </div>
     <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
-      <el-menu-item
-        index="1"
-        class="hover-item"
-        @click="navigateTo('/advertisement')"
-      >
-        <el-icon><MapLocation /></el-icon>
-        <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
+    
+      <el-sub-menu index="2" class="hover-item" @click="navigateTo('/advertisement')">
+        <template #title>
+          <el-icon><MapLocation /></el-icon>
+          <NuxtLink to="/advertisement" class="menu-link">廣告總覽</NuxtLink>
+        </template>
         <!-- 以下為子菜單 -->
         <el-menu-item index="1-1" @click="navigateTo('/Ad')">廣告總覽</el-menu-item>
         
@@ -69,9 +68,9 @@
         @click="navigateTo('/Ad')"
         >我的佈告欄
         </el-menu-item>
-        
-      </el-menu-item>
 
+      </el-sub-menu>
+      
       <el-sub-menu index="2" class="hover-item" @click="navigateTo('/posts')">
         <template #title>
           <el-icon><ChatLineRound /></el-icon>

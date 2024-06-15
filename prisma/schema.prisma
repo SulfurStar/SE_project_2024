@@ -188,6 +188,7 @@ model Advertise {
   houseAge String? //屋齡
   endAt    DateTime? //下架時間
   verify   Verify@default(UNKNOWN)  //廣告狀態
+  address  String //地址
 
   @@schema("public")
 }
