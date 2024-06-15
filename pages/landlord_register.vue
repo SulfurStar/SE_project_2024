@@ -10,7 +10,6 @@
           required
           placeholder="Email"
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
-          readonly
         />
       </div>
       <div class="form-group">
@@ -21,25 +20,43 @@
           required
           placeholder="Name"
           class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
-          readonly
         />
       </div>
-      <button type="submit">Register</button>
+      <div class="form-group">
+        <input
+          id="phone"
+          v-model="phone"
+          type="tel"
+          required
+          placeholder="Phone"
+          class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          :pattern="`\\d*`"
+        />
+      </div>
+      <button type="submit">註冊</button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const email = ref("");
 const name = ref("");
+const phone = ref("");
 const router = useRouter();
 
 const user = useState("user");
-email.value = user.value.email;
-name.value = user.value.name;
+
+onMounted(() => {
+  if (user.value.role !== "LANDLORD") {
+    email.value = user.value.email;
+    name.value = user.value.name;
+  } else {
+    router.push("/"); // 如果已經是房東，重定向到首頁
+  }
+});
 
 const register = async () => {
   try {
@@ -48,7 +65,11 @@ const register = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email: email.value, name: name.value }),
+      body: JSON.stringify({
+        email: email.value,
+        name: name.value,
+        phone: phone.value,
+      }),
     });
 
     if (response.ok) {
@@ -59,6 +80,7 @@ const register = async () => {
       });
       // 把role加入user的資料中
       user.value.role = "LANDLORD";
+      user.value.phone = phone.value;
       router.push("/");
     } else {
       const error = await response.json();
