@@ -36,11 +36,58 @@
         </el-form>
       </div>
     </div>
+<!--  條件渲染的提示框 -->
+    <AlertDialog v-if="showAlert">
+          <AlertDialogTrigger>
+            <button ref="alertTrigger" class="hidden">Show Dialog</button>
+          </AlertDialogTrigger>
+          <AlertDialogContent
+            class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
+          >
+            <AlertDialogTitle class="flex items-center">
+              <svg
+              v-if="success"
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-emerald-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+             >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              />
+            </svg>
+            <svg
+              v-else
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6 text-red-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+            <span class="ml-2">{{ success ? '操作成功' : '操作失敗' }}</span>
+            </AlertDialogTitle>
+            <AlertDialogAction class="mt-4" @click="handleConfirm"
+              >確認</AlertDialogAction
+            >
+          </AlertDialogContent>
+        </AlertDialog>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref,nextTick } from 'vue';
+import { useRouter } from 'vue-router';
 import auth from '~/middleware/auth';
 
 export default {
@@ -50,13 +97,32 @@ export default {
     });
 
     const user = useState('user');
-    console.log(user.value);
+    const userId = user.value.id;
+    const showAlert = ref(false);
+    const alertTrigger = ref(null);
+    const router = useRouter();
+    const success = ref(false);
 
     const post = ref({
       title: '',
       content: '',
       image: ''
     });
+
+    watch(showAlert, async (newVal) => {
+      if (newVal) {
+        await nextTick(); // 等待元素渲染完成
+        if (alertTrigger.value) {
+          alertTrigger.value.click();
+        }
+      }
+    });
+
+    const handleConfirm = () => {
+      showAlert.value = false;
+      if (success.value)
+        router.push("/posts/overview/1");
+    };
 
     const rules = {
       title: [
@@ -91,10 +157,10 @@ export default {
             const params = {
               title: post.value.title,
               content: post.value.content,
-              authorId: 1,
+              authorId: userId,
               image: post.value.image
             };
-            console.log('params:', params);
+            // console.log('params:', params);
             const response = await fetch('/api/posts/create-new-posts', {
               method: 'POST',
               headers: {
@@ -106,18 +172,22 @@ export default {
             const responseData = await response.json();
             if (response.ok && responseData.statusCode === 200) {
               console.log('成功創建新帖子:', responseData.body);
-              // 這裡你可以添加成功處理邏輯，例如導航到新創建的帖子的頁面
+              success.value = true;
+              showAlert.value = true;
             } else {
               console.error('創建帖子失敗:', responseData.body || responseData);
-              // 這裡你可以添加失敗處理邏輯，例如顯示錯誤消息
+              success.value = false;
+              showAlert.value = true;
             }
           } catch (error) {
             console.error('請求失敗:', error);
-            // 這裡你可以添加請求失敗的處理邏輯
+            success.value = false;
+            showAlert.value = true;
           }
-          // console.log('表單數據: ', post.value.title);
         } else {
           console.log('表單驗證失敗!');
+          success.value = false;
+          showAlert.value = true;
           return false;
         }
       });
@@ -135,7 +205,11 @@ export default {
       handleRemove,
       submitForm,
       resetForm,
-      postForm
+      postForm,
+      showAlert,
+      alertTrigger,
+      handleConfirm,
+      success
     };
   }
 };

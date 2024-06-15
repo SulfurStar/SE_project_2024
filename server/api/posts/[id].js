@@ -25,5 +25,5 @@ export default defineEventHandler(async(event) => {
     return { post, error: 'Author not found' };
   }
 
-  return { post, authorName: author.name };
+  return { post, authorName: author.name , authorId: post.authorId};
 });

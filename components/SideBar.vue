@@ -19,10 +19,30 @@
         <el-icon><MapLocation /></el-icon>
         <NuxtLink to="/advertisement" class="menu-link">租屋廣告</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="2" class="hover-item" @click="navigateTo('/posts')">
-        <el-icon><ChatLineRound /></el-icon>
-        <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
-      </el-menu-item>
+
+      <el-sub-menu index="2" class="hover-item" @click="navigateTo('/posts')">
+        <template #title>
+          <el-icon><ChatLineRound /></el-icon>
+          <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
+        </template>
+        <!-- 以下為子菜單 -->
+        <el-menu-item index="1-1" @click="navigateTo('/posts')">貼文總覽</el-menu-item>
+
+        <el-menu-item 
+        v-if="user && (user.role === 'STUDENT' || 'ADMIN' || 'LANDLORD' || 'TEACHER')" 
+        index="1-2"
+        @click="navigateTo('/posts/new-post')"
+        >新增貼文
+        </el-menu-item>
+
+        <el-menu-item 
+        v-if="user && (user.role === 'STUDENT' || 'ADMIN' || 'LANDLORD' || 'TEACHER')" 
+        index="1-3"
+        @click="navigateTo('/my/posts/1')"
+        >我的貼文
+        </el-menu-item>
+      </el-sub-menu>
+
       <el-menu-item
         index="3"
         class="hover-item"

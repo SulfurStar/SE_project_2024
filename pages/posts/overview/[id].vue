@@ -25,40 +25,54 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
-import PostTitleCard from "~/components/PostTitleCard.vue";
 
-const route = useRoute();
-const router = useRouter();
-const posts = ref(null);
-const numberOfPosts = ref(null);
-const currentPage = ref(1);
-currentPage.value = route.params.id || 1;
+    import { useRoute,useRouter } from 'vue-router';
+    import { ref, onMounted } from 'vue';
+    import PostTitleCard from '~/components/PostTitleCard.vue';
+    
+    const route = useRoute();
+    const router = useRouter();
+    const posts = ref(null);
+    const numberOfPosts = ref(null);
+    const currentPage = ref(1);
+
+    currentPage.value = route.params.id || 1;
 
 const handlePageChange = (page) => {
   router.push(`/posts/overview/${page}`);
 };
 
-const params = {
-  skip: currentPage.value * 10 - 10 || 0,
-  take: 10,
-  thestatus: ["NORMAL", "REPORTED"],
-};
+    const params = {
+        skip: currentPage.value * 10 - 10 || 0,
+        take: 10,
+        thestatus: ['NORMAL', 'REPORTED'],
+        ids: null 
+    };
 
-const params2 = {
-  thestatus: ["NORMAL", "REPORTED"],
-};
-
-onMounted(async () => {
-  const responsePost = await fetch("/api/posts/get-n-posts", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-  });
-  posts.value = await responsePost.json();
+    const params2 = {
+        thestatus: ['NORMAL', 'REPORTED']
+    };
+    
+    onMounted(async () => {
+        const responsePost = await fetch('/api/posts/get-n-posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        });
+        
+        if (responsePost.ok) {
+            const responseData = await responsePost.json();
+            if (responseData.statusCode === 200) {
+                posts.value = responseData.body;
+                console.log('posts:', posts.value);
+            } else {
+                console.error('Failed to fetch posts:', responseData);
+            }
+        } else {
+            console.error('Failed to fetch posts: HTTP status', responsePost.status);
+        }
 
   const responseNumberOfPost = await fetch("/api/posts/get-number-of-posts", {
     method: "POST",
