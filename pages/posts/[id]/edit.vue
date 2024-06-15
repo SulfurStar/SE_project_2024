@@ -5,27 +5,36 @@
     </div>
     <div class="new-post-container">
       <div class="the-form">
-        <el-form ref="postForm" :model="post" :rules="rules" label-width="100px">
+        <el-form
+          ref="postForm"
+          :model="post"
+          :rules="rules"
+          label-width="100px"
+        >
           <el-form-item label="標題" prop="title">
-            <el-input v-model="post.title" placeholder="輸入貼文標題"></el-input>
+            <el-input
+              v-model="post.title"
+              placeholder="輸入貼文標題"
+            ></el-input>
           </el-form-item>
           <el-form-item label="內容" prop="content">
-            <el-input v-model="post.content" type="textarea" placeholder="輸入貼文內容"></el-input>
+            <el-input
+              v-model="post.content"
+              type="textarea"
+              placeholder="輸入貼文內容"
+            ></el-input>
           </el-form-item>
           <el-form-item label="圖片" prop="image">
             <el-upload
               class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
+              :before-upload="beforeUpload"
               list-type="picture"
-              :on-success="handleSuccess"
-              :on-remove="handleRemove"
               :file-list="fileList"
               :limit="1"
-              :auto-upload="false">
+            >
               <el-button size="small" type="primary">選擇圖片</el-button>
               <template #tip>
-                <div class="el-upload__tip">只能上傳 jpg/png 文件
-                </div>
+                <div class="el-upload__tip">只能上傳 jpg/png 文件</div>
               </template>
             </el-upload>
           </el-form-item>
@@ -36,202 +45,231 @@
         </el-form>
       </div>
     </div>
-<!--  條件渲染的提示框 -->
+    <!-- 條件渲染的提示框 -->
     <AlertDialog v-if="showAlert">
-          <AlertDialogTrigger>
-            <button ref="alertTrigger" class="hidden">Show Dialog</button>
-          </AlertDialogTrigger>
-          <AlertDialogContent
-            class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
+      <AlertDialogTrigger>
+        <button ref="alertTrigger" class="hidden">Show Dialog</button>
+      </AlertDialogTrigger>
+      <AlertDialogContent
+        class="flex flex-col items-center justify-center w-1/5 max-w-xs p-4 bg-white rounded-lg shadow-lg"
+      >
+        <AlertDialogTitle class="flex items-center">
+          <svg
+            v-if="success"
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-emerald-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <AlertDialogTitle class="flex items-center">
-              <svg
-              v-if="success"
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-emerald-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-             >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-            <svg
-              v-else
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 text-red-500"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-            <span class="ml-2">{{ success ? '操作成功' : '操作失敗' }}</span>
-            </AlertDialogTitle>
-            <AlertDialogAction class="mt-4" @click="handleConfirm"
-              >確認</AlertDialogAction
-            >
-          </AlertDialogContent>
-        </AlertDialog>
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+          <svg
+            v-else
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 text-red-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+          <span class="ml-2">{{ success ? "操作成功" : "操作失敗" }}</span>
+        </AlertDialogTitle>
+        <AlertDialogAction class="mt-4" @click="handleConfirm"
+          >確認</AlertDialogAction
+        >
+      </AlertDialogContent>
+    </AlertDialog>
   </div>
 </template>
 
-<script>
-// import { id } from 'element-plus/es/locale/index.mjs';
-import { ref,nextTick } from 'vue';
-import { useRouter,useRoute } from 'vue-router';
-// import check-post-owner from '~/middleware/auth';
+<script setup>
+import { ref, watch, nextTick, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { v4 as uuidv4 } from "uuid"; // 引入 UUID 庫
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogTitle,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
-export default {
-  setup() {
-    definePageMeta({
-      middleware: "check-post-owner",
+const supabase = useSupabaseClient();
+
+definePageMeta({
+  middleware: "check-post-owner",
+});
+
+const user = useState("user");
+const userId = user.value.id;
+const showAlert = ref(false);
+const alertTrigger = ref(null);
+const router = useRouter();
+const route = useRoute();
+const postId = route.params.id;
+const success = ref(false);
+
+const post = ref({
+  title: "",
+  content: "",
+  image: "",
+});
+
+const params = {
+  postId,
+};
+
+onMounted(async () => {
+  const response = await fetch(`/api/posts/get-single-post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  });
+  const data = await response.json();
+  post.value = data.post;
+  if (data.post.image) {
+    fileList.value.push({
+      name: data.post.image,
+      url: data.post.image,
     });
+  }
+});
 
-    const user = useState('user');
-    const userId = user.value.id;
-    const showAlert = ref(false);
-    const alertTrigger = ref(null);
-    const router = useRouter();
-    const route = useRoute();
-    const postId = route.params.id;
-    const success = ref(false);
+watch(showAlert, async (newVal) => {
+  if (newVal) {
+    await nextTick(); // 等待元素渲染完成
+    if (alertTrigger.value) {
+      alertTrigger.value.click();
+    }
+  }
+});
 
-    const params = {
-      postId
-    };
+const handleConfirm = () => {
+  showAlert.value = false;
+  if (success.value) router.push("/posts/overview/1");
+};
 
-    onMounted(async() => {
-      const response = await fetch(`/api/posts/get-single-post`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params)
-      });
-      const data = await response.json();
-      post.value = data.post;
-    });
+const rules = {
+  title: [
+    { required: true, message: "請輸入標題", trigger: "blur" },
+    { min: 3, message: "標題不能少於 3 個字", trigger: "blur" },
+  ],
+  content: [
+    { required: true, message: "請輸入內容", trigger: "blur" },
+    { min: 10, message: "內容不能少於 10 個字", trigger: "blur" },
+  ],
+  image: [{ message: "請上傳圖片", trigger: "change" }],
+};
 
-    const post = ref({
-      title: '',
-      content: '',
-      image: ''
-    });
+const fileList = ref([]);
 
-    watch(showAlert, async (newVal) => {
-      if (newVal) {
-        await nextTick(); // 等待元素渲染完成
-        if (alertTrigger.value) {
-          alertTrigger.value.click();
-        }
-      }
-    });
+const beforeUpload = async (file) => {
+  const imageUrl = await uploadImage(file);
+  if (imageUrl) {
+    post.value.image = imageUrl;
+    return true; // 允許上傳
+  }
+  return false; // 阻止上傳
+};
 
-    const handleConfirm = () => {
-      showAlert.value = false;
-      if (success.value)
-        router.push("/posts/overview/1");
-    };
+const uploadImage = async (file) => {
+  try {
+    // 生成唯一的文件名
+    const uniqueFileName = `${uuidv4()}.${file.name.split(".").pop()}`;
 
-    const rules = {
-      title: [
-        { required: true, message: '請輸入標題', trigger: 'blur' },
-        { min: 3, message: '標題不能少於 3 個字', trigger: 'blur' }
-      ],
-      content: [
-        { required: true, message: '請輸入內容', trigger: 'blur' },
-        { min: 10, message: '內容不能少於 10 個字', trigger: 'blur' }
-      ],
-      // image: [
-      //   { required: true, message: '請上傳圖片', trigger: 'change' }
-      // ]
-    };
+    const { data, error } = await supabase.storage
+      .from("PostPhoto")
+      .upload(`public/${uniqueFileName}`, file);
 
-    const fileList = ref([]);
+    if (error) {
+      console.error("圖片上傳失敗:", error);
+      return null;
+    }
 
-    const handleSuccess = (response, file, fileList) => {
-      post.value.image = response.url;
-    };
+    // 獲取公開 URL
+    const { data: urlData, error: urlError } = supabase.storage
+      .from("PostPhoto")
+      .getPublicUrl(`public/${uniqueFileName}`);
+    if (urlError) {
+      console.error("獲取圖片URL失敗:", urlError);
+      return null;
+    }
 
-    const handleRemove = (file, fileList) => {
-      post.value.image = '';
-    };
+    const imageURL = urlData.publicUrl;
+    console.log("圖片上傳成功，圖片URL:", imageURL);
+    return imageURL;
+  } catch (error) {
+    console.error("圖片上傳過程中出現錯誤:", error);
+    return null;
+  }
+};
 
-    const postForm = ref(null);
+const handleSuccess = (response, file, fileList) => {
+  post.value.image = response;
+  fileList.push(file); // 更新文件列表
+};
 
-    const submitForm = () => {
-      postForm.value.validate(async (valid) => {
-        if (valid) {
-          try {
-            const params = {
-              id: postId,
-              title: post.value.title,
-              content: post.value.content,
-              authorId: userId,
-              image: post.value.image
-            };
-            // console.log('params:', params);
-            const response = await fetch('/api/posts/update-post', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify(params)
-            });
+const postForm = ref(null);
 
-            const responseData = await response.json();
-            if (response.ok && responseData.statusCode === 200) {
-              console.log('成功更新帖子:', responseData.body);
-              success.value = true;
-              showAlert.value = true;
-            } else {
-              console.error('更新帖子失敗:', responseData.body || responseData);
-              success.value = false;
-              showAlert.value = true;
-            }
-          } catch (error) {
-            console.error('請求失敗:', error);
-            success.value = false;
-            showAlert.value = true;
-          }
+const submitForm = async () => {
+  postForm.value.validate(async (valid) => {
+    if (valid) {
+      try {
+        const params = {
+          id: postId,
+          title: post.value.title,
+          content: post.value.content,
+          authorId: userId,
+          image: post.value.image,
+        };
+        const response = await fetch("/api/posts/update-post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(params),
+        });
+
+        const responseData = await response.json();
+        if (response.ok && responseData.statusCode === 200) {
+          console.log("成功更新帖子:", responseData.body);
+          success.value = true;
+          showAlert.value = true;
         } else {
-          console.log('表單驗證失敗!');
+          console.error("更新帖子失敗:", responseData.body || responseData);
           success.value = false;
           showAlert.value = true;
-          return false;
         }
-      });
-    };
+      } catch (error) {
+        console.error("請求失敗:", error);
+        success.value = false;
+        showAlert.value = true;
+      }
+    } else {
+      console.log("表單驗證失敗!");
+      success.value = false;
+      showAlert.value = true;
+      return false;
+    }
+  });
+};
 
-    const resetForm = () => {
-      postForm.value.resetFields();
-    };
-
-    return {
-      post,
-      rules,
-      fileList,
-      handleSuccess,
-      handleRemove,
-      submitForm,
-      resetForm,
-      postForm,
-      showAlert,
-      alertTrigger,
-      handleConfirm,
-      success
-    };
-  }
+const resetForm = () => {
+  postForm.value.resetFields();
 };
 </script>
 
@@ -260,7 +298,7 @@ export default {
   padding: 20px 0;
 }
 
-.header{
+.header {
   width: 100%;
   background-color: #f9f9f9;
   border-bottom: 1px solid #eaeaea;
