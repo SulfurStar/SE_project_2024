@@ -9,18 +9,12 @@
             <p class="post-content">{{ post.content }}</p>
             <img v-if="post.imageUrl" :src="post.imageUrl" alt="Post Image" class="post-image">
             </div> -->
-    <div class="post-footer">
-      <el-icon :size="20" color="" class="report-icon"
-        ><WarningFilled /></el-icon
-      >狀態 : {{ post.status }}
-
-      <strong> 原因 : {{ post.reportedReason }} </strong>
-
-      <div class="post-date">
-        Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}
-      </div>
-    </div>
-  </el-card>
+            <div class="post-footer">
+                <el-icon :size="20" color="" class="report-icon"><WarningFilled /></el-icon>
+                <div class="post-date">Posted on: {{ new Date(post.createdAt).toLocaleDateString() }}</div>
+            </div>
+    </el-card>
+    </NuxtLink>
 </template>
 
 <script>
