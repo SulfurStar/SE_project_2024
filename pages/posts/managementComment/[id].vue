@@ -1,13 +1,13 @@
 <template>
   <div class="content">
     <div class="infinite-scroll">
-      <div v-if="posts">
-        <div v-if="posts.length === 0">
-          <p>沒有貼文需要審核</p>
+      <div v-if="comments">
+        <div v-if="comments.length === 0">
+          <p>沒有評論需要審核</p>
         </div>
-        <div v-for="post in posts" :key="post.id">
-          <NuxtLink :to="`/posts/${post.id}/check`">
-            <PostTitleCard :post="post" />
+        <div v-for="comment in comments" :key="comment.id">
+          <NuxtLink :to="{ path: `/posts/${comment.postId}/checkComment`, query: { id: comment.id } }">
+            <CommentCard :comment="comment" />
           </NuxtLink>
         </div>
       </div>
@@ -16,11 +16,11 @@
       </div>
     </div>
     <div class="pagination">
-      <div v-if="numberOfPosts">
+      <div v-if="numberOfComments">
         <el-pagination
           background
           layout="prev, pager, next"
-          :total="numberOfPosts * 10"
+          :total="numberOfComments * 10"
           :current-page="currentPage * 1"
           @current-change="handlePageChange"
         />
@@ -32,18 +32,18 @@
 <script setup>
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
-import PostTitleCard from "~/components/PostTitleCard.vue";
+import CommentCard from "~/components/CommentCard.vue";
 
 const route = useRoute();
 const router = useRouter();
-const posts = ref(null);
-const numberOfPosts = ref(null);
+const comments = ref(null);
+const numberOfComments = ref(null);
 const currentPage = ref(1);
 
 currentPage.value = route.params.id || 1;
 
 const handlePageChange = (page) => {
-  router.push(`/posts/management/${page}`);
+  router.push(`/posts/managementComment/${page}`);
 };
 
 const params = {
@@ -58,7 +58,7 @@ const params2 = {
 };
 
 onMounted(async () => {
-  const responsePost = await fetch("/api/posts/get-n-posts", {
+  const responseComment = await fetch("/api/posts/get-n-comments", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -66,26 +66,26 @@ onMounted(async () => {
     body: JSON.stringify(params),
   });
 
-  if (responsePost.ok) {
-    const responseData = await responsePost.json();
+  if (responseComment.ok) {
+    const responseData = await responseComment.json();
     if (responseData.statusCode === 200) {
-      posts.value = responseData.body;
+      comments.value = responseData.body;
     } else {
       console.error("Failed to fetch posts:", responseData);
     }
   } else {
-    console.error("Failed to fetch posts: HTTP status", responsePost.status);
+    console.error("Failed to fetch comments: HTTP status", responseComment.status);
   }
 
-  const responseNumberOfPost = await fetch("/api/posts/get-number-of-posts", {
+  const responseNumberOfComment = await fetch("/api/posts/get-number-of-comments", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(params2),
   });
-  numberOfPosts.value = await responseNumberOfPost.json();
-  numberOfPosts.value = Math.ceil(numberOfPosts.value / 10);
+  numberOfComments.value = await responseNumberOfComment.json();
+  numberOfComments.value = Math.ceil(numberOfComments.value / 10);
 });
 
 definePageMeta({

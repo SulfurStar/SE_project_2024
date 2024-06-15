@@ -8,20 +8,20 @@ export default defineEventHandler(async (event) => {
 
   try {
     // 使用 Prisma 更新帖子狀態
-    const updatedPost = await prisma.post.update({
+    const updatedcomment = await prisma.comment.update({
       where: { id: Number(id) },
       data: { status: 'NORMAL' , reportedReason: null},
     });
 
     return {
       success: true,
-      message: `Post with ID ${id} has been approved.`,
-      post: updatedPost,
+      message: `comment with ID ${id} has been approved.`,
+      comment: updatedcomment,
     };
   } catch (error) {
     return {
       success: false,
-      message: `Failed to approve post with ID ${id}.`,
+      message: `Failed to approve comment with ID ${id}.`,
       error: error.message,
     };
   }

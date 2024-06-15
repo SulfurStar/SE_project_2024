@@ -21,9 +21,17 @@ const users = ref([]);
 const loading = ref(true);
 const router = useRouter();
 const user = useState("user");
-const params = {
-  adminId: user.value.id,
-};
+const params = ref({ adminId: "" });
+
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      params.value.adminId = newUser.id;
+    }
+  },
+  { immediate: true }
+);
 console.log(params);
 const fetchUsers = async () => {
   try {
@@ -32,7 +40,7 @@ const fetchUsers = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(params),
+      body: JSON.stringify(params.value),
     });
     const data = await response.json();
     users.value = data;

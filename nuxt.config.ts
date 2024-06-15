@@ -6,10 +6,11 @@ export default defineNuxtConfig({
     '@element-plus/nuxt',
     '@nuxtjs/tailwindcss',
     'shadcn-nuxt',
+    "@nuxtjs/supabase"
   ],
   runtimeConfig: {
     public: {
-      googleClientId: process.env.GOOGLE_CLIENT_ID
+      googleClientId: process.env.GOOGLE_CLIENT_ID,
     },
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET
   },
@@ -19,6 +20,8 @@ export default defineNuxtConfig({
   devServer: {
     port: 3000,
   },
-  
+  supabase: {
+    redirect: false
+    },
   // ssr: false,
 });
