@@ -2,6 +2,9 @@
   <div class="content">
     <div class="infinite-scroll">
       <div v-if="posts">
+        <div v-if="posts.length === 0">
+          <p>沒有貼文需要審核</p>
+        </div>
         <div v-for="post in posts" :key="post.id">
           <NuxtLink :to="`/posts/${post.id}/check`">
             <PostTitleCard :post="post" />
