@@ -15,7 +15,7 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useState } from '#app'
-import FillVisitRecord from '~/components/FillVisitRecord.vue'
+import FillVisitRecord from '~/pages/visitation/FillVisitRecord.vue'
 
 const formData = ref({})
 const user = useState("user")
