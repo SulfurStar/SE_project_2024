@@ -12,10 +12,10 @@
           class="mb-4 p-4 bg-white shadow-md rounded-lg"
         >
           <div class="mb-2">
-            <strong class="text-xl font-semibold">學生 ID:</strong>
-            {{ record.studentId }} <br />
-            <strong class="text-xl font-semibold">導師 ID:</strong>
-            {{ record.teacherId }} <br />
+            <strong class="text-xl font-semibold">學生:</strong>
+            {{ record.studentName }} <br />
+            <strong class="text-xl font-semibold">導師:</strong>
+            {{ record.teacherName }} <br />
             <strong class="text-xl font-semibold">創建時間:</strong>
             {{ record.date_create }} <br />
             <strong class="text-xl font-semibold">更新時間:</strong>
@@ -104,6 +104,24 @@ const fetchRecords = async () => {
       `/api/visitation/getVisitationRecords?teacherId=${route.params.id}`
     );
     const data = await response.json();
+
+    // Fetch student and teacher names
+    for (const record of data) {
+      const studentResponse = await fetch(
+        `/api/get-user-name-by-id/${record.studentId}`
+      );
+      const studentData = await studentResponse.json();
+      record.studentName = studentData.name;
+      console.log(record.studentName);
+
+      const teacherResponse = await fetch(
+        `/api/get-user-name-by-id/${record.teacherId}`
+      );
+      const teacherData = await teacherResponse.json();
+      record.teacherName = teacherData.name;
+      console.log(record.teacherName);
+    }
+
     records.value = data;
   } catch (error) {
     console.error("Error fetching visitation records:", error);
