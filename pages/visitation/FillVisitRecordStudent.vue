@@ -1,7 +1,6 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">校外實習訪視紀錄</h1>
-    <div v-if="userRole === 'STUDENT'">
+    <h1 class="page-title">訪視紀錄</h1>
     <form @submit.prevent="submitForm">
       <!-- 校外住宿資料 -->
       <div class="form-section">
@@ -19,7 +18,7 @@
           <div class="content">
             <div>
               <label>
-                <input v-model="formData.accommodationType" type="radio" value="獨棟透天" /> <div>獨棟透天</div>
+                <input v-model="formData.accommodationType" type="radio" value="獨棟透天" /> 獨棟透天
               </label>
               <label>
                 <input v-model="formData.accommodationType" type="radio" value="公寓(五樓以下)" /> 公寓(五樓以下)
@@ -211,12 +210,13 @@
         <button type="button" class="delete-button" @click="resetForm">取消</button>
       </div>
     </form>
-    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useState } from '#app'
 
 const props = defineProps({
   initialData: {
@@ -249,6 +249,8 @@ const formData = ref({
   }
 });
 
+const user = useState('user');
+const router = useRouter();
 const loading = ref(true)
 const error = ref<string | null>(null)
 
@@ -261,6 +263,7 @@ onMounted(() => {
 
 const submitForm = async () => {
   const formString = generateFormString(formData.value)
+  const currentDate = new Date().toISOString();
   try {
     const response = await fetch('/api/visitation/update-visit-record-student', {
       method: 'POST',
