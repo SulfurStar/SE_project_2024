@@ -54,7 +54,7 @@
           >我的廣告
         </el-menu-item>
       </el-sub-menu>
-        <!-- <el-menu-item
+      <!-- <el-menu-item
           v-if="user && user.role === 'TEACHER'"
           index="1-6"
           @click="navigateTo('/Ad')"
@@ -112,7 +112,7 @@
       </el-sub-menu>
 
       <el-menu-item
-        v-if="userRole !='LANDLORD'"
+        v-if="userRole != 'LANDLORD'"
         index="3"
         class="hover-item"
         @click="navigateTo('/visitation')"
@@ -120,13 +120,9 @@
         <el-icon><Phone /></el-icon>
         <NuxtLink to="/visitation" class="menu-link">訪視</NuxtLink>
       </el-menu-item>
-      <el-menu-item index="4" class="hover-item" @click="navigateTo('/about')">
-        <el-icon><More /></el-icon>
-        <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
-      </el-menu-item>
       <el-sub-menu
         v-if="user && user.role === 'ADMIN'"
-        index="5"
+        index="4"
         class="hover-item"
       >
         <template #title>
@@ -134,7 +130,7 @@
           <span>管理帳號</span>
         </template>
         <el-menu-item
-          index="5-1"
+          index="4-1"
           class="hover-item"
           @click="navigateTo('/create_account')"
         >
@@ -142,7 +138,7 @@
           <NuxtLink to="/create_account" class="menu-link">創建帳號</NuxtLink>
         </el-menu-item>
         <el-menu-item
-          index="5-2"
+          index="4-2"
           class="hover-item"
           @click="navigateTo('/delete_account')"
         >
@@ -150,7 +146,7 @@
           <NuxtLink to="/delete_account" class="menu-link">刪除帳號</NuxtLink>
         </el-menu-item>
         <el-menu-item
-          index="5-3"
+          index="4-3"
           class="hover-item"
           @click="navigateTo('/admin_edit_user')"
         >
@@ -160,6 +156,10 @@
           >
         </el-menu-item>
       </el-sub-menu>
+      <el-menu-item index="5" class="hover-item" @click="navigateTo('/about')">
+        <el-icon><More /></el-icon>
+        <NuxtLink to="/about" class="menu-link">關於</NuxtLink>
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
