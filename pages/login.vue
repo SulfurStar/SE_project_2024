@@ -1,12 +1,21 @@
 <template>
-  <div class="login-container">
+  <div class="login-container mx-auto p-6 bg-white shadow-md rounded-lg">
     <div class="flex flex-col items-center justify-center px-4 py-6">
       <div class="flex w-full max-w-md flex-col items-center justify-center">
-        <!-- google登入按鈕 -->
+        <!-- Google登入按鈕 -->
         <ClientOnly>
           <GoogleLogin :callback="callback" prompt />
         </ClientOnly>
-        <!--  條件渲染的提示框 -->
+        <p class="mt-4 text-2xl font-bold">
+          <span class="text-google-blue">G</span>
+          <span class="text-google-red">o</span>
+          <span class="text-google-yellow">o</span>
+          <span class="text-google-blue">g</span>
+          <span class="text-google-green">l</span>
+          <span class="text-google-red">e</span>
+          <span class="text-gray-600">帳戶</span>
+        </p>
+        <!-- 條件渲染的提示框 -->
         <AlertDialog v-if="showAlert">
           <AlertDialogTrigger>
             <button ref="alertTrigger" class="hidden">Show Dialog</button>
@@ -36,7 +45,6 @@
             >
           </AlertDialogContent>
         </AlertDialog>
-
       </div>
     </div>
   </div>
@@ -104,19 +112,12 @@ const handleConfirm = () => {
   showAlert.value = false;
   router.push("/");
 };
-
-
 </script>
 
 <!-- ______________________________________樣式____________________________________________ -->
 <style scoped>
 .login-container {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
@@ -166,5 +167,21 @@ button:hover {
   color: #007bff;
   cursor: pointer;
   text-decoration: underline;
+}
+
+.text-google-blue {
+  color: #4285f4;
+}
+
+.text-google-red {
+  color: #db4437;
+}
+
+.text-google-yellow {
+  color: #f4b400;
+}
+
+.text-google-green {
+  color: #0f9d58;
 }
 </style>
