@@ -24,13 +24,13 @@
               placeholder="輸入貼文內容"
             ></el-input>
           </el-form-item>
-          <el-form-item label="圖片" prop="image">
+          <el-form-item label="圖片" prop="images">
             <el-upload
               class="upload-demo"
               :before-upload="beforeUpload"
               list-type="picture"
               :file-list="fileList"
-              :limit="1"
+              multiple
             >
               <el-button size="small" type="primary">選擇圖片</el-button>
               <template #tip>
@@ -124,7 +124,7 @@ const success = ref(false);
 const post = ref({
   title: "",
   content: "",
-  image: "",
+  images: [],
 });
 
 const params = {
@@ -141,11 +141,17 @@ onMounted(async () => {
   });
   const data = await response.json();
   post.value = data.post;
-  if (data.post.image) {
-    fileList.value.push({
-      name: data.post.image,
-      url: data.post.image,
+  if (data.post.images) {
+    post.value.images = data.post.images.split(",");
+    // 將圖片URL字符串拆分成數組
+    data.post.images.split(",").forEach((image) => {
+      fileList.value.push({
+        name: image.split("/").pop(),
+        url: image,
+      });
     });
+  } else {
+    post.value.images = [];
   }
 });
 
@@ -172,7 +178,7 @@ const rules = {
     { required: true, message: "請輸入內容", trigger: "blur" },
     { min: 10, message: "內容不能少於 10 個字", trigger: "blur" },
   ],
-  image: [{ message: "請上傳圖片", trigger: "change" }],
+  images: [{ message: "請上傳圖片", trigger: "change" }],
 };
 
 const fileList = ref([]);
@@ -180,7 +186,8 @@ const fileList = ref([]);
 const beforeUpload = async (file) => {
   const imageUrl = await uploadImage(file);
   if (imageUrl) {
-    post.value.image = imageUrl;
+    post.value.images.push(imageUrl);
+    console.log("上傳成功，圖片URL:", post.value.images);
     return true; // 允許上傳
   }
   return false; // 阻止上傳
@@ -190,7 +197,6 @@ const uploadImage = async (file) => {
   try {
     // 生成唯一的文件名
     const uniqueFileName = `${uuidv4()}.${file.name.split(".").pop()}`;
-
     const { data, error } = await supabase.storage
       .from("PostPhoto")
       .upload(`public/${uniqueFileName}`, file);
@@ -210,62 +216,47 @@ const uploadImage = async (file) => {
     }
 
     const imageURL = urlData.publicUrl;
-    console.log("圖片上傳成功，圖片URL:", imageURL);
     return imageURL;
   } catch (error) {
     console.error("圖片上傳過程中出現錯誤:", error);
     return null;
   }
 };
-
-const handleSuccess = (response, file, fileList) => {
-  post.value.image = response;
-  fileList.push(file); // 更新文件列表
-};
-
 const postForm = ref(null);
 
 const submitForm = async () => {
-  postForm.value.validate(async (valid) => {
-    if (valid) {
-      try {
-        const params = {
-          id: postId,
-          title: post.value.title,
-          content: post.value.content,
-          authorId: userId,
-          image: post.value.image,
-        };
-        const response = await fetch("/api/posts/update-post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(params),
-        });
+  try {
+    const params = {
+      id: postId,
+      title: post.value.title,
+      content: post.value.content,
+      authorId: userId,
+      images: post.value.images.join(","),
+    };
+    console.log("提交參數:", params.images);
+    const response = await fetch("/api/posts/update-post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    });
 
-        const responseData = await response.json();
-        if (response.ok && responseData.statusCode === 200) {
-          console.log("成功更新帖子:", responseData.body);
-          success.value = true;
-          showAlert.value = true;
-        } else {
-          console.error("更新帖子失敗:", responseData.body || responseData);
-          success.value = false;
-          showAlert.value = true;
-        }
-      } catch (error) {
-        console.error("請求失敗:", error);
-        success.value = false;
-        showAlert.value = true;
-      }
+    const responseData = await response.json();
+    if (response.ok && responseData.statusCode === 200) {
+      console.log("成功更新貼文:", responseData.body);
+      success.value = true;
+      showAlert.value = true;
     } else {
-      console.log("表單驗證失敗!");
+      console.error("更新貼文失敗:", responseData.body || responseData);
       success.value = false;
       showAlert.value = true;
-      return false;
     }
-  });
+  } catch (error) {
+    console.error("請求失敗:", error);
+    success.value = false;
+    showAlert.value = true;
+  }
 };
 
 const resetForm = () => {
