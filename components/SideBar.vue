@@ -15,7 +15,6 @@
       <el-sub-menu
         index="1"
         class="hover-item"
-        @click="navigateTo('/advertisement')"
       >
         <template #title>
           <el-icon><MapLocation /></el-icon>
@@ -55,7 +54,7 @@
         <el-menu-item
           v-if="user && user.role === 'LANDLORD'"
           index="1-5"
-          @click="navigateTo('/Ad')"
+          @click="navigateTo('/Ad/Ad_manage')"
           >我的廣告
         </el-menu-item>
 
