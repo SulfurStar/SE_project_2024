@@ -1,10 +1,11 @@
 <template>
   <div class="delete-account-container">
     <h1>學生清單</h1>
-    <div v-if="visitTables">
+    <div v-if="students">
       <ul>
-        <li v-for="visitTable in visitTables" :key=visitTable.id>
-          <VisitationTitleCard :visits="visitTable" />
+        <li v-for="student in students" :key=student.id>
+          <VisitationTitleCard :student="student" />
+
         </li>
       </ul>
     </div>
@@ -18,8 +19,8 @@ import VisitationTitleCard from "~/components/VisitationTitleCard.vue";
 
 const route = useRoute();
 const router = useRouter();
-const visitTables = ref(null);
-// const numberOfVisitTables = ref(null);
+const students = ref(null);
+// const numberOfstudents = ref(null);
 const currentPage = ref(1);
 
 const user = useState('user');
@@ -50,7 +51,7 @@ const params = {
 
 onMounted(async () => {
   console.log("userId:", userId.value);
-  const responseVisitTable = await fetch("/api/visitation/get-students-by-id", {
+  const responseStudents = await fetch("/api/visitation/get-students-by-id", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -58,28 +59,28 @@ onMounted(async () => {
     body: JSON.stringify(params),
   });
 
-  if (responseVisitTable.ok) {
-    const responseData = await responseVisitTable.json();
+  if (responseStudents.ok) {
+    const responseData = await responseStudents.json();
     if (responseData.statusCode === 200) {
-      visitTables.value = responseData.body;
-      console.log("pppppppppppppppppppppp", visitTables.value);
+      students.value = responseData.body;
+      console.log("gggg", students.value);
     } else {
       console.error("Failed to fetch posts:", responseData);
     }
   } else {
-    console.error("Failed to fetch posts: HTTP status", responseVisitTable.status);
+    console.error("Failed to fetch posts: HTTP status", responseStudents.status);
   }
 
-  // const responseNumberOfVisitTables = await fetch("/api/visitation/get-number-of-visits-table", {
+  // const responseNumberOfstudents = await fetch("/api/visitation/get-number-of-visits-table", {
   //   method: "POST",
   //   headers: {
   //     "Content-Type": "application/json",
   //   },
   //   body: JSON.stringify(params2),
   // });
-  // numberOfVisitTables.value = await responseNumberOfVisitTables.json();
-  // numberOfVisitTables.value = Math.ceil(numberOfVisitTables.value / 10);
-  // console.log("numberOfPosts:", numberOfVisitTables.value);
+  // numberOfstudents.value = await responseNumberOfstudents.json();
+  // numberOfstudents.value = Math.ceil(numberOfstudents.value / 10);
+  // console.log("numberOfPosts:", numberOfstudents.value);
 });
 
 definePageMeta({

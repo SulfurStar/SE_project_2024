@@ -3,12 +3,12 @@ import { PrismaClient } from '@prisma/client';
 const prismaClient = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-    const { userId} = await readBody(event);
+    const { userId } = await readBody(event);
 
     try {
-        const req = await prismaClient.visit_table.findMany({
+        const req = await prismaClient.user.findMany({
             where: {
-                teacherId: userId
+                teacher: userId
             }
         });
 

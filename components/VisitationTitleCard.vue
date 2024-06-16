@@ -1,11 +1,10 @@
 <template>
-
-      <div v-if="stuInfo" class="top">
+      <div v-if="student" class="top">
           <div>
-            {{ stuInfo.studentID }} 
-            {{ stuInfo.name }}
+            {{ student.studentID }} 
+            {{ student.name }}
           </div>
-          <div v-if="visits.visit_address" :style="{ color: 'green' }">
+          <div v-if="visit" :style="{ color: 'green' }">
             <el-icon :style="{ color: 'green' }"><CircleCheckFilled /></el-icon>
             <strong>已填寫</strong>
           </div>
@@ -21,25 +20,25 @@
 export default {
 name: 'VisitsTitleCard',
 props: {
-  visits: {
+  student: {
     type: Object,
     required: true
   }
 },
 data() {
   return {
+    visit: null,
     temp: null,
-    stuInfo: null
   };
 },
 mounted() {
-  if (this.visits.id) {
+  if (this.student) {
     this.fetchStudentInfo();
   }
 },
 methods: {
   async fetchStudentInfo() {
-    if (!this.visits.studentId) {
+    if (!this.student.id) {
       return;
     }
     try {
@@ -48,17 +47,16 @@ methods: {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ studentId: this.visits.studentId }),
+        body: JSON.stringify({ studentId: this.student.id }),
       });
       this.temp = await response.json();
       if (this.temp.success === false) {
-        console.log('Error fetching student info:', this.temp[1]);
-        
+        console.log('Error fetching student info:', this.temp);
       }else{
-        this.stuInfo = this.temp.body;
+        this.visit = this.temp.body;
       }
     } catch (error) {
-      console.error('Error fetching comment author:', error);
+      console.error('Error fetching student author:', error);
     }
   }
 },
