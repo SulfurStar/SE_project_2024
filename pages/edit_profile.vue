@@ -26,7 +26,7 @@ import "element-plus/theme-chalk/el-message.css";
 const user = useState("user");
 const router = useRouter();
 // 不應顯示在表單中的屬性
-const excludeKeys = ["avatar", "exists", "role", "id"];
+const excludeKeys = ["avatar", "exists", "role", "id", "email"];
 
 // 讓學生無法修改name和email
 onMounted(() => {
@@ -50,7 +50,7 @@ const getPlaceholder = (key) => {
     case "homeTel":
       return "家裡電話";
     case "emergencyContact":
-      return "緊急聯絡人"
+      return "緊急聯絡人";
     case "emergencyContactNumber":
       return "緊急聯絡人電話";
     case "studentID":
