@@ -46,7 +46,6 @@
           @click="navigateTo('/AD/Ad_new')"
           >新增廣告
         </el-menu-item>
-
         <!-- 廣告管理Ad_manage 房東限定頁面 -->
         <el-menu-item
           v-if="user && user.role === 'LANDLORD'"

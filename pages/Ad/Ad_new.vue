@@ -7,11 +7,23 @@
     </div>
     <div class="form-group">
       <label for="phone">電話：<span class="required">*</span></label>
-      <input id="phone" v-model="form.phone" type="text" name="phone" />
+      <input
+        id="phone"
+        v-model="form.phone"
+        type="text"
+        name="phone"
+        required
+      />
     </div>
     <div class="form-group">
       <label for="address">地址：<span class="required">*</span></label>
-      <input id="address" v-model="form.address" type="text" name="address" />
+      <input
+        id="address"
+        v-model="form.address"
+        type="text"
+        name="address"
+        required
+      />
     </div>
     <div class="form-group">
       <label for="rental_rm">出租房數：<span class="required">*</span></label>
@@ -20,6 +32,7 @@
         v-model="form.rental_rm"
         type="text"
         name="rental_rm"
+        required
       />
       <p class="hint">
         範例: [雅房 約3坪]共5間; 空房0間; [套房 約7坪]共4間; 空房3間
@@ -34,6 +47,7 @@
           type="radio"
           name="availability"
           value="yes"
+          required
         />
         <label for="availability_yes">是</label>
         <input
@@ -42,6 +56,7 @@
           type="radio"
           name="availability"
           value="no"
+          required
         />
         <label for="availability_no">否</label>
       </div>
@@ -55,6 +70,7 @@
           type="radio"
           name="appointment"
           value="yes"
+          required
         />
         <label for="appointment_yes">是</label>
         <input
@@ -63,14 +79,15 @@
           type="radio"
           name="appointment"
           value="no"
+          required
         />
         <label for="appointment_no">否</label>
       </div>
     </div>
     <div class="form-group">
       <label>請選擇房屋類型：<span class="required">*</span></label>
-      <select v-model="form.buildtype">
-        <option>請選擇房屋類型</option>
+      <select v-model="form.buildtype" required>
+        <option disabled value="">請選擇房屋類型</option>
         <option>公寓</option>
         <option>大樓</option>
         <option>學舍</option>
@@ -79,8 +96,8 @@
     </div>
     <div class="form-group">
       <label>請選擇出租類型：<span class="required">*</span></label>
-      <select v-model="form.rm_type">
-        <option>請選擇出租類型</option>
+      <select v-model="form.rm_type" required>
+        <option disabled value="">請選擇出租類型</option>
         <option>整棟出租</option>
         <option>獨立套房</option>
         <option>房間分租</option>
@@ -93,6 +110,7 @@
         v-model="form.rent_low"
         type="text"
         name="rent_low"
+        required
       />
       <p class="hint">(請以月為單位，並輸入阿拉伯數字，範例: 2000)</p>
     </div>
@@ -103,12 +121,19 @@
         v-model="form.rent_high"
         type="text"
         name="rent_high"
+        required
       />
       <p class="hint">(若價格單一，最低、最高租金請分別填入相同數字)</p>
     </div>
     <div class="form-group">
       <label for="deposit">押金：<span class="required">*</span></label>
-      <input id="deposit" v-model="form.deposit" type="text" name="deposit" />
+      <input
+        id="deposit"
+        v-model="form.deposit"
+        type="text"
+        name="deposit"
+        required
+      />
     </div>
     <div class="form-group">
       <label for="other_fee">其他費用</label>
@@ -124,21 +149,23 @@
       <input id="floor" v-model="form.floor" type="text" name="floor" />
     </div>
     <div class="form-group">
-      <label for="indp_mete">獨立電表 : <font color="red">*</font></label>
+      <label for="indp_mete">獨立電表 : <span class="required">*</span></label>
       <input
         id="indp_mete"
         v-model="form.indp_mete"
         type="text"
         name="indp_mete"
+        required
       />
     </div>
     <div class="form-group">
-      <label for="part_mate">隔間材質 : <font color="red">*</font></label>
+      <label for="part_mate">隔間材質 : <span class="required">*</span></label>
       <input
         id="part_mate"
         v-model="form.part_mate"
         type="text"
         name="part_mate"
+        required
       />
     </div>
     <div class="form-group">
@@ -155,7 +182,7 @@
       <input id="endAt" v-model="form.endAt" type="text" name="endAt" />
     </div>
     <div class="form-group">
-      <p>性別要求：<span style="color: red">*</span></p>
+      <p>性別要求：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="gender_male"
@@ -163,6 +190,7 @@
           type="radio"
           name="gender"
           value="男"
+          required
         />
         <label for="gender_male">男</label>
         <input
@@ -172,6 +200,7 @@
           name="gender"
           value="女"
           style="margin-left: 10px"
+          required
         />
         <label for="gender_female">女</label>
         <input
@@ -181,12 +210,13 @@
           name="gender"
           value="無要求"
           style="margin-left: 10px"
+          required
         />
         <label for="gender_none">無要求</label>
       </form>
     </div>
     <div class="form-group">
-      <p>無菸要求：<span style="color: red">*</span></p>
+      <p>無菸要求：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="smoking_yes"
@@ -194,6 +224,7 @@
           type="radio"
           name="smoking"
           value="是"
+          required
         />
         <label for="smoking_yes">是</label>
         <input
@@ -203,6 +234,7 @@
           name="smoking"
           value="否"
           style="margin-left: 10px"
+          required
         />
         <label for="smoking_no">否</label>
         <input
@@ -212,6 +244,7 @@
           name="smoking"
           value="無要求"
           style="margin-left: 10px"
+          required
         />
         <label for="smoking_none">無要求</label>
       </form>
@@ -226,7 +259,7 @@
       />
     </div>
     <div class="form-group">
-      <p>有電視：<span style="color: red">*</span></p>
+      <p>有電視：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="television_yes"
@@ -234,6 +267,7 @@
           type="radio"
           name="television"
           value="true"
+          required
         />
         <label for="television_yes">有</label>
         <input
@@ -243,12 +277,13 @@
           name="television"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="television_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有冰箱：<span style="color: red">*</span></p>
+      <p>有冰箱：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="refrigerator_yes"
@@ -256,6 +291,7 @@
           type="radio"
           name="refrigerator"
           value="true"
+          required
         />
         <label for="refrigerator_yes">有</label>
         <input
@@ -265,12 +301,13 @@
           name="refrigerator"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="refrigerator_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有洗衣機：<span style="color: red">*</span></p>
+      <p>有洗衣機：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="washingMachine_yes"
@@ -278,6 +315,7 @@
           type="radio"
           name="washingMachine"
           value="true"
+          required
         />
         <label for="washingMachine_yes">有</label>
         <input
@@ -287,12 +325,13 @@
           name="washingMachine"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="washingMachine_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有烘衣機：<span style="color: red">*</span></p>
+      <p>有烘衣機：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="dryer_yes"
@@ -300,6 +339,7 @@
           type="radio"
           name="dryer"
           value="true"
+          required
         />
         <label for="dryer_yes">有</label>
         <input
@@ -309,12 +349,13 @@
           name="dryer"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="dryer_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有飲水機：<span style="color: red">*</span></p>
+      <p>有飲水機：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="waterDispenser_yes"
@@ -322,6 +363,7 @@
           type="radio"
           name="waterDispenser"
           value="true"
+          required
         />
         <label for="waterDispenser_yes">有</label>
         <input
@@ -331,12 +373,13 @@
           name="waterDispenser"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="waterDispenser_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有單人床：<span style="color: red">*</span></p>
+      <p>有單人床：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="singleBed_yes"
@@ -344,6 +387,7 @@
           type="radio"
           name="singleBed"
           value="true"
+          required
         />
         <label for="singleBed_yes">有</label>
         <input
@@ -353,12 +397,13 @@
           name="singleBed"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="singleBed_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有雙人床：<span style="color: red">*</span></p>
+      <p>有雙人床：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="doubleBed_yes"
@@ -366,6 +411,7 @@
           type="radio"
           name="doubleBed"
           value="true"
+          required
         />
         <label for="doubleBed_yes">有</label>
         <input
@@ -375,12 +421,13 @@
           name="doubleBed"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="doubleBed_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有冷氣：<span style="color: red">*</span></p>
+      <p>有冷氣：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="aircond_yes"
@@ -388,6 +435,7 @@
           type="radio"
           name="aircond"
           value="true"
+          required
         />
         <label for="aircond_yes">有</label>
         <input
@@ -397,12 +445,13 @@
           name="aircond"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="aircond_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有衣櫃：<span style="color: red">*</span></p>
+      <p>有衣櫃：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="wardrobe_yes"
@@ -410,6 +459,7 @@
           type="radio"
           name="wardrobe"
           value="true"
+          required
         />
         <label for="wardrobe_yes">有</label>
         <input
@@ -419,12 +469,13 @@
           name="wardrobe"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="wardrobe_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有書桌：<span style="color: red">*</span></p>
+      <p>有書桌：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="desk_yes"
@@ -432,6 +483,7 @@
           type="radio"
           name="desk"
           value="true"
+          required
         />
         <label for="desk_yes">有</label>
         <input
@@ -441,12 +493,13 @@
           name="desk"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="desk_no">無</label>
       </form>
     </div>
     <div class="form-group">
-      <p>有寬頻網路：<span style="color: red">*</span></p>
+      <p>有寬頻網路：<span class="required">*</span></p>
       <form style="display: flex; flex-direction: row">
         <input
           id="internet_yes"
@@ -454,6 +507,7 @@
           type="radio"
           name="internet"
           value="true"
+          required
         />
         <label for="internet_yes">有</label>
         <input
@@ -463,6 +517,7 @@
           name="internet"
           value="false"
           style="margin-left: 10px"
+          required
         />
         <label for="internet_no">無</label>
       </form>
@@ -634,6 +689,43 @@ const postForm = ref(null);
 
 const submitForm = async () => {
   try {
+    const requiredFields = [
+      "title",
+      "phone",
+      "address",
+      "rental_rm",
+      "noroom",
+      "reserve",
+      "buildtype",
+      "rm_type",
+      "rent_low",
+      "rent_high",
+      "deposit",
+      "indp_mete",
+      "part_mate",
+      "gender",
+      "Smoke_fre",
+      "telev",
+      "fridge",
+      "washmch",
+      "clothdry",
+      "waterdisp",
+      "singlebed",
+      "doublebea",
+      "aircond",
+      "wardrobe",
+      "desk",
+      "internet",
+    ];
+    for (const field of requiredFields) {
+      if (!form.value[field]) {
+        ElMessage({
+          message: `請填寫${field}欄位`,
+          type: "error",
+        });
+        return;
+      }
+    }
     const params = {
       ...form.value,
       images: form.value.images.join(","),
@@ -647,15 +739,16 @@ const submitForm = async () => {
       body: JSON.stringify(params),
     });
     const responseData = await response.json();
-    if (response.ok) {
-      console.log("成功創建新廣告:", responseData.body);
+    console.log("服務器返回的數據:", responseData);
+    if (response.ok && responseData.status === "success") {
+      console.log("成功創建新廣告:", responseData.status);
       success.value = true;
       showAlert.value = true;
       ElMessage({
         message: "成功創建新廣告",
         type: "success",
       });
-      router.push("/Ad/overview/1");
+      router.push("/AD/overview/1");
     } else {
       console.error("創建廣告失敗:", responseData.body || responseData);
       success.value = false;
