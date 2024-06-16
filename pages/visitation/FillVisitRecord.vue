@@ -1,6 +1,7 @@
 <template>
   <div class="page-container">
     <h1 class="page-title">校外實習訪視紀錄</h1>
+    <div v-if="userRole === 'STUDENT'">
     <form @submit.prevent="submitForm">
       <!-- 校外住宿資料 -->
       <div class="form-section">
@@ -120,26 +121,99 @@
             </label>
           </div>
         </div>
+        <div class="form-group">
+          <label>熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.hotWaterSupply" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.hotWaterSupply" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.multiElectricalAppliances" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.multiElectricalAppliances" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>有流水號且功能正常:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.runningWaterFunctionality" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.runningWaterFunctionality" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.gasSafety" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.gasSafety" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>分間6個以上房間數10個以上床位:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.roomCount" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.roomCount" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>有安裝照明設備（停電備用）:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.emergencyLighting" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.emergencyLighting" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>使用低故障率或變化度低的電子鎖:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.electronicLock" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.electronicLock" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
       </div>
 
       <!-- 按鈕組 -->
       <div class="button-group">
         <button type="submit" class="confirm-button">確認</button>
-        <button type="button" class="delete-button" @click="resetForm">重置</button>
+        <button type="button" class="delete-button" @click="resetForm">取消</button>
       </div>
     </form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-
-const props = defineProps({
-  initialData: {
-    type: Object,
-    default: () => ({})
-  }
-})
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useState } from '#app'
 
 const formData = ref({
   address: '',
@@ -165,20 +239,26 @@ const formData = ref({
   }
 })
 
-const loading = ref(true)
-const error = ref<string | null>(null)
-
-onMounted(() => {
-  if (props.initialData) {
-    formData.value = { ...formData.value, ...props.initialData }
-  }
-  loading.value = false
-})
+const user = useState("user")
+const router = useRouter()
+const userRole = ref("");
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      userRole.value = newUser.role;
+    }
+  },
+  { immediate: true }
+);
 
 const submitForm = async () => {
   const formString = generateFormString(formData.value)
+  const currentDate = new Date().toISOString()
+  console.log('Form String:', formString)
+  console.log('Current Date:', currentDate)
   try {
-    const response = await fetch('/api/visitation/update-visit-record', {
+    const response = await fetch('/api/visitation/update-visit-record-student', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -186,7 +266,7 @@ const submitForm = async () => {
       body: JSON.stringify({
         userId: user.value.id,
         info_student: formString,
-        date_update: new Date().toISOString()
+        date_update: currentDate
       }),
     })
     const result = await response.json()
@@ -202,7 +282,30 @@ const submitForm = async () => {
 }
 
 const resetForm = () => {
-  formData.value = { ...formData.value, ...props.initialData }
+  formData.value = {
+    address: '',
+    phone: '',
+    accommodationType: '',
+    monthlyRent: '',
+    deposit: '',
+    hasContract: '',
+    safety: {
+      woodenPartition: '',
+      fireAlarmExtinguisher: '',
+      emergencyExit: '',
+      windowsDoorsLocks: '',
+      lightingEquipment: '',
+      legalSafetyCompliance: '',
+      hotWaterSupply: '',
+      multiElectricalAppliances: '',
+      runningWaterFunctionality: '',
+      gasSafety: '',
+      roomCount: '',
+      emergencyLighting: '',
+      electronicLock: ''
+    }
+  }
+  router.push('/visitation')
 }
 
 const generateFormString = (data) => {
