@@ -655,7 +655,7 @@ const submitForm = async () => {
         message: "成功創建新廣告",
         type: "success",
       });
-      router.push("/");
+      router.push("/Ad/overview/1");
     } else {
       console.error("創建廣告失敗:", responseData.body || responseData);
       success.value = false;

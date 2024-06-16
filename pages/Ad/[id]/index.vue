@@ -267,7 +267,6 @@ export default {
         body: JSON.stringify(params), // 將參數轉成 JSON 字串
       });
       Ad.value = await response.json(); // 將取得的資料存入 Ad 變數中
-      console.log(Ad.value);
     });
     return { Ad }; // 回傳 Ad 變數
   },
