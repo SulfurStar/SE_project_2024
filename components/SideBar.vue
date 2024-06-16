@@ -15,7 +15,7 @@
       <el-sub-menu index="1" class="hover-item">
         <template #title>
           <el-icon><MapLocation /></el-icon>
-          <NuxtLink to="/advertisement" class="menu-link">廣告總覽</NuxtLink>
+          <NuxtLink to="/Ad/overview/1" class="menu-link">租屋廣告</NuxtLink>
         </template>
         <!-- 以下為子菜單 -->
         <el-menu-item index="1-1" @click="navigateTo('/Ad/overview/1')"

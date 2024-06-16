@@ -9,7 +9,7 @@
     <div class="features">
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-card class="feature-card" @click="goToPage('/advertisement')">
+          <el-card class="feature-card" @click="goToPage('/Ad/overview/1')">
             <template #header>
         <div  class="feature-title">租屋廣告</div>
         </template>
