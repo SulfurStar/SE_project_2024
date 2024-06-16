@@ -8,18 +8,24 @@
       <table>
         <thead>
           <tr>
-            <th>學生姓名</th>
-            <th>操作</th>
+            <th>ID</th>
+            <th>學生ID</th>
+            <th>教師ID</th>
+            <th>學生信息</th>
+            <th>教師信息</th>
+            <th>創建日期</th>
+            <th>更新日期</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="record in visitRecords" :key="record.id">
-            <td>{{ record.student.name }}</td>
-            <td>
-              <nuxt-link :to="`/visit_record/${record.id}`">
-                <button class="styled-button">{{ record.student.name }}</button>
-              </nuxt-link>
-            </td>
+            <td>{{ record.id }}</td>
+            <td>{{ record.studentId }}</td>
+            <td>{{ record.teacherId }}</td>
+            <td>{{ record.info_student }}</td>
+            <td>{{ record.info_teacher }}</td>
+            <td>{{ record.date_create }}</td>
+            <td>{{ record.date_update }}</td>
           </tr>
         </tbody>
       </table>
@@ -32,34 +38,41 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 
 const user = useState("user")
-const userId = user.value?.id || ''
+const userId = ref(user.value?.id || '')
 const visitRecords = ref([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
 const fetchVisitRecords = async () => {
+  console.log('Fetching records for teacherId:', userId.value)  // 調試輸出
+  if (!userId.value) {
+    error.value = '未找到用戶ID';
+    loading.value = false;
+    return;
+  }
+
   try {
     const response = await fetch('/api/visitation/get-visit-records', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ teacherId: userId }),
-    })
-    const result = await response.json()
+      body: JSON.stringify({ teacherId: userId.value }),
+    });
+    const result = await response.json();
     if (result.success) {
-      visitRecords.value = result.data
+      visitRecords.value = result.data;
     } else {
-      error.value = '無法獲取訪視記錄'
+      error.value = '無法獲取訪視記錄';
     }
   } catch (err) {
-    error.value = '請求失敗'
+    error.value = '請求失敗';
   } finally {
-    loading.value = false
+    loading.value = false;
   }
-}
+};
 
-onMounted(fetchVisitRecords)
+onMounted(fetchVisitRecords);
 </script>
 
 <style scoped>
@@ -90,21 +103,5 @@ th, td {
 
 th {
   background-color: #f4f4f4;
-}
-
-.styled-button {
-  background-color: #007BFF;
-  border: none;
-  border-radius: 8px;
-  color: white;
-  padding: 8px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
-}
-
-.styled-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-2px);
 }
 </style>

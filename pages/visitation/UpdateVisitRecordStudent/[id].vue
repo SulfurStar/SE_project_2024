@@ -17,7 +17,7 @@
             <input id="phone" v-model="formData['房東電話']" type="text" />
           </div>
           <div class="form-group">
-            <label>住宿型態:</label>
+            <label class="groupEnd">住宿型態:</label>
             <div>
               <label>
                 <input v-model="formData['住宿型態']" type="radio" value="獨棟透天" /> 獨棟透天
@@ -42,7 +42,7 @@
             <input id="deposit" v-model="formData['押金']" type="text" />
           </div>
           <div class="form-group">
-            <label>是否簽訂租賃契約:</label>
+            <label class="groupEnd">是否簽訂租賃契約:</label>
             <div>
               <label>
                 <input v-model="formData['是否簽訂租賃契約']" type="radio" value="是" /> 是
@@ -58,7 +58,7 @@
         <div class="form-section">
           <h2>住宿安全自主管理檢視資料（學生填寫）</h2>
           <div class="form-group">
-            <label>木造隔間或鐵皮加蓋:</label>
+            <label class="groupEnd">木造隔間或鐵皮加蓋:</label>
             <div>
               <label>
                 <input v-model="formData['木造隔間或鐵皮加蓋']" type="radio" value="是" /> 是
@@ -69,7 +69,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>有火警警報器及滅火器:</label>
+            <label class="groupEnd">有火警警報器及滅火器:</label>
             <div>
               <label>
                 <input v-model="formData['有火警警報器及滅火器']" type="radio" value="是" /> 是
@@ -80,7 +80,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>逃生通道暢通且標示清楚:</label>
+            <label class="groupEnd">逃生通道暢通且標示清楚:</label>
             <div>
               <label>
                 <input v-model="formData['逃生通道暢通且標示清楚']" type="radio" value="是" /> 是
@@ -91,7 +91,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>門窗及鎖具良好:</label>
+            <label class="groupEnd">門窗及鎖具良好:</label>
             <div>
               <label>
                 <input v-model="formData['門窗及鎖具良好']" type="radio" value="是" /> 是
@@ -102,7 +102,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>有安裝照明設備（停電備用）:</label>
+            <label class="groupEnd">有安裝照明設備（停電備用）:</label>
             <div>
               <label>
                 <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="是" /> 是
@@ -113,7 +113,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>租賃物為合法安全及符合消防規範:</label>
+            <label class="groupEnd">租賃物為合法安全及符合消防規範:</label>
             <div>
               <label>
                 <input v-model="formData['租賃物為合法安全及符合消防規範']" type="radio" value="是" /> 是
@@ -124,7 +124,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
+            <label class="groupEnd">熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
             <div>
               <label>
                 <input v-model="formData['熱水供應正常（如電鍋、清淨機、學校採暖設備）']" type="radio" value="是" /> 是
@@ -135,7 +135,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
+            <label class="groupEnd">使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
             <div>
               <label>
                 <input v-model="formData['使用多種電器（高耗能），是否同時插在同一條延長線上']" type="radio" value="是" /> 是
@@ -146,7 +146,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>有流水號且功能正常:</label>
+            <label class="groupEnd">有流水號且功能正常:</label>
             <div>
               <label>
                 <input v-model="formData['有流水號且功能正常']" type="radio" value="是" /> 是
@@ -157,7 +157,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
+            <label class="groupEnd">煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
             <div>
               <label>
                 <input v-model="formData['煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮']" type="radio" value="是" /> 是
@@ -168,7 +168,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>分間6個以上房間數10個以上床位:</label>
+            <label class="groupEnd">分間6個以上房間數10個以上床位:</label>
             <div>
               <label>
                 <input v-model="formData['分間6個以上房間數10個以上床位']" type="radio" value="是" /> 是
@@ -179,18 +179,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label>有安裝照明設備（停電備用）:</label>
-            <div>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>使用低故障率或變化度低的電子鎖:</label>
+            <label class="groupEnd">使用低故障率或變化度低的電子鎖:</label>
             <div>
               <label>
                 <input v-model="formData['使用低故障率或變化度低的電子鎖']" type="radio" value="是" /> 是
@@ -234,7 +223,6 @@ const formData = ref({
   '有流水號且功能正常': '',
   '煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮': '',
   '分間6個以上房間數10個以上床位': '',
-  '有安裝照明設備（停電備用）': '',
   '使用低故障率或變化度低的電子鎖': ''
 })
 
@@ -394,5 +382,10 @@ onMounted(fetchVisitRecord)
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+.groupEnd {
+  padding-top: 5px;
+  border-top: 2px solid #333;
 }
 </style>

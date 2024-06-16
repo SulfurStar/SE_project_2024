@@ -126,7 +126,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
+          <label class="groupEnd">熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
           <div>
             <label>
               <input v-model="formData.safety.hotWaterSupply" type="radio" value="是" /> 是
@@ -137,7 +137,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
+          <label class="groupEnd">使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
           <div>
             <label>
               <input v-model="formData.safety.multiElectricalAppliances" type="radio" value="是" /> 是
@@ -148,7 +148,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>有流水號且功能正常:</label>
+          <label class="groupEnd">有流水號且功能正常:</label>
           <div>
             <label>
               <input v-model="formData.safety.runningWaterFunctionality" type="radio" value="是" /> 是
@@ -159,7 +159,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
+          <label class="groupEnd">煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
           <div>
             <label>
               <input v-model="formData.safety.gasSafety" type="radio" value="是" /> 是
@@ -170,7 +170,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>分間6個以上房間數10個以上床位:</label>
+          <label class="groupEnd">分間6個以上房間數10個以上床位:</label>
           <div>
             <label>
               <input v-model="formData.safety.roomCount" type="radio" value="是" /> 是
@@ -181,18 +181,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>有安裝照明設備（停電備用）:</label>
-          <div>
-            <label>
-              <input v-model="formData.safety.emergencyLighting" type="radio" value="是" /> 是
-            </label>
-            <label>
-              <input v-model="formData.safety.emergencyLighting" type="radio" value="否" /> 否
-            </label>
-          </div>
-        </div>
-        <div class="form-group">
-          <label>使用低故障率或變化度低的電子鎖:</label>
+          <label class="groupEnd">使用低故障率或變化度低的電子鎖:</label>
           <div>
             <label>
               <input v-model="formData.safety.electronicLock" type="radio" value="是" /> 是
@@ -203,7 +192,7 @@
           </div>
         </div>
       </div>
-      <div class="groupEnd"> </div>
+      <div class="groupEnd"></div>
       <!-- 按鈕組 -->
       <div class="button-group">
         <button type="submit" class="confirm-button">確認</button>
@@ -244,7 +233,6 @@ const formData = ref({
     runningWaterFunctionality: '',
     gasSafety: '',
     roomCount: '',
-    emergencyLighting: '',
     electronicLock: ''
   }
 });
@@ -313,7 +301,6 @@ const generateFormString = (data) => {
     有流水號且功能正常: ${safety.runningWaterFunctionality}
     煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮: ${safety.gasSafety}
     分間6個以上房間數10個以上床位: ${safety.roomCount}
-    有安裝照明設備（停電備用）: ${safety.emergencyLighting}
     使用低故障率或變化度低的電子鎖: ${safety.electronicLock}
   `;
 };
