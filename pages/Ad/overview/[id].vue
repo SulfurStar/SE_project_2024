@@ -17,7 +17,7 @@
         <input id="keyword" v-model="keyword" type="text" />
     
         <label for="rent">房屋租金:</label>
-        <select v-model="rent" id="rent">
+        <select id="rent" v-model="rent">
           <option value="不限">不限</option>
           <option value="3000以下">3000以下</option>
           <option value="5000以下">5000以下</option>
@@ -27,7 +27,7 @@
         </select>
     
         <label for="building">建築類型:</label>
-        <select v-model="building" id="building">
+        <select id="building" v-model="building">
           <option value="不限">不限</option>
           <option value="透天">透天</option>
           <option value="大樓">大樓</option>
@@ -36,7 +36,7 @@
         </select>
     
         <label for="rentType">出租類型:</label>
-        <select v-model="rentType" id="rentType">
+        <select id="rentType" v-model="rentType">
           <option value="不限">不限</option>
           <option value="整棟出租">整棟出租</option>
           <option value="套房出租">套房出租</option>
@@ -50,27 +50,27 @@
           
           
           <div class="filter">
-            <label  for="male"><input type="radio" id="male" value="male" name="gender" v-model="gender"> 男性</label>
-            <label  for="female"><input type="radio" id="female" value="female" name="gender" v-model="gender"> 女性</label>
-            <label  for="any"><input type="radio" id="any" value="any" name="gender" v-model="gender"> 不限</label>
+            <label  for="male"><input id="male" v-model="gender" type="radio" value="male" name="gender"> 男性</label>
+            <label  for="female"><input id="female" v-model="gender" type="radio" value="female" name="gender"> 女性</label>
+            <label  for="any"><input id="any" v-model="gender" type="radio" value="any" name="gender"> 不限</label>
           </div>
     
           <div class="filter">
-            <label><input type="checkbox" value="18" v-model="facilities"> 有電視</label>
-            <label><input type="checkbox" value="19" v-model="facilities"> 有冰箱</label>
-            <label><input type="checkbox" value="20" v-model="facilities"> 有洗衣機</label>
-            <label><input type="checkbox" value="21" v-model="facilities"> 有烘衣機</label>
-            <label><input type="checkbox" value="22" v-model="facilities"> 有飲水機</label>
-            <label><input type="checkbox" value="23" v-model="facilities"> 有衣櫃</label>
-            <label><input type="checkbox" value="24" v-model="facilities"> 有單人床</label>
-            <label><input type="checkbox" value="25" v-model="facilities"> 有雙人床</label>
-            <label><input type="checkbox" value="26" v-model="facilities"> 有書桌</label>
-            <label><input type="checkbox" value="27" v-model="facilities"> 有寬頻網路</label>
+            <label><input v-model="facilities" type="checkbox" value="18"> 有電視</label>
+            <label><input v-model="facilities" type="checkbox" value="19"> 有冰箱</label>
+            <label><input v-model="facilities" type="checkbox" value="20"> 有洗衣機</label>
+            <label><input v-model="facilities" type="checkbox" value="21"> 有烘衣機</label>
+            <label><input v-model="facilities" type="checkbox" value="22"> 有飲水機</label>
+            <label><input v-model="facilities" type="checkbox" value="23"> 有衣櫃</label>
+            <label><input v-model="facilities" type="checkbox" value="24"> 有單人床</label>
+            <label><input v-model="facilities" type="checkbox" value="25"> 有雙人床</label>
+            <label><input v-model="facilities" type="checkbox" value="26"> 有書桌</label>
+            <label><input v-model="facilities" type="checkbox" value="27"> 有寬頻網路</label>
           </div>
         </fieldset>
       </div>
     
-      <button @click="search" class="btn-search">查詢</button>
+      <button class="btn-search" @click="search">查詢</button>
     
       <hr />
 
@@ -123,7 +123,7 @@
 
       const route = useRoute();
       const router = useRouter();
-      const Ads = ref(null);  //*posts
+      const Ads = ref(null);  // *posts
       const numberOfAds = ref(null);  //*
       const currentPage = ref(1);
 
@@ -136,12 +136,12 @@
       const params = {
         skip: currentPage.value * 10 - 10 || 0,
         take: 10,
-        thestatus: ["ADOPTED"],  //"NORMAL", "REPORTED"
+        thestatus: ["ADOPTED"],  // "NORMAL", "REPORTED"
         ids: null,
       };
 
       const params2 = {
-        thestatus: ["ADOPTED"],  //"NORMAL", "REPORTED"
+        thestatus: ["ADOPTED"],  // "NORMAL", "REPORTED"
       };
 
       onMounted(async () => {
@@ -157,7 +157,7 @@
           const responseData = await responseAd.json();
           if (responseData.statusCode === 200) {
             Ads.value = responseData.body;
-            console.log("Ads:", Ads.value);
+            console.log("Ads:", Ads.value[0].title);
           } else {
             console.error("Failed to fetch Ads:", responseData);
           }
@@ -166,7 +166,7 @@
         }
 
         const responseNumberOfAd = await fetch("/api/ad/get-number-of-ads", {  //*
-          method: "POST", //POST
+          method: "POST", // POST
           headers: {
             "Content-Type": "application/json",
           },
@@ -194,11 +194,11 @@
         rentType: '不限',
         gender: 'any',
         facilities: [],
-        /*houses: [
+        /* houses: [
           { type: '公寓', location: '', price: '$/月' },
           { type: '透天', location: '', price: '$/月' },
           { type: '別墅', location: '', price: '$/月' }
-        ]*/
+        ] */
       };
     },
     methods: {

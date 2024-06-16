@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         const whereClause = {
-            status: {
+            verify: {
                 in: thestatus && Array.isArray(thestatus) ? thestatus : ['ADOPTED'],
             },
         };
@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
             };
         }
 
-        const ads = await prismaClient.advertise.findMany({  //*post
+        const ads = await prismaClient.advertise.findMany({  //* post
             skip: skip || 0,
             take: take || 10,
             where: whereClause,
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
         });
 
         return {
-            statusCode: 200,  //success?
+            statusCode: 200,  // success?
             body: ads,  //*
         };
     } catch (error) {

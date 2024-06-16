@@ -5,9 +5,9 @@ const prismaClient = new PrismaClient();
 export default defineEventHandler(async (event) => {
     const { thestatus } = await readBody(event);
 
-    const count = await prismaClient.advertise.count({  //*post
+    const count = await prismaClient.advertise.count({  // *post
         where: {
-            status: {
+            verify: {
                 in: thestatus && Array.isArray(thestatus) ? thestatus : ['ADOPTED'],
             },
         },

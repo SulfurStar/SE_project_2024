@@ -1,7 +1,7 @@
 <template>
-    <el-card class="post-card">
+    <el-card class="post-card" >
       <div class="post-header">
-        <h2 class="post-title">{{ Ad.title }}</h2>
+        <h2 v-if="ad" class="post-title">{{ ad.title }}</h2>
         <!-- <p class="post-author">by {{ post.authorId }}</p> -->
         <!-- <p class="post-status">Status: {{ post.status }}</p> -->
       </div>
@@ -13,8 +13,8 @@
         <!-- <el-icon :size="20" color="" class="report-icon"
           ><WarningFilled
         /></el-icon> -->
-        <div class="post-date">
-          Posted on: {{ new Date(Ad.createdAt).toLocaleDateString() }} <!--*-->
+        <div v-if="ad" class="post-date">
+          Posted on: {{ new Date(ad.createdAt).toLocaleDateString() }} <!--*-->
         </div>
       </div>
     </el-card>
@@ -24,10 +24,13 @@
   export default {
     name: "AdTitleCard", //*
     props: {
-      Ad: {  //*
+      ad: {
         type: Object,
         required: true,
       },
+    },
+    mounted() {
+      console.log("ad:", this.ad); // 在 mounted 生命週期鉤子中顯示 console log
     },
   };
   </script>
