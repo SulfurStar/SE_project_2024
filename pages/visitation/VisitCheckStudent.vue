@@ -51,7 +51,7 @@
   };
   
   const goBack = () => {
-    router.push('/visitation/VisitCheckAdmin');
+    router.push('/visitation');
   };
   
   onMounted(fetchRecords);
