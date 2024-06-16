@@ -6,7 +6,7 @@
       <div v-if="user.role === 'LANDLORD'">
         <h2>房東不可查看</h2>
       </div>
-      <div v-if="user.role !== 'LANDLORD'">
+      <div v-else>
         <div class="button-block">
           <h2 class="block-title">訪視問卷</h2>
           <div class="button-container">
@@ -42,7 +42,7 @@ const buttons = ref([
   { id: 1, name: '填寫訪視問卷', url: '/visitation/FillVisitForm' },
   { id: 2, name: '確認訪視時間', url: '/visitation/ChooseStudentConfirmVisitTime' },
   { id: 3, name: '填寫訪視紀錄', url: '/visitation/FillVisitRecord' },
-  { id: 4, name: '修改訪視紀錄', url: '/visitation/UpdateVisitRecord' },
+  { id: 4, name: '修改訪視紀錄', url: `/visitation/UpdateVisitRecord/${user.value ? user.value.id : ''}` }, // 动态路由
   { id: 5, name: '查詢訪視紀錄', url: '/visitation/SearchVisitRecord' },
   { id: 6, name: '刪除訪視紀錄', url: '/visitation/DeleteVisitRecord' }
 ]);

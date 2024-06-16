@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const result = await prisma.Visit_record.updateMany({
-      where: { studentId: userId },
+      where: { studentId:parseInt(userId, 10) },
       data: { info_student, date_update },
     })
 

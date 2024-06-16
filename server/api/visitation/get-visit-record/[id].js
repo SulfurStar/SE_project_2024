@@ -1,33 +1,33 @@
-// api/get-students.post.js
 import { PrismaClient } from '@prisma/client';
-import { defineEventHandler, readBody } from 'h3';
-
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const  studentId  = event.context.params.id;
-
-  if (!teacherId) {
-    throw new Error('Teacher ID is required');
-  }
-
+  const { id } = event.context.params; // 获取动态路由参数中的id
+  console.log(`Fetching visit record for student ID: ${id}`); // 调试输出
   try {
-    const visits = await prisma.visit_record.findUnique({
-      where: { studentId: parseInt(studentId, 10) },
+    const visitRecord = await prisma.Visit_record.findFirst({
+      where: {
+        studentId: parseInt(id), // 将id转换为整数类型
+      },
     });
 
-    console.log('Queried visits:', visits); // 打印查询结果进行调试
-
-    return {
-      success: true,
-      data: visits
-    };
+    if (visitRecord) {
+      return {
+        success: true,
+        data: visitRecord,
+      };
+    } else {
+      return {
+        success: false,
+        message: 'Record not found',
+      };
+    }
   } catch (error) {
-    console.error('Error fetching visits:', error);
+    console.error('Error fetching visit record:', error);
     return {
       success: false,
-      message: 'Failed to fetch visits',
-      error: error.message,
+      message: 'Failed to fetch visit record',
     };
   }
 });
+
