@@ -1,4 +1,3 @@
-<!-- 從verify跳轉過來，透過id顯示AD完整內容，並選擇要不要通過 -->
 <template>
     <div class="check-ad-container">
       <h1>Check Advertise</h1>
@@ -11,6 +10,7 @@
           </div>
         </div>
         <button @click="approveAdvertise">批准廣告</button>
+        <button @click="rejectAdvertise" class="reject-button">不批准廣告</button>
       </div>
     </div>
   </template>
@@ -81,6 +81,39 @@
     }
   };
   
+  const rejectAdvertise = async () => {
+    try {
+      const response = await fetch(`/api/ad/approveAdvertise/${route.params.id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ verify: 'FAILED' }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to reject advertise');
+      }
+  
+      const data = await response.json();
+  
+      console.log('Advertise rejected successfully:', data);
+  
+      ElMessage({
+        message: '廣告未批准',
+        type: 'success',
+      });
+  
+      router.push('/Ad/Ad_verify'); // 更新完成后跳转回用户管理页面
+    } catch (error) {
+      console.error('Error rejecting advertise:', error);
+      ElMessage({
+        message: '不批准失敗',
+        type: 'error',
+      });
+    }
+  };
+  
   onMounted(fetchAdvertise);
   </script>
   
@@ -120,6 +153,11 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    margin-right: 1rem;
+  }
+  
+  .reject-button {
+    background-color: #dc3545;
   }
   </style>
   
