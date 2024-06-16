@@ -120,12 +120,16 @@
       import { useRoute, useRouter } from "vue-router";
       import { ref, onMounted } from "vue";
       import AdTitleCard from "~/components/AdTitleCard.vue";  //*
-
+      
       const route = useRoute();
       const router = useRouter();
       const Ads = ref(null);  // *posts
       const numberOfAds = ref(null);  //*
       const currentPage = ref(1);
+
+      //*bd
+      const Bds = ref(null);
+      const numberOfBds = ref(null);
 
       currentPage.value = route.params.id || 1;
 
@@ -143,6 +147,8 @@
       const params2 = {
         thestatus: ["ADOPTED"],  // "NORMAL", "REPORTED"
       };
+
+
 
       onMounted(async () => {
         const responseAd = await fetch("/api/ad/get-n-ads", {  //*
@@ -174,11 +180,15 @@
         });
         numberOfAds.value = await responseNumberOfAd.json();
         numberOfAds.value = Math.ceil(numberOfAds.value / 10);
+
+        //board
+
       });
 
       definePageMeta({
         middleware: "auth",
       });
+
     </script>
 
 
@@ -188,7 +198,7 @@
     data() {
       return {
         title: '校外賃居網',
-        keyword: ' ',
+        keyword: '',
         rent: '不限',
         building: '不限',
         rentType: '不限',
