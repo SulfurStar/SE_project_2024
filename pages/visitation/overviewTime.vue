@@ -1,13 +1,13 @@
 <template>
   <div class="delete-account-container">
-    <h1 class="page-title">選擇學生填寫訪視時間</h1>
+    <h1 class="page-title">學生訪視時間</h1>
     <div v-if="loading">加載學生中...</div>
     <div v-else>
       <div v-if="students">
           <ul>
             <el-scrollbar height="400px">
               <li v-for="student in students" :key=student.id>
-                <VisitationTitleCard :student="student" />
+                <VisitationTitleTimeCard :student="student" />
               </li>
             </el-scrollbar>
           </ul>
@@ -21,12 +21,12 @@ import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import VisitationTitleCard from "~/components/VisitationTitleCard.vue";
 
-const route = useRoute();
-const router = useRouter();
+// const route = useRoute();
+// const router = useRouter();
 const students = ref(null);
 // const numberOfstudents = ref(null);
 const loading = ref(true);
-const currentPage = ref(1);
+// const currentPage = ref(1);
 
 const user = useState('user');
 const userId = ref("");
@@ -40,11 +40,11 @@ watch(
   { immediate: true }
 );
 
-currentPage.value = route.params.id || 1;
+// currentPage.value = route.params.id || 1;
 
-const handlePageChange = (page) => {
-  router.push(`/visitation/overview/${page}`);
-};
+// const handlePageChange = (page) => {
+//   router.push(`/visitation/overview/${page}`);
+// };
 
 const params = {
   userId: userId.value,

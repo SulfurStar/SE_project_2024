@@ -25,18 +25,36 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="圖片" prop="images">
-            <el-upload
-              class="upload-demo"
-              :before-upload="beforeUpload"
-              list-type="picture"
-              :file-list="fileList"
-              multiple
-            >
-              <el-button size="small" type="primary">選擇圖片</el-button>
-              <template #tip>
-                <div class="el-upload__tip">只能上傳 jpg/png 文件</div>
-              </template>
-            </el-upload>
+            <div class="image-upload-section">
+              <div class="image-list">
+                <div
+                  v-for="(image, index) in post.images"
+                  :key="index"
+                  class="relative image-item"
+                >
+                  <button
+                    type="button"
+                    class="absolute top-0 right-0 m-2 remove-button"
+                    @click="removeImage(index)"
+                  >
+                    <el-icon><delete /></el-icon>
+                  </button>
+                  <img :src="image" alt="Advert Image" class="advert-image" />
+                </div>
+              </div>
+              <el-upload
+                class="upload-demo"
+                :before-upload="beforeUpload"
+                list-type="picture"
+                :file-list="fileList"
+                multiple
+              >
+                <el-button size="small" type="primary">選擇圖片</el-button>
+                <template #tip>
+                  <div class="el-upload__tip">只能上傳 jpg/png 文件</div>
+                </template>
+              </el-upload>
+            </div>
           </el-form-item>
           <el-form-item>
             <el-button type="success" @click="submitForm">提交</el-button>
@@ -95,16 +113,7 @@
 </template>
 
 <script setup>
-import { ref, watch, nextTick, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import { v4 as uuidv4 } from "uuid"; // 引入 UUID 庫
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogTitle,
-  AlertDialogAction,
-} from "@/components/ui/alert-dialog";
 
 const supabase = useSupabaseClient();
 
@@ -140,16 +149,11 @@ onMounted(async () => {
     body: JSON.stringify(params),
   });
   const data = await response.json();
+  console.log("獲取到的貼文數據:", data);
   post.value = data.post;
-  if (data.post.images) {
-    post.value.images = data.post.images.split(",");
-    // 將圖片URL字符串拆分成數組
-    data.post.images.split(",").forEach((image) => {
-      fileList.value.push({
-        name: image.split("/").pop(),
-        url: image,
-      });
-    });
+  if (data.post.imageUrl) {
+    post.value.images = data.post.imageUrl.split(",");
+    data.post.imageUrl.split(",").forEach((image) => {});
   } else {
     post.value.images = [];
   }
@@ -184,7 +188,7 @@ const rules = {
 const fileList = ref([]);
 
 const beforeUpload = async (file) => {
-  const imageUrl = await uploadImage(file);
+  const imageUrl = await uploadImage({ file });
   if (imageUrl) {
     post.value.images.push(imageUrl);
     console.log("上傳成功，圖片URL:", post.value.images);
@@ -193,7 +197,7 @@ const beforeUpload = async (file) => {
   return false; // 阻止上傳
 };
 
-const uploadImage = async (file) => {
+const uploadImage = async ({ file }) => {
   try {
     // 生成唯一的文件名
     const uniqueFileName = `${uuidv4()}.${file.name.split(".").pop()}`;
@@ -222,6 +226,7 @@ const uploadImage = async (file) => {
     return null;
   }
 };
+
 const postForm = ref(null);
 
 const submitForm = async () => {
@@ -262,6 +267,11 @@ const submitForm = async () => {
 const resetForm = () => {
   postForm.value.resetFields();
 };
+
+const removeImage = (index) => {
+  post.value.images.splice(index, 1);
+  fileList.value.splice(index, 1);
+};
 </script>
 
 <style scoped>
@@ -298,5 +308,43 @@ const resetForm = () => {
 .main {
   max-width: 600px;
   margin: 0 auto;
+}
+
+.image-upload-section {
+  margin-top: 2rem;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.image-item {
+  position: relative;
+}
+
+.advert-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.remove-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 </style>
