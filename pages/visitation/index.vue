@@ -52,7 +52,8 @@ watch(
 // 定义按钮列表
 const buttons = ref([
   { id: 1, name: '填寫地址', url: '/visitation/FillVisitForm' },
-  { id: 2, name: '選擇訪視時間', url: '/visitation/overview/1' },
+  { id: 2, name: '選擇訪視時間', url: '/visitation/overview' },
+  { id: 11, name: '查看訪視時間', url: '/visitation/overviewTime' },
   { id: 3, name: '學生填寫訪視紀錄', url: '/visitation/FillVisitRecordStudent' },
   { id: 4, name: '學生修改訪視紀錄', url: `/visitation/UpdateVisitRecordStudent/${user.value ? user.value.id : ''}` }, // 动态路由
   { id: 5, name: '學生查詢訪視紀錄', url: '/visitation/VisitCheckStudent' },
@@ -86,7 +87,7 @@ onMounted(() => {
       otherButtons.value = buttons.value.filter(button => button.id === 3 ||button.id === 4||button.id === 5);
     }
     else if(userRole.value === 'TEACHER'){
-      mainButtons.value = buttons.value.filter(button => button.id === 2 );
+      mainButtons.value = buttons.value.filter(button => button.id === 2 || button.id === 11);
       otherButtons.value = buttons.value.filter(button => button.id === 9 ||button.id === 10||button.id === 7);
     }
     else if (userRole.value === 'LANDLORD') {
