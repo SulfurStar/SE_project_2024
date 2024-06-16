@@ -40,7 +40,7 @@ const error = ref(null);
 // 定义按钮列表
 const buttons = ref([
   { id: 1, name: '填寫訪視問卷', url: '/visitation/FillVisitForm' },
-  { id: 2, name: '確認訪視時間', url: '/visitation/ConfirmVisitTime' },
+  { id: 2, name: '確認訪視時間', url: '/visitation/ChooseStudentConfirmVisitTime' },
   { id: 3, name: '填寫訪視紀錄', url: '/visitation/FillVisitRecord' },
   { id: 4, name: '修改訪視紀錄', url: '/visitation/UpdateVisitRecord' },
   { id: 5, name: '查詢訪視紀錄', url: '/visitation/SearchVisitRecord' },

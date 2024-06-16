@@ -6,34 +6,66 @@
       <div v-if="timeString" class="time-string">{{ timeString }}</div>
     </div>
     <div class="button-group">
-      <button class="confirm-button" @click="confirmTime">确认</button>
-      <button class="delete-button" @click="deleteTime">删除</button>
+      <button class="confirm-button" @click="confirmTime">確認</button>
+      <button class="delete-button" @click="deleteTime">刪除</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
-const selectedTime = ref('')
-const timeString = ref('')
+const user = useState('user');
+const userId = ref("");
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      userId.value = newUser.id;
+    }
+  },
+  { immediate: true }
+);
 
 const updateTimeString = () => {
   if (selectedTime.value) {
     const date = new Date(selectedTime.value)
-    // Format the date to only include the date and hour part
     timeString.value = date.toLocaleString('zh-TW', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
-      hour: '2-digit'
-    }).replace(':00', '時')  // Replace ':00' with '時'
+      hour: '2-digit',
+      minute: '2-digit'
+    })
   }
 }
 
-const confirmTime = () => {
-  alert(`确认时间: ${timeString.value}`)
-}
+const submitTime = async () => {
+  const response = await fetch(`/api/visitation/confirm-visit-time`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      teacherId: userId.value,
+      visitAddress: document.getElementById("address-input").value
+    }),
+  });
+  const data = await response.json();
+  if (data.success === false) {
+    ElMessage({
+        message: '新增訪視預約時出錯: ' + data.error,
+        type: "error",
+    });
+  } else {
+    ElMessage({
+        message: "訪視預約已更新",
+        type: "success",
+    });
+    router.push('/visitation');
+  }
+};
 
 const deleteTime = () => {
   selectedTime.value = ''
