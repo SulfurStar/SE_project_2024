@@ -53,23 +53,20 @@
           @click="navigateTo('/Ad/Ad_manage')"
           >我的廣告
         </el-menu-item>
-
-        <!-- 佈告欄新增Bd_new 老師限定頁面 -->
-        <el-menu-item
+      </el-sub-menu>
+        <!-- <el-menu-item
           v-if="user && user.role === 'TEACHER'"
           index="1-6"
           @click="navigateTo('/Ad')"
           >新增佈告欄
         </el-menu-item>
-
-        <!-- 佈告欄管理Bd_manage 老師限定頁面 -->
         <el-menu-item
           v-if="user && user.role === 'TEACHER'"
           index="1-7"
           @click="navigateTo('/Ad')"
           >我的佈告欄
         </el-menu-item>
-      </el-sub-menu>
+      </el-sub-menu> -->
 
       <el-sub-menu index="2" class="hover-item">
         <template #title>
@@ -77,7 +74,7 @@
           <NuxtLink to="/posts" class="menu-link">貼文區</NuxtLink>
         </template>
         <!-- 以下為子菜單 -->
-        <el-menu-item index="1-1" @click="navigateTo('/posts')"
+        <el-menu-item index="2-1" @click="navigateTo('/posts')"
           >貼文總覽</el-menu-item
         >
 
@@ -86,7 +83,7 @@
             user &&
             (user.role === 'STUDENT' || 'ADMIN' || 'LANDLORD' || 'TEACHER')
           "
-          index="1-2"
+          index="2-2"
           @click="navigateTo('/posts/new-post')"
           >新增貼文
         </el-menu-item>
@@ -96,19 +93,19 @@
             user &&
             (user.role === 'STUDENT' || 'ADMIN' || 'LANDLORD' || 'TEACHER')
           "
-          index="1-3"
+          index="2-3"
           @click="navigateTo('/my/posts/1')"
           >我的貼文
         </el-menu-item>
         <el-menu-item
           v-if="user && user.role === 'ADMIN'"
-          index="1-4"
+          index="2-4"
           @click="navigateTo('/posts/management/1')"
           >審核貼文
         </el-menu-item>
         <el-menu-item
           v-if="user && user.role === 'ADMIN'"
-          index="1-5"
+          index="2-5"
           @click="navigateTo('/posts/managementComment/1')"
           >審核留言
         </el-menu-item>
