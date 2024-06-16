@@ -41,6 +41,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
+import { ElMessage } from "element-plus";
+import "element-plus/theme-chalk/el-message.css";
 
 const email = ref("");
 const name = ref("");
@@ -48,12 +50,21 @@ const phone = ref("");
 const router = useRouter();
 
 const user = useState("user");
+// watch監聽user的變化 把email,name,phone的值設定為user的值
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      email.value = newUser.email;
+      name.value = newUser.name;
+      phone.value = newUser.phone;
+    }
+  },
+  { immediate: true }
+);
 
 onMounted(() => {
-  if (user.value.role !== "LANDLORD") {
-    email.value = user.value.email;
-    name.value = user.value.name;
-  } else {
+  if (user.value.role === "LANDLORD") {
     router.push("/"); // 如果已經是房東，重定向到首頁
   }
 });
@@ -73,14 +84,20 @@ const register = async () => {
     });
 
     if (response.ok) {
-      // 假設 ElMessage 是某個訊息提示組件
+      const data = await response.json();
       ElMessage({
         message: "註冊成功",
         type: "success",
       });
-      // 把role加入user的資料中
-      user.value.role = "LANDLORD";
-      user.value.phone = phone.value;
+      // 更新用户的本地状态
+      user.value = {
+        ...user.value,
+        exists: true,
+        role: data.role,
+        phone: data.phone,
+        id: data.id,
+        sexual: data.sexual,
+      };
       router.push("/");
     } else {
       const error = await response.json();

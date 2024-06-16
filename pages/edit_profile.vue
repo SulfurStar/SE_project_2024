@@ -97,7 +97,10 @@ const updateProfile = async () => {
     const data = await response.json();
 
     console.log("Profile updated successfully:", data);
-
+    // 更新用户的本地状态
+    user.value = {
+      ...user.value,
+    };
     ElMessage({
       message: "修改成功",
       type: "success",
