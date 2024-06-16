@@ -72,17 +72,17 @@ model StudentHousingInfo {
 
 //貼文，PS，愷
 model Post {
-  id        Int         @id @default(autoincrement())
-  title     String      @db.VarChar(255)
-  content   String
-  imageUrl  String?
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt @default(now())
-  postPhoto PostPhoto[]
-  author    User        @relation(fields: [authorId], references: [id])
-  authorId  Int
-  status    Status      @default(NORMAL)
-  comments  Comment[]
+  id             Int         @id @default(autoincrement())
+  title          String      @db.VarChar(255)
+  content        String
+  imageUrl       String?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @default(now()) @updatedAt
+  postPhoto      PostPhoto[]
+  author         User        @relation(fields: [authorId], references: [id])
+  authorId       Int
+  status         Status      @default(NORMAL)
+  comments       Comment[]
   reportedReason String?
 
   @@index([authorId])
@@ -91,16 +91,16 @@ model Post {
 
 //貼文評論，PS，愷
 model Comment {
-  id        Int      @id @default(autoincrement())
-  content   String
-  imageUrl  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
-  postId    Int
-  authorId  Int
-  post      Post     @relation(fields: [postId], references: [id])
-  author    User     @relation(fields: [authorId], references: [id])
-  status    Status   @default(NORMAL)
+  id             Int      @id @default(autoincrement())
+  content        String
+  imageUrl       String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now()) @updatedAt
+  postId         Int
+  authorId       Int
+  post           Post     @relation(fields: [postId], references: [id])
+  author         User     @relation(fields: [authorId], references: [id])
+  status         Status   @default(NORMAL)
   reportedReason String?
 
   @@index([postId])
@@ -147,7 +147,7 @@ model Advertise {
   noroom    Boolean //目前滿租
   reserve   Boolean //可預約
 
-  adphoto AdPhoto[] //相片
+  images String[] //廣告圖片
 
   rental_rm String //出租房數
   buildtype String //房屋類型
@@ -187,8 +187,9 @@ model Advertise {
 
   houseAge String? //屋齡
   endAt    DateTime? //下架時間
-  verify   Verify@default(UNKNOWN)  //廣告狀態
+  verify   Verify    @default(UNKNOWN) //廣告狀態
   address  String //地址
+  AdPhoto  AdPhoto[]
 
   @@schema("public")
 }
@@ -200,7 +201,7 @@ model AdPhoto {
   authorId    Int //作者ID
   advertise   Advertise @relation(fields: [advertiseId], references: [id]) //相片所屬廣告
   advertiseId Int //廣告ID
-  pic         Bytes //相片
+  pic         String? //相片
 
   @@schema("public")
 }
@@ -226,7 +227,7 @@ model Board {
   authorId  Int //作者ID
   title     String //佈告欄標題
   content   String? //佈告欄內文
-  verify   Verify@default(UNKNOWN)  //佈告欄狀態
+  verify    Verify   @default(UNKNOWN) //佈告欄狀態
 
   @@schema("public")
 }
