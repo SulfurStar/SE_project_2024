@@ -45,6 +45,8 @@ jobs:
           GOOGLE_Client_Secret: ${{ secrets.GOOGLE_Client_Secret }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: "pnpm run build --preset=azure"
       - name: "Move staticwebapp.config.json"
         run: "mv staticwebapp.config.json .output/public/staticwebapp.config.json"
@@ -55,6 +57,8 @@ jobs:
           GOOGLE_Client_Secret: ${{ secrets.GOOGLE_Client_Secret }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         uses: Azure/static-web-apps-deploy@v1
           
         with:
