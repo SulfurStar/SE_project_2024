@@ -53,8 +53,10 @@ const buttons = ref([
   { id: 2, name: '選擇訪視時間', url: '/visitation/overview/1' },
   { id: 3, name: '填寫訪視紀錄', url: '/visitation/FillVisitRecord' },
   { id: 4, name: '修改訪視紀錄', url: `/visitation/UpdateVisitRecord/${user.value ? user.value.id : ''}` }, // 动态路由
-  { id: 5, name: '查詢訪視紀錄', url: '/visitation/SearchVisitRecord' },
-  { id: 6, name: '刪除訪視紀錄', url: '/visitation/DeleteVisitRecord' }
+  { id: 5, name: '學生查詢訪視紀錄', url: '/visitation/SearchVisitStudent' },
+  { id: 6, name: '刪除訪視紀錄', url: '/visitation/DeleteVisitRecord' },
+  { id: 7, name: '老師查詢訪視紀錄', url: '/visitation/VisitCheckTeacher' },
+  { id: 8, name: '管理員查詢訪視紀錄', url: '/visitation/VisitCheckAdmin' }
 ]);
 
 
@@ -72,7 +74,7 @@ onMounted(() => {
     // 根据角色筛选按钮
     if (userRole.value === 'ADMIN') {
       mainButtons.value = buttons.value.filter(button => button.id === 1 || button.id === 2);
-      otherButtons.value = buttons.value.filter(button => button.id !== 1 && button.id !== 2);
+      otherButtons.value = buttons.value.filter(button => button.id !== 1 && button.id !== 2  && button.id !== 5  && button.id !== 7 );
     }
     else if(userRole.value === 'STUDENT'){
       mainButtons.value = buttons.value.filter(button => button.id === 1 );
@@ -80,7 +82,7 @@ onMounted(() => {
     }
     else if(userRole.value === 'TEACHER'){
       mainButtons.value = buttons.value.filter(button => button.id === 2 );
-      otherButtons.value = buttons.value.filter(button => button.id === 3 ||button.id === 4||button.id === 5);
+      otherButtons.value = buttons.value.filter(button => button.id === 3 ||button.id === 4||button.id === 7);
     }
     else if (userRole.value === 'LANDLORD') {
       mainButtons.value = [];
