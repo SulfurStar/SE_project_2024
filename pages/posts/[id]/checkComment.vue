@@ -52,7 +52,7 @@ onMounted(async () => {
     body: JSON.stringify(params),
   });
   const data = await response.json();
-  comments.value = data.post;
+  post.value = data.post;
   authorName.value = data.authorName;
   console.log(params2);
   const responseComment = await fetch("/api/posts/get-single-comment", {

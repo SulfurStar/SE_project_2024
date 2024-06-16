@@ -113,7 +113,7 @@
         </el-menu-item>
         <el-menu-item
           v-if="user && user.role === 'ADMIN'"
-          index="1-4"
+          index="1-5"
           @click="navigateTo('/posts/managementComment/1')"
           >審核留言
         </el-menu-item>

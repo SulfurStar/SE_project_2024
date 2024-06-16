@@ -10,6 +10,10 @@
         <input id="phone" type="text" name="phone" />
       </div>
       <div class="form-group">
+        <label for="address">地址：<span class="required">*</span></label>
+        <input id="address" type="text" name="address" />
+      </div>
+      <div class="form-group">
         <label for="rentalCount">出租房數：<span class="required">*</span></label>
         <input id="rentalCount" type="text" name="rentalCount" />
         <p class="hint">範例: [雅房 約3坪]共5間; 空房0間; [套房 約7坪]共4間; 空房3間</p> 

@@ -2,6 +2,9 @@
   <div class="content">
     <div class="infinite-scroll">
       <div v-if="comments">
+        <div v-if="comments.length === 0">
+          <p>沒有評論需要審核</p>
+        </div>
         <div v-for="comment in comments" :key="comment.id">
           <NuxtLink :to="{ path: `/posts/${comment.postId}/checkComment`, query: { id: comment.id } }">
             <CommentCard :comment="comment" />

@@ -3,9 +3,10 @@
     <div class="post-header">
       <h2 class="post-title">{{ post.title }}</h2>
       <p class="post-author">by {{ authorname }}</p>
-      <p v-if="post.reportedReason" class="post-reason">
+      <!-- <p class="post-status">Status: {{ post.status }}</p> -->
+      <!-- <p v-if="post.reportedReason" class="post-reason">
         Reported Reason: {{ post.reportedReason }}
-      </p>
+      </p> -->
     </div>
     <div class="post-body">
       <div class="post-content">{{ post.content }}</div>

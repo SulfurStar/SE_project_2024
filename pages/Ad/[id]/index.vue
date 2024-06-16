@@ -17,11 +17,11 @@
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">出租人(房東)</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.authorId}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">連絡電話</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.phone}} </td>
             </tr>
           </tbody>
         </table>
@@ -38,59 +38,58 @@
           <tbody>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000; width: 30%;">出租房數</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.rental_rm}} </td>
               <td style="background-color:#99ccff; border-color:#000000; width: 20%;">建物樓層</td>
-              <td style="background-color:#ffffff; border-color:#000000">  </td>
+              <td colspan="2"> {{Ad.floor}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">房屋類型</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.buildtype}} </td>
               <td style="background-color:#99ccff; border-color:#000000;">獨立電表</td>
-              <td>  </td>
+              <td> {{Ad.indp_mete}} </td>
             </tr>
             <tr>
-              <td style="background-color:#99ccff; border-color:#000000;">
-                <p>證明文件</p>
-              </td>
-              <td colspan="2">  </td>
+              <td style="background-color:#99ccff; border-color:#000000;">出租類型</td>
+              <td colspan="2"> {{Ad.rm_type}} </td>
               <td style="background-color:#99ccff; border-color:#000000;">隔間材質</td>
-              <td>  </td>
+              <td> {{Ad.part_mate}} </td>
             </tr>
             <tr>
-              <td style="background-color:#99ccff; border-color:#000000;">安全訪評</td>
-              <td colspan="2">  </td>
+              <td style="background-color:#99ccff; border-color:#000000;">租金</td>
+              <td colspan="2"> 每月 {{Ad.rent_low}} ~ {{Ad.rent_high}} 元 </td>
               <td style="background-color:#99ccff; border-color:#000000;">性別要求</td>
-              <td>  </td>
+              <td> {{Ad.gender}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">押金</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.deposit}} </td>
               <td style="background-color:#99ccff; border-color:#000000;">無菸租屋</td>
-              <td>  </td>
+              <td> {{Ad.Smoke_fre}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">其他費用</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.other_fee}} </td>
               <td style="background-color:#99ccff; border-color:#000000;">身份要求</td>
-              <td>  </td>
-            </tr>
-            <tr>
-              <td style="background-color:#99ccff; border-color:#000000;">其他條件</td>
-              <td colspan="2">  </td>
-              <td style="background-color:#99ccff; border-color:#000000;">公共設施</td>
-              <td>  </td>
+              <td> {{Ad.identity}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">屋內設備</td>
-              <td colspan="2">  </td>
-              <td style="background-color:#99ccff; border-color:#000000;">屋況說明</td>
+              <td colspan="2"> <span v-if="Ad.telev">電視</span> <span v-if="Ad.fridge">冰箱</span> <span v-if="Ad.aircond">冷氣</span> <span v-if="Ad.washmch">洗衣機</span> <span v-if="Ad.clothdry">烘衣機</span> <span v-if="Ad.waterdisp">飲水機</span> <span v-if="Ad.wardrobe">衣櫃</span> <span v-if="Ad.singlebed">單人床</span> <span v-if="Ad.doublebea">雙人床</span> <span v-if="Ad.desk">書桌</span> <span v-if="Ad.internet">寬頻網路</span>
+              </td>
+              <td style="background-color:#99ccff; border-color:#000000;">屋齡</td>
+              <td> {{Ad.houseAge}} </td>
+            </tr>
+            <tr>
+              <td style="background-color:#99ccff; border-color:#000000;">公共設施</td>
+              <td colspan="2"> {{Ad.pub_equi}} </td>
+              <td style="background-color:#99ccff; border-color:#000000;">其他條件</td>
               <td>  </td>
             </tr>
             <tr>
-              <td style="background-color:#99ccff; border-color:#000000;">屋齡</td>
-              <td colspan="2">  </td>
+              <td style="background-color:#99ccff; border-color:#000000;">屋況說明</td>
+              <td colspan="2"> {{Ad.condition}} </td>
               <td style="background-color:#99ccff; border-color:#000000;">下架時間</td>
-              <td>  </td>
+              <td> {{Ad.endAt}} </td>
             </tr>
           </tbody>
         </table>
@@ -106,15 +105,15 @@
           <tbody>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000; width: 30%;">熱水器</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.heater}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">安全設施</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.safe_faci}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">證明文件</td>
-              <td colspan="2">  </td>
+              <td colspan="2"> {{Ad.certified}} </td>
             </tr>
             <tr>
               <td style="background-color:#99ccff; border-color:#000000;">安全訪評</td>
@@ -139,6 +138,8 @@
 
 import { useRoute } from "vue-router";
 import { ref, onMounted } from "vue";
+import Advertise from "../Advertise.vue";
+import { User } from "lucide-vue-next";
 
 export default {
   setup() {
@@ -160,6 +161,7 @@ export default {
         body: JSON.stringify(params), // 將參數轉成 JSON 字串
       });
       Ad.value = await response.json(); // 將取得的資料存入 Ad 變數中
+
     });
     // console.log("AD",Ad);
     return { Ad }; // 回傳 Ad 變數

@@ -5,6 +5,7 @@
         <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
         <div class="button-group">
           <el-button type="success" @click="approvePost">審核通過</el-button>
+          <div class="reason">被檢舉原因 : {{ post.reportedReason }}</div>
           <el-button type="danger" @click="rejectPost">審核失敗</el-button>
         </div>
         <PostCard :post="post" :authorname="authorName" />
@@ -137,5 +138,9 @@ const rejectPost = async () => {
   display: flex;
   justify-content: space-between;
   margin-top: 20px;
+}
+
+.reason {
+  color: #5f5f5f;
 }
 </style>
