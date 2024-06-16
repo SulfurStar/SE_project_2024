@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="announcement">
+    <!-- <div class="announcement">
       <h1>校外賃居廣告頁</h1>
     </div>
 
@@ -8,7 +8,7 @@
     <h2 style="font-weight: bold; font-size: 26px">公告</h2>
     <hr />
     <div>
-      <!--class="announcement"-->
+      class="announcement"
       <p></p>
     </div>
 
@@ -130,7 +130,7 @@
 
     <button class="btn-search" @click="search">查詢</button>
 
-    <hr />
+    <hr /> -->
 
     <div class="content">
       <div class="infinite-scroll">
@@ -158,7 +158,7 @@
       </div>
     </div>
 
-      <!-- 原房屋列表
+    <!-- 原房屋列表
       <div class="house-list">
         <h2>房屋列表</h2>
         <ul>
@@ -171,23 +171,23 @@
         </ul>
       </div>
       -->
-    </div>
-    </template>
-    
-    <script setup>
-      import { useRoute, useRouter } from "vue-router";
-      import { ref, onMounted } from "vue";
-      import AdTitleCard from "~/components/AdTitleCard.vue";  //*
-      
-      const route = useRoute();
-      const router = useRouter();
-      const Ads = ref(null);  // *posts
-      const numberOfAds = ref(null);  //*
-      const currentPage = ref(1);
+  </div>
+</template>
 
-      //*bd
-      const Bds = ref(null);
-      const numberOfBds = ref(null);
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted } from "vue";
+import AdTitleCard from "~/components/AdTitleCard.vue"; //*
+
+const route = useRoute();
+const router = useRouter();
+const Ads = ref(null); // *posts
+const numberOfAds = ref(null); //*
+const currentPage = ref(1);
+
+//* bd
+const Bds = ref(null);
+const numberOfBds = ref(null);
 
 currentPage.value = route.params.id || 1;
 
@@ -202,11 +202,9 @@ const params = {
   ids: null,
 };
 
-      const params2 = {
-        thestatus: ["ADOPTED"],  // "NORMAL", "REPORTED"
-      };
-
-
+const params2 = {
+  thestatus: ["ADOPTED"], // "NORMAL", "REPORTED"
+};
 
 onMounted(async () => {
   const responseAd = await fetch("/api/ad/get-n-ads", {
@@ -231,81 +229,77 @@ onMounted(async () => {
     console.error("Failed to fetch Ads: HTTP status", responseAd.status);
   }
 
-        const responseNumberOfAd = await fetch("/api/ad/get-number-of-ads", {  //*
-          method: "POST", // POST
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(params2),
-        });
-        numberOfAds.value = await responseNumberOfAd.json();
-        numberOfAds.value = Math.ceil(numberOfAds.value / 10);
+  const responseNumberOfAd = await fetch("/api/ad/get-number-of-ads", {
+    //*
+    method: "POST", // POST
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params2),
+  });
+  numberOfAds.value = await responseNumberOfAd.json();
+  numberOfAds.value = Math.ceil(numberOfAds.value / 10);
 
-        //board
+  // board
+});
 
-      });
+definePageMeta({
+  middleware: "auth",
+});
+</script>
 
-      definePageMeta({
-        middleware: "auth",
-      });
-
-    </script>
-
-
-    
-    <script>
-    export default {
-    data() {
-      return {
-        title: '校外賃居網',
-        keyword: '',
-        rent: '不限',
-        building: '不限',
-        rentType: '不限',
-        gender: 'any',
-        facilities: [],
-        /* houses: [
+<script>
+export default {
+  data() {
+    return {
+      title: "校外賃居網",
+      keyword: "",
+      rent: "不限",
+      building: "不限",
+      rentType: "不限",
+      gender: "any",
+      facilities: [],
+      /* houses: [
           { type: '公寓', location: '', price: '$/月' },
           { type: '透天', location: '', price: '$/月' },
           { type: '別墅', location: '', price: '$/月' }
         ] */
-      };
-    },
-    methods: {
-      search() {
-        // 進行查詢的相關邏輯
-        console.log('進行查詢');
-      }
-    }
     };
-    </script>
-    
-    
-    <style>
-    .content {
-      width: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .content .infinite-scroll {
-      width: 100%;
-      max-width: 800px;
-      padding: 20px;
-      flex-basis: 100%;
-    }
-    .content .pagination {
-      width: 100%;
-      max-width: 800px;
-      padding: 20px;
-      flex-basis: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-block-end: 50px;
-    }
-    </style>
+  },
+  methods: {
+    search() {
+      // 進行查詢的相關邏輯
+      console.log("進行查詢");
+    },
+  },
+};
+</script>
+
+<style>
+.content {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.content .infinite-scroll {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  flex-basis: 100%;
+}
+.content .pagination {
+  width: 100%;
+  max-width: 800px;
+  padding: 20px;
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block-end: 50px;
+}
+</style>
 
 <!--*(多了scoped)-->
 <style scoped>

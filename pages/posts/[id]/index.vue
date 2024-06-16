@@ -3,12 +3,16 @@
     <div class="content">
       <div class="PostCard">
         <!-- <NuxtLink :to="`/posts/${post.id}/edit`">Edit</NuxtLink> -->
-        <el-button v-if="userId == authorId" type="error" @click="deletePost">刪除貼文</el-button>
-        <el-button v-if="userId != authorId" type="error" @click="reportPost">檢舉貼文</el-button>
-        <PostCard :post="post" :authorname="authorName" :userid="userId"/>
+        <el-button v-if="userId == authorId" type="error" @click="deletePost"
+          >刪除貼文</el-button
+        >
+        <el-button v-if="userId != authorId" type="error" @click="reportPost"
+          >檢舉貼文</el-button
+        >
+        <PostCard :post="post" :authorname="authorName" :userid="userId" />
       </div>
 
-      <div class="updateComment"> 
+      <div class="updateComment">
         <el-dialog
           v-model="dialogVisible2"
           title="修改留言"
@@ -17,7 +21,7 @@
         >
           <el-input
             v-model="textarea2"
-            style="width: 100%;font-size: 16px;"
+            style="width: 100%; font-size: 16px"
             :autosize="{ minRows: 5, maxRows: 20 }"
             type="textarea"
             placeholder=""
@@ -34,8 +38,10 @@
         </el-dialog>
       </div>
 
-      <div class="createComment"> 
-        <el-button type="primary" @click="dialogVisible1 = true">新增留言</el-button>
+      <div class="createComment">
+        <el-button type="primary" @click="dialogVisible1 = true"
+          >新增留言</el-button
+        >
         <el-dialog
           v-model="dialogVisible1"
           title="新增留言"
@@ -44,7 +50,7 @@
         >
           <el-input
             v-model="textarea1"
-            style="width: 100%;font-size: 16px;"
+            style="width: 100%; font-size: 16px"
             :autosize="{ minRows: 5, maxRows: 20 }"
             type="textarea"
             placeholder="公開留言..."
@@ -60,14 +66,29 @@
           </template>
         </el-dialog>
       </div>
-      
+
       <div class="comment">
         <div v-if="comments">
           <div v-for="comment in comments" :key="comment.id">
             <div v-if="comment.status != 'REMOVED'">
-              <el-button v-if="comment.authorId != userId" type="danger" @click="reportComment(comment.id)">檢舉留言</el-button>
-              <el-button v-if="comment.authorId == userId" type="" @click="updateCommentReq(comment)">修改留言</el-button>
-              <el-button v-if="comment.authorId == userId" type="" @click="deleteCommentReq(comment.id)">刪除留言</el-button>
+              <el-button
+                v-if="comment.authorId != userId"
+                type="danger"
+                @click="reportComment(comment.id)"
+                >檢舉留言</el-button
+              >
+              <el-button
+                v-if="comment.authorId == userId"
+                type=""
+                @click="updateCommentReq(comment)"
+                >修改留言</el-button
+              >
+              <el-button
+                v-if="comment.authorId == userId"
+                type=""
+                @click="deleteCommentReq(comment.id)"
+                >刪除留言</el-button
+              >
               <CommentCard :comment="comment" />
             </div>
           </div>
@@ -76,21 +97,18 @@
           <p>Loading Comment...</p>
         </div>
         <!-- <el-button type="primary">新增留言</el-button> -->
-        
       </div>
     </div>
   </div>
   <div v-else>
     <p>Loading...</p>
   </div>
-  
 </template>
 
 <script setup>
-import { useRoute,useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
 import PostCard from "~/components/PostCard.vue";
-
 
 definePageMeta({
   middleware: "auth",
@@ -98,10 +116,18 @@ definePageMeta({
 
 const dialogVisible1 = ref(false);
 const dialogVisible2 = ref(false);
-const textarea1 = ref('');
-const textarea2 = ref('');
-const user = useState('user');
-const userId = user.value.id;
+const textarea1 = ref("");
+const textarea2 = ref("");
+const user = useState("user");
+const userId = ref("");
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      userId.value = newUser.id;
+    }
+  }
+);
 
 const route = useRoute();
 const router = useRouter();
@@ -144,7 +170,7 @@ const deleteCommentReq = async (commentId) => {
     } else {
       ElMessage.error("Failed to delete comment");
     }
-  }else{
+  } else {
     ElMessage.error("Failed to delete comment yee");
   }
 };
@@ -155,7 +181,10 @@ const updateComment = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ commentId: holdCommentId.value ,content: textarea2.value}),
+    body: JSON.stringify({
+      commentId: holdCommentId.value,
+      content: textarea2.value,
+    }),
   });
   const data = await response.json();
   dialogVisible2.value = false;
@@ -189,7 +218,11 @@ const addComment = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ postId: route.params.id, content: textarea1.value , authorId: userId}),
+    body: JSON.stringify({
+      postId: route.params.id,
+      content: textarea1.value,
+      authorId: userId,
+    }),
   });
   const data = await response.json();
   dialogVisible1.value = false;
@@ -212,17 +245,21 @@ const addComment = async () => {
 
 // function to report comment
 const reportComment = async (commentId) => {
-  const { value: reason } = await ElMessageBox.prompt("請輸入檢舉原因", "檢舉留言", {
-    confirmButtonText: "檢舉",
-    cancelButtonText: "取消",
-  });
+  const { value: reason } = await ElMessageBox.prompt(
+    "請輸入檢舉原因",
+    "檢舉留言",
+    {
+      confirmButtonText: "檢舉",
+      cancelButtonText: "取消",
+    }
+  );
   if (reason) {
     const response = await fetch(`/api/posts/report-comment`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ commentId, reason}),
+      body: JSON.stringify({ commentId, reason }),
     });
     const data = await response.json();
     if (data.success) {
@@ -253,10 +290,14 @@ const deletePost = async () => {
 
 // function to ask for the resons to report post by alert with input
 const reportPost = async () => {
-  const { value: reason } = await ElMessageBox.prompt("請輸入檢舉原因", "檢舉貼文", {
-    confirmButtonText: "檢舉",
-    cancelButtonText: "取消",
-  });
+  const { value: reason } = await ElMessageBox.prompt(
+    "請輸入檢舉原因",
+    "檢舉貼文",
+    {
+      confirmButtonText: "檢舉",
+      cancelButtonText: "取消",
+    }
+  );
   if (reason) {
     const response = await fetch(`/api/posts/report-post`, {
       method: "POST",
@@ -273,7 +314,6 @@ const reportPost = async () => {
     }
   }
 };
-
 
 // function to report post
 // const reportPost = async () => {
@@ -293,7 +333,6 @@ const reportPost = async () => {
 // };
 
 onMounted(async () => {
-
   const response = await fetch(`/api/posts/get-single-post`, {
     method: "POST",
     headers: {
