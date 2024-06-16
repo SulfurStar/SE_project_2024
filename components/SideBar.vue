@@ -115,6 +115,7 @@
       </el-sub-menu>
 
       <el-menu-item
+        v-if="userRole !='LANDLORD'"
         index="3"
         class="hover-item"
         @click="navigateTo('/visitation')"
@@ -169,6 +170,18 @@
 <script setup>
 import { DeleteIcon, PenBoxIcon, PopcornIcon } from "lucide-vue-next";
 
+const user = useState("user");
+const userRole = ref("");
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      userRole.value = newUser.role;
+    }
+  },
+  { immediate: true }
+);
+
 // 定義組件的 props
 const props = defineProps({
   isExpanded: {
@@ -187,7 +200,6 @@ const isCollapse = computed(() => props.isExpanded);
 const toggleSidebar = () => {
   emit("toggleSidebar");
 };
-const user = useState("user");
 </script>
 
 <style scoped>
