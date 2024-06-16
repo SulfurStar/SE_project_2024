@@ -39,7 +39,7 @@
         <el-menu-item
           v-if="user && user.role === 'ADMIN'"
           index="1-3"
-          @click="navigateTo('/Ad')"
+          @click="navigateTo('/Ad/Ad_verify')"
           >廣告審核
         </el-menu-item>
 
@@ -164,16 +164,6 @@
           <el-icon><PenBoxIcon /></el-icon>
           <NuxtLink to="/admin_edit_user" class="menu-link"
             >修改使用者資料</NuxtLink
-          >
-        </el-menu-item>
-        <el-menu-item
-          index="5-4"
-          class="hover-item"
-          @click="navigateTo('/Ad/Ad_verify')"
-        >
-          <el-icon><PopcornIcon /></el-icon>
-          <NuxtLink to="/Ad/Ad_verify" class="menu-link"
-            >廣告審查</NuxtLink
           >
         </el-menu-item>
       </el-sub-menu>
