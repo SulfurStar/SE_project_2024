@@ -36,11 +36,13 @@ import { ref, onMounted } from 'vue';
 const loading = ref(true);
 const error = ref(null);
 const user = useState('user');
+const userId = ref("");
 const userRole = ref("");
 watch(
   () => user.value,
   (newUser) => {
     if (newUser) {
+      userId.value = newUser.id;
       userRole.value = newUser.role;
     }
   },
