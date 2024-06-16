@@ -12,16 +12,13 @@
     <el-menu class="el-menu-vertical-demo h-full" :collapse="isCollapse">
       <!-- 菜單項目 -->
 
-      <el-sub-menu
-        index="1"
-        class="hover-item"
-      >
+      <el-sub-menu index="1" class="hover-item">
         <template #title>
           <el-icon><MapLocation /></el-icon>
           <NuxtLink to="/advertisement" class="menu-link">廣告總覽</NuxtLink>
         </template>
         <!-- 以下為子菜單 -->
-        <el-menu-item index="1-1" @click="navigateTo('/Ad')"
+        <el-menu-item index="1-1" @click="navigateTo('/Ad/overview/1')"
           >廣告總覽</el-menu-item
         >
 
