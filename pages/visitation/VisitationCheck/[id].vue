@@ -11,23 +11,28 @@
             <strong>學生反饋:</strong> {{ record.info_student }} <br />
             <strong>創建時間:</strong> {{ record.date_create }} <br />
             <strong>更新時間:</strong> {{ record.date_update }} <br />
+            <el-button type="danger" @click="deleteRecord(record.id)">刪除</el-button>
           </li>
         </ul>
+        <el-button type="primary" @click="goBack">返回</el-button>
       </div>
     </div>
   </template>
   
   <script setup>
   import { ref, onMounted } from 'vue';
-  import { useRoute } from 'vue-router';
+  import { useRouter, useRoute } from 'vue-router';
+  import { ElMessage } from 'element-plus';
+  import 'element-plus/theme-chalk/el-message.css';
   
   const records = ref([]);
   const loading = ref(true);
+  const router = useRouter();
   const route = useRoute();
   
   const fetchRecords = async () => {
     try {
-      const response = await fetch(`/api/getVisitationRecords?teacherId=${route.params.id}`);
+      const response = await fetch(`/api/visitation/getVisitationRecords?teacherId=${route.params.id}`);
       const data = await response.json();
       records.value = data;
     } catch (error) {
@@ -35,6 +40,35 @@
     } finally {
       loading.value = false;
     }
+  };
+  
+  const deleteRecord = async (recordId) => {
+    try {
+      const response = await fetch(`/api/visitation/deleteVisitationRecord/${recordId}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to delete record');
+      }
+  
+      records.value = records.value.filter(record => record.id !== recordId);
+  
+      ElMessage({
+        message: '刪除成功',
+        type: 'success',
+      });
+    } catch (error) {
+      console.error('Error deleting record:', error);
+      ElMessage({
+        message: '刪除失敗',
+        type: 'error',
+      });
+    }
+  };
+  
+  const goBack = () => {
+    router.push('/visitation/VisitCheckAdmin');
   };
   
   onMounted(fetchRecords);
@@ -66,6 +100,10 @@
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 4px;
+  }
+  
+  .el-button {
+    margin-left: 1rem;
   }
   </style>
   

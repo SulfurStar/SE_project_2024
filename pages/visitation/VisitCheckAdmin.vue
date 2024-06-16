@@ -23,7 +23,7 @@
   
   const fetchTeachers = async () => {
     try {
-      const response = await fetch('/api/getTeachers');
+      const response = await fetch('/api/visitation/getTeachers');
       const data = await response.json();
       teachers.value = data;
     } catch (error) {
@@ -34,7 +34,7 @@
   };
   
   const viewVisitationRecords = (teacherId) => {
-    router.push(`/VisitationCheck/${teacherId}`);
+    router.push(`/visitation/VisitationCheck/${teacherId}`);
   };
   
   onMounted(fetchTeachers);
