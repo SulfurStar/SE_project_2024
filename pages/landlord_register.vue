@@ -1,7 +1,7 @@
 <template>
-  <div class="register-container">
-    <h1>Landlord Register</h1>
-    <form @submit.prevent="register">
+  <div class="register-container mx-auto p-6 bg-white shadow-md rounded-lg">
+    <h1 class="text-2xl font-bold text-center mb-6">Landlord Register</h1>
+    <form class="space-y-4" @submit.prevent="register">
       <div class="form-group">
         <input
           id="email"
@@ -9,7 +9,7 @@
           type="email"
           required
           placeholder="Email"
-          class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md"
         />
       </div>
       <div class="form-group">
@@ -19,7 +19,7 @@
           type="text"
           required
           placeholder="Name"
-          class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md"
         />
       </div>
       <div class="form-group">
@@ -29,17 +29,22 @@
           type="tel"
           required
           placeholder="Phone"
-          class="w-full px-3 py-2 mb-3 border border-gray-300 rounded-md"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md"
           :pattern="`\\d*`"
         />
       </div>
-      <button type="submit">註冊</button>
+      <button
+        type="submit"
+        class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300"
+      >
+        註冊
+      </button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import "element-plus/theme-chalk/el-message.css";
@@ -118,11 +123,6 @@ const register = async () => {
 <style scoped>
 .register-container {
   max-width: 400px;
-  margin: 0 auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
