@@ -295,7 +295,7 @@ const resetForm = () => {
 const generateFormString = (data) => {
   const safety = data.safety
   return `
-    校外住宿資料：
+    
     房東住址: ${data.address}
     房東電話: ${data.phone}
     住宿型態: ${data.accommodationType}
@@ -303,7 +303,7 @@ const generateFormString = (data) => {
     押金: ${data.deposit}
     是否簽訂租賃契約: ${data.hasContract}
     
-    住宿安全自主管理檢視資料：
+    
     木造隔間或鐵皮加蓋: ${safety.woodenPartition}
     有火警警報器及滅火器: ${safety.fireAlarmExtinguisher}
     逃生通道暢通且標示清楚: ${safety.emergencyExit}

@@ -246,6 +246,7 @@ const user = useState("user")
 const loading = ref(true)
 const error = ref<string | null>(null)
 const router = useRouter()
+const route = useRoute();
 
 const parseInfoString = (infoString: string) => {
   const data = {
@@ -288,7 +289,7 @@ const parseInfoString = (infoString: string) => {
 
 const fetchVisitRecord = async () => {
   try {
-    const response = await fetch('/api/visitation/get-visit-record', {
+    const response = await fetch('/api/visitation/get-visit-record//${route.params.id}', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
