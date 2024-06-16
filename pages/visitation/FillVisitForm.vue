@@ -1,6 +1,6 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">填寫訪視問卷</h1>
+    <h1 class="page-title">填寫地址</h1>
     <!-- {{ User.id }} -->
     <!-- <div>當前使用者ID: {{ userId }}</div> -->
     <div class="input-container">
@@ -8,8 +8,8 @@
       <!-- <div v-if="address" class="address-string">{{ address }}</div> -->
     </div>
     <div class="button-group">
-      <button class="confirm-button" @click="submitForm">確認</button>
-      <button class="delete-button" @click="cancel">取消</button>
+      <el-button type="primary" @click="submitForm">確認</el-button>
+      <el-button type="" @click="cancel">取消</el-button>
     </div>
   </div>
 </template>
