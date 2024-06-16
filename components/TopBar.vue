@@ -83,7 +83,7 @@ const handleConfirm = () => {
         <template v-else>
           <NuxtLink to="/login" class="login-link">
             <el-button size="large" type="primary" class="login-btn">
-              Login
+              登入
             </el-button>
           </NuxtLink>
         </template>
