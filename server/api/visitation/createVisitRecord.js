@@ -4,9 +4,9 @@ import { defineEventHandler, readBody } from 'h3';
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
-  const { teacherId, studentId, date_create } = await readBody(event);
+  const { studentId, teacherId } = await readBody(event);
 
-  if (!teacherId || !studentId || !date_create) {
+  if (!studentId || !teacherId) {
     return {
       success: false,
       message: '缺少必要的字段',
@@ -14,24 +14,27 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    const date_create = new Date();
+    const date_update = date_create;
+
     const newRecord = await prisma.visit_record.create({
       data: {
-        teacherId,
-        studentId,
+        studentId: parseInt(studentId, 10),
+        teacherId: parseInt(teacherId, 10),
         date_create,
-        date_update: date_create,
+        date_update,
       },
     });
 
     return {
       success: true,
-      data: newRecord,
+      recordId: newRecord.id,
     };
   } catch (error) {
     console.error('Error creating visit record:', error);
     return {
       success: false,
-      message: '创建访视记录时出错',
+      message: '創建訪視記錄時出錯',
     };
   }
 });
