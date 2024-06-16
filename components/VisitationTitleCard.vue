@@ -5,8 +5,10 @@
             {{ student.name }}
           </div>
           <div v-if="visit" :style="{ color: 'green' }">
-            <el-icon :style="{ color: 'green' }"><CircleCheckFilled /></el-icon>
-            <strong>已填寫</strong>
+            <NuxtLink :to="'/visitation/confirmTime/' + visit.id">
+              <el-icon :style="{ color: 'green' }"><CircleCheckFilled /></el-icon>
+              <strong>已填寫</strong>
+            </NuxtLink>
           </div>
           <div v-else :style="{ color: 'red' }">
             <el-icon :style="{ color: 'red' }"><CircleCloseFilled /></el-icon>
@@ -50,9 +52,7 @@ methods: {
         body: JSON.stringify({ studentId: this.student.id }),
       });
       this.temp = await response.json();
-      if (this.temp.success === false) {
-        console.log('Error fetching student info:', this.temp);
-      }else{
+      if (this.temp.success === true) {
         this.visit = this.temp.body;
       }
     } catch (error) {

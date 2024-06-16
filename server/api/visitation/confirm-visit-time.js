@@ -7,17 +7,17 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
   const visitData = await readBody(event);
 
-  if (!visitData.studentId) {
-    throw new Error('Student ID is required');
+  if (!visitData.visitTableId) {
+    throw new Error('visit Table Id is required');
   }
-  if (!visitData.visit_time) {
+  if (!visitData.visitTime) {
     throw new Error('Visit time is required');
   }
 
   try {
     const updatedVisit = await prisma.visit_table.update({
-      where: { teacherId: visitData.teacherId },
-      data: { visit_time: visitData.visit_time },
+      where: { id: parseInt(visitData.visitTableId) },
+      data: { visit_date: visitData.visitTime },
     });
 
     return {
