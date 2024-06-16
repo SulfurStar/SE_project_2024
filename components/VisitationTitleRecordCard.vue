@@ -1,0 +1,76 @@
+<template>
+  <div v-if="student" class="top">
+      <div>
+        {{ student.studentID }} 
+        {{ student.name }}
+      </div>
+      <div v-if="visit" :style="{ color: 'green' }">
+        <NuxtLink :to="'/visitation/UpdateVisitRecordTeacher/' + visit.id">
+          <el-icon :style="{ color: 'green' }"><CircleCheckFilled /></el-icon>
+          <strong>已填寫</strong>
+        </NuxtLink>
+      </div>
+      <div v-else :style="{ color: 'red' }">
+        <NuxtLink :to="'/visitation/CreateRecord/' + student.id">
+          <el-icon :style="{ color: 'red' }"><CircleCloseFilled /></el-icon>
+          <strong>未填寫</strong>
+        </NuxtLink>
+      </div>
+  </div>
+
+</template>
+
+<script>
+export default {
+name: 'VisitsTitleCard',
+props: {
+student: {
+type: Object,
+required: true
+}
+},
+data() {
+return {
+visit: null,
+temp: null,
+};
+},
+mounted() {
+if (this.student) {
+this.fetchStudentInfo();
+}
+},
+methods: {
+async fetchStudentInfo() {
+if (!this.student.id) {
+  return;
+}
+try {
+  const response = await fetch(`/api/visitation/get-student-info-by-id-record`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ studentId: this.student.id }),
+  });
+  this.temp = await response.json();
+  if (this.temp.success === true) {
+    this.visit = this.temp.body;
+  }
+} catch (error) {
+  console.error('Error fetching student author:', error);
+}
+}
+},
+};
+</script>
+
+<style>
+.top {
+width: 100%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+
+</style>
