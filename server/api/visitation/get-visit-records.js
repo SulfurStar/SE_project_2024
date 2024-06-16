@@ -1,34 +1,36 @@
 import { PrismaClient } from '@prisma/client';
-import { getQuery, readBody } from 'h3';
+import { readBody } from 'h3';
 
 const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const { teacherId } = await readBody(event);
 
-  if (!teacherId) {
-    return {
-      success: false,
-      message: '缺少teacherId',
-    };
-  }
-
   try {
     const records = await prisma.visit_record.findMany({
       where: {
         teacherId: parseInt(teacherId, 10)
+      },
+      include: {
+        student: true // 假设 visit_record 表有 studentId 与 User 表关联
       }
     });
 
+    const response = records.map(record => ({
+      ...record,
+      studentName: record.student.name // 获取学生的名字
+    }));
+
     return {
       success: true,
-      data: records
+      data: response
     };
   } catch (error) {
     console.error('Error fetching visitation records:', error);
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'Error fetching visitation records'
-    });
+    return {
+      success: false,
+      message: 'Error fetching visitation records'
+    };
   }
 });
+
