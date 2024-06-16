@@ -27,7 +27,7 @@
         <el-menu-item
           v-if="user && user.role === 'ADMIN'"
           index="1-2"
-          @click="navigteTo('/Ad')"
+          @click="navigateTo('/Bd/Bd_check')"
           >佈告欄審核
         </el-menu-item>
 
@@ -43,7 +43,7 @@
         <el-menu-item
           v-if="user && user.role === 'LANDLORD'"
           index="1-4"
-          @click="navigateTo('/Ad')"
+          @click="navigateTo('/AD/Ad_new')"
           >新增廣告
         </el-menu-item>
 

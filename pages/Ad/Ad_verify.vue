@@ -4,10 +4,15 @@
     <h1>Verify Adverts</h1>
     <div v-if="loading">Loading adverts...</div>
     <div v-else>
-      <ul>
+      <ul v-if="adverts.length === 0">
+        <li>No adverts to verify</li>
+      </ul>
+      <ul v-else>
         <li v-for="advert in adverts" :key="advert.id">
           <strong>{{ advert.title }}</strong> - {{ advert.address }}
-          <el-button type="primary" @click="checkAdvert(advert.id)">Check</el-button>
+          <el-button type="primary" @click="checkAdvert(advert.id)"
+            >Check</el-button
+          >
         </li>
       </ul>
     </div>
@@ -15,8 +20,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const adverts = ref([]);
 const loading = ref(true);
@@ -24,11 +29,11 @@ const router = useRouter();
 
 const fetchAdverts = async () => {
   try {
-    const response = await fetch('/api/ad/getUnknownAdverts');
+    const response = await fetch("/api/ad/getUnknownAdverts");
     const data = await response.json();
     adverts.value = data;
   } catch (error) {
-    console.error('Error fetching adverts:', error);
+    console.error("Error fetching adverts:", error);
   } finally {
     loading.value = false;
   }
@@ -37,7 +42,9 @@ const fetchAdverts = async () => {
 const checkAdvert = (advertId) => {
   router.push(`/Ad/Ad_check/${advertId}`);
 };
-
+definePageMeta({
+  middleware: ["auth", "admin"],
+});
 onMounted(fetchAdverts);
 </script>
 
