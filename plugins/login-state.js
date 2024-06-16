@@ -5,7 +5,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const isLoading = useState('isLoading', () => true);
 
   // 過期時間30分鐘
-  const EXPIRATION_TIME = 30 * 60 * 1000;
+  const EXPIRATION_TIME = 60 * 60 * 1000;
 
   // 只在 client 端執行
   if (process.client) {
