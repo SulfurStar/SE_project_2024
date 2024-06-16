@@ -4,6 +4,7 @@
     <div class="input-container">
       <el-date-picker
         v-model="value1"
+        :picker-options="{ disabledDate }"
         type="datetime"
         placeholder="請選擇日期"
         style="width: 100%;height: 50px;"
@@ -25,6 +26,7 @@ const router = useRouter();
 const visitTableId = route.params.id;
 const user = useState('user');
 const userId = ref("");
+const value1 = ref('');
 watch(
   () => user.value,
   (newUser) => {
@@ -35,7 +37,9 @@ watch(
   { immediate: true }
 );
 
-const value1 = ref('');
+const disabledDate = (time) => {
+  return time.getTime() <= Date.now();
+};
 
 const confirmTime = async () => {
   const response = await fetch(`/api/visitation/confirm-visit-time`, {
