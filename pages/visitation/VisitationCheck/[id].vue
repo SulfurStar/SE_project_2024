@@ -159,7 +159,7 @@ const deleteRecord = async (recordId) => {
 };
 
 const goBack = () => {
-  router.push("/visitation/VisitCheckAdmin");
+  router.push("/visitation");
 };
 
 const parseInfoString = (infoString) => {

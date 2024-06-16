@@ -7,7 +7,7 @@
         <h2>房東不可查看</h2>
       </div>
       <div v-else>
-        <div class="button-block">
+        <div v-if="user.role !== 'ADMIN'" class="button-block" >
           <h2 class="block-title">訪視問卷</h2>
           <div class="button-container">
             <nuxt-link v-for="button in mainButtons" :key="button.id" :to="button.url" class="button-link">
@@ -79,8 +79,8 @@ onMounted(() => {
 
     // 根据角色筛选按钮
     if (userRole.value === 'ADMIN') {
-      mainButtons.value = buttons.value.filter(button => button.id === 1 || button.id === 2);
-      otherButtons.value = buttons.value.filter(button => button.id !== 1 && button.id !== 2  && button.id !== 5  && button.id !== 7 );
+      mainButtons.value = buttons.value.filter(button => 0);
+      otherButtons.value = buttons.value.filter(button => button.id === 8 );
     }
     else if(userRole.value === 'STUDENT'){
       mainButtons.value = buttons.value.filter(button => button.id === 1 );
