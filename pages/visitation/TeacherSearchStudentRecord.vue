@@ -1,69 +1,33 @@
 <template>
   <div class="page-container">
-    <h1 class="page-title">訪視紀錄</h1>
+    <h1 class="page-title">沒有訪視記錄的學生</h1>
     <div v-if="loading">加載中...</div>
     <div v-else-if="error">{{ error }}</div>
     <div v-else>
-      <p>當前使用者ID: {{ userId }}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>學生ID</th>
-            <th>教師ID</th>
-            <th>學生信息</th>
-            <th>教師信息</th>
-            <th>創建日期</th>
-            <th>更新日期</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="record in visitRecords" :key="record.id">
-            <td>{{ record.id }}</td>
-            <td>{{ record.studentId }}</td>
-            <td>{{ record.teacherId }}</td>
-            <td>{{ record.info_student }}</td>
-            <td>{{ record.info_teacher }}</td>
-            <td>{{ record.date_create }}</td>
-            <td>{{ record.date_update }}</td>
-          </tr>
-        </tbody>
-      </table>
+      <ul>
+        <li v-for="student in students" :key="student.id">
+          <router-link :to="{ name: 'CreateRecord', params: { id: student.id } }">{{ student.name }}</router-link>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue';
 
-const user = useState("user")
-const userId = ref(user.value?.id || '')
-const visitRecords = ref([])
-const loading = ref(true)
-const error = ref<string | null>(null)
+const students = ref([]);
+const loading = ref(true);
+const error = ref<string | null>(null);
 
-const fetchVisitRecords = async () => {
-  console.log('Fetching records for teacherId:', userId.value)  // 調試輸出
-  if (!userId.value) {
-    error.value = '未找到用戶ID';
-    loading.value = false;
-    return;
-  }
-
+const fetchStudents = async () => {
   try {
-    const response = await fetch('/api/visitation/get-visit-records', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ teacherId: userId.value }),
-    });
+    const response = await fetch('/api/visitation/getStudentsWithoutVisitRecords');
     const result = await response.json();
     if (result.success) {
-      visitRecords.value = result.data;
+      students.value = result.data;
     } else {
-      error.value = '無法獲取訪視記錄';
+      error.value = result.message;
     }
   } catch (err) {
     error.value = '請求失敗';
@@ -72,7 +36,7 @@ const fetchVisitRecords = async () => {
   }
 };
 
-onMounted(fetchVisitRecords);
+onMounted(fetchStudents);
 </script>
 
 <style scoped>
@@ -81,7 +45,7 @@ onMounted(fetchVisitRecords);
   background-color: #f8f9fa;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
+  max-width: 800px;
   margin: 40px auto;
 }
 
@@ -91,17 +55,22 @@ onMounted(fetchVisitRecords);
   margin-bottom: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-th, td {
+li {
   padding: 10px;
-  border: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
 }
 
-th {
-  background-color: #f4f4f4;
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
 </style>

@@ -42,6 +42,7 @@ const disabledDate = (time) => {
 };
 
 const confirmTime = async () => {
+  console.log("weae",value1.value);
   const response = await fetch(`/api/visitation/confirm-visit-time`, {
     method: "POST",
     headers: {

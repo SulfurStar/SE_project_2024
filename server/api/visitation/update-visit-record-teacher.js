@@ -4,9 +4,9 @@ import { defineEventHandler, readBody } from 'h3'
 const prisma = new PrismaClient()
 
 export default defineEventHandler(async (event) => {
-  const { userId, info_student, date_update } = await readBody(event)
+  const { Id, info_teacher, date_update } = await readBody(event)
 
-  if (!userId || !info_student || !date_update) {
+  if (!Id || !info_teacher || !date_update) {
     return {
       success: false,
       message: '缺少必要的字段',
@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const result = await prisma.visit_record.updateMany({
-      where: { TeacherId: parseInt(userId, 10) },
+      where: { id: parseInt(Id, 10) },  // 确保字段名为 teacherId
       data: { info_teacher, date_update },
     })
 
@@ -37,4 +37,5 @@ export default defineEventHandler(async (event) => {
     }
   }
 })
+
 
