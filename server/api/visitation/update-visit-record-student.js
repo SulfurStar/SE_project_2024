@@ -1,4 +1,3 @@
-// /api/update-visit-record.post.js
 import { PrismaClient } from '@prisma/client'
 import { defineEventHandler, readBody } from 'h3'
 
@@ -15,8 +14,8 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const result = await prisma.Visit_record.updateMany({
-      where: { studentId:parseInt(userId, 10) },
+    const result = await prisma.visit_record.updateMany({
+      where: { studentId: parseInt(userId, 10) },
       data: { info_student, date_update },
     })
 
@@ -38,3 +37,4 @@ export default defineEventHandler(async (event) => {
     }
   }
 })
+

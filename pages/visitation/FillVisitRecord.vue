@@ -1,6 +1,7 @@
 <template>
   <div class="page-container">
     <h1 class="page-title">校外實習訪視紀錄</h1>
+    <div v-if="userRole === 'STUDENT'">
     <form @submit.prevent="submitForm">
       <!-- 校外住宿資料 -->
       <div class="form-section">
@@ -13,34 +14,38 @@
           <label for="phone">房東電話:</label>
           <input id="phone" v-model="formData.phone" type="text" />
         </div>
-        <div class="form-group">
-          <label>住宿型態:</label>
-          <div>
-            <label>
-              <input v-model="formData.accommodationType" type="radio" value="獨棟透天" /> 獨棟透天
-            </label>
-            <label>
-              <input v-model="formData.accommodationType" type="radio" value="公寓(五樓以下)" /> 公寓(五樓以下)
-            </label>
-            <label>
-              <input v-model="formData.accommodationType" type="radio" value="大樓(六樓以上)" /> 大樓(六樓以上)
-            </label>
-            <label>
-              <input v-model="formData.accommodationType" type="radio" value="大型學舍(為學生提供的宿舍)" /> 大型學舍(為學生提供的宿舍)
-            </label>
+        <div class="form-group houseType">
+          <label class="groupEnd">住宿型態:</label>
+          <div class="content">
+            <div>
+              <label>
+                <input v-model="formData.accommodationType" type="radio" value="獨棟透天" /> <div>獨棟透天</div>
+              </label>
+              <label>
+                <input v-model="formData.accommodationType" type="radio" value="公寓(五樓以下)" /> 公寓(五樓以下)
+              </label>
+            </div>
+            <div>
+              <label>
+                <input v-model="formData.accommodationType" type="radio" value="大樓(六樓以上)" /> 大樓(六樓以上)
+              </label>
+              <label>
+                <input v-model="formData.accommodationType" type="radio" value="大型學舍(為學生提供的宿舍)" /> 大型學舍(為學生提供的宿舍)
+              </label>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label for="monthlyRent">每月租金:</label>
+          <label for="monthlyRent" class="groupEnd">每月租金:</label>
           <input id="monthlyRent" v-model="formData.monthlyRent" type="text" />
         </div>
         <div class="form-group">
           <label for="deposit">押金:</label>
           <input id="deposit" v-model="formData.deposit" type="text" />
         </div>
-        <div class="form-group">
-          <label>是否簽訂租賃契約:</label>
-          <div>
+        <div class="form-group houseType">
+          <label class="groupEnd">是否簽訂租賃契約:</label>
+          <div class="content">
             <label>
               <input v-model="formData.hasContract" type="radio" value="是" /> 是
             </label>
@@ -50,13 +55,14 @@
           </div>
         </div>
       </div>
-
+      <br>
+      <br>
       <!-- 住宿安全自主管理檢視資料 -->
       <div class="form-section">
         <h2>住宿安全自主管理檢視資料（學生填寫）</h2>
-        <div class="form-group">
+        <div class="form-group houseType">
           <label>木造隔間或鐵皮加蓋:</label>
-          <div>
+          <div class="content">
             <label>
               <input v-model="formData.safety.woodenPartition" type="radio" value="是" /> 是
             </label>
@@ -65,9 +71,9 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label>有火警警報器及滅火器:</label>
-          <div>
+        <div class="form-group houseType">
+          <label class="groupEnd">有火警警報器及滅火器:</label>
+          <div class="content">
             <label>
               <input v-model="formData.safety.fireAlarmExtinguisher" type="radio" value="是" /> 是
             </label>
@@ -76,9 +82,9 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label>逃生通道暢通且標示清楚:</label>
-          <div>
+        <div class="form-group houseType">
+          <label class="groupEnd">逃生通道暢通且標示清楚:</label>
+          <div class="content">
             <label>
               <input v-model="formData.safety.emergencyExit" type="radio" value="是" /> 是
             </label>
@@ -87,9 +93,9 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label>門窗及鎖具良好:</label>
-          <div>
+        <div class="form-group houseType">
+          <label class="groupEnd">門窗及鎖具良好:</label>
+          <div class="content">
             <label>
               <input v-model="formData.safety.windowsDoorsLocks" type="radio" value="是" /> 是
             </label>
@@ -98,9 +104,9 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label>有安裝照明設備（停電備用）:</label>
-          <div>
+        <div class="form-group houseType">
+          <label class="groupEnd">有安裝照明設備（停電備用）:</label>
+          <div class="content">
             <label>
               <input v-model="formData.safety.lightingEquipment" type="radio" value="是" /> 是
             </label>
@@ -109,9 +115,9 @@
             </label>
           </div>
         </div>
-        <div class="form-group">
-          <label>租賃物為合法安全及符合消防規範:</label>
-          <div>
+        <div class="form-group  houseType">
+          <label class="groupEnd">租賃物為合法安全及符合消防規範:</label>
+          <div class="content">
             <label>
               <input v-model="formData.safety.legalSafetyCompliance" type="radio" value="是" /> 是
             </label>
@@ -120,14 +126,92 @@
             </label>
           </div>
         </div>
+        <div class="form-group">
+          <label>熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.hotWaterSupply" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.hotWaterSupply" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.multiElectricalAppliances" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.multiElectricalAppliances" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>有流水號且功能正常:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.runningWaterFunctionality" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.runningWaterFunctionality" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.gasSafety" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.gasSafety" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>分間6個以上房間數10個以上床位:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.roomCount" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.roomCount" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>有安裝照明設備（停電備用）:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.emergencyLighting" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.emergencyLighting" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>使用低故障率或變化度低的電子鎖:</label>
+          <div>
+            <label>
+              <input v-model="formData.safety.electronicLock" type="radio" value="是" /> 是
+            </label>
+            <label>
+              <input v-model="formData.safety.electronicLock" type="radio" value="否" /> 否
+            </label>
+          </div>
+        </div>
       </div>
-
+      <div class="groupEnd"> </div>
       <!-- 按鈕組 -->
       <div class="button-group">
         <button type="submit" class="confirm-button">確認</button>
-        <button type="button" class="delete-button" @click="resetForm">重置</button>
+        <button type="button" class="delete-button" @click="resetForm">取消</button>
       </div>
     </form>
+    </div>
   </div>
 </template>
 
@@ -163,7 +247,7 @@ const formData = ref({
     emergencyLighting: '',
     electronicLock: ''
   }
-})
+});
 
 const loading = ref(true)
 const error = ref<string | null>(null)
@@ -178,7 +262,7 @@ onMounted(() => {
 const submitForm = async () => {
   const formString = generateFormString(formData.value)
   try {
-    const response = await fetch('/api/visitation/update-visit-record', {
+    const response = await fetch('/api/visitation/update-visit-record-student', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -186,27 +270,27 @@ const submitForm = async () => {
       body: JSON.stringify({
         userId: user.value.id,
         info_student: formString,
-        date_update: new Date().toISOString()
+        date_update: currentDate
       }),
-    })
-    const result = await response.json()
+    });
+    const result = await response.json();
     if (result.success) {
-      alert('更新成功')
-      router.push('/visitation')
+      alert('更新成功');
+      router.push('/visitation');
     } else {
-      alert('更新失敗')
+      alert('更新失敗');
     }
   } catch (error) {
-    alert('更新時出錯: ' + error.message)
+    alert('更新時出錯: ' + error.message);
   }
-}
+};
 
 const resetForm = () => {
   formData.value = { ...formData.value, ...props.initialData }
 }
 
 const generateFormString = (data) => {
-  const safety = data.safety
+  const safety = data.safety;
   return `
     房東住址: ${data.address}
     房東電話: ${data.phone}
@@ -228,8 +312,8 @@ const generateFormString = (data) => {
     分間6個以上房間數10個以上床位: ${safety.roomCount}
     有安裝照明設備（停電備用）: ${safety.emergencyLighting}
     使用低故障率或變化度低的電子鎖: ${safety.electronicLock}
-  `
-}
+  `;
+};
 </script>
 
 <style scoped>
@@ -262,12 +346,18 @@ const generateFormString = (data) => {
   margin-bottom: 10px;
   border-bottom: 2px solid #333;
   padding-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group {
   margin-bottom: 10px;
   display: flex;
   flex-direction: column;
+}
+
+.groupEnd {
+  padding-top: 5px;
+  border-top: 2px solid #333;
 }
 
 .form-group label {
@@ -314,5 +404,17 @@ const generateFormString = (data) => {
 
 .delete-button:hover {
   background-color: #c82333;
+}
+
+.houseType{
+  width: 100%;
+}
+
+.houseType .content{
+  text-align: center;
+  display: flex;
+  align-content: space-between;
+  justify-content: space-around;
+  gap: 20px;
 }
 </style>
