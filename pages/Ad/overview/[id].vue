@@ -159,18 +159,18 @@
     </div>
 
     <!-- 原房屋列表
-      <div class="house-list">
-        <h2>房屋列表</h2>
-        <ul>
-          <li v-for="(house, index) in houses" :key="index" class="house-item">
-            <h3>{{ house.type }}</h3>
-            <p>地點：{{ house.location }}</p>
-            <p>價格：{{ house.price }}</p>
-            <p>面積：</p>
-          </li>
-        </ul>
-      </div>
-      -->
+    <div class="house-list">
+      <h2>房屋列表</h2>
+      <ul>
+        <li v-for="(house, index) in houses" :key="index" class="house-item">
+          <h3>{{ house.type }}</h3>
+          <p>地點：{{ house.location }}</p>
+          <p>價格：{{ house.price }}</p>
+          <p>面積：</p>
+        </li>
+      </ul>
+    </div>
+    -->
   </div>
 </template>
 
@@ -217,6 +217,7 @@ onMounted(async () => {
     const responseData = await responseAd.json();
     if (responseData.statusCode === 200) {
       Ads.value = responseData.body;
+      console.log("Ads:", Ads.value[0].title);
     } else {
       console.error("Failed to fetch Ads:", responseData);
     }
@@ -253,10 +254,10 @@ export default {
       gender: "any",
       facilities: [],
       /* houses: [
-          { type: '公寓', location: '', price: '$/月' },
-          { type: '透天', location: '', price: '$/月' },
-          { type: '別墅', location: '', price: '$/月' }
-        ] */
+        { type: '公寓', location: '', price: '$/月' },
+        { type: '透天', location: '', price: '$/月' },
+        { type: '別墅', location: '', price: '$/月' }
+      ] */
     };
   },
   methods: {
