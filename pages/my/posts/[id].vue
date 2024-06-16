@@ -15,6 +15,7 @@
       <div class="pagination">
           <div v-if="numberOfPosts">
               <el-pagination 
+                v-if="posts > 1"
                   background 
                   layout="prev, pager, next" 
                   :total="numberOfPosts * 10" 
