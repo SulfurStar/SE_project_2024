@@ -58,7 +58,7 @@ const buttons = ref([
   { id: 4, name: '學生修改訪視紀錄', url: `/visitation/UpdateVisitRecordStudent/${user.value ? user.value.id : ''}` }, // 动态路由
   { id: 5, name: '學生查詢訪視紀錄', url: '/visitation/VisitCheckStudent' },
   { id: 9, name: '老師填寫訪視紀錄', url: '/visitation/TeacherSearchStudentRecord' },
-  { id: 10, name: '老師修改訪視紀錄', url: `/visitation/TeacherSearchStudentRecordModify` },
+  { id: 10, name: '老師修改訪視紀錄', url: `/visitation/overviewRecord` },
   { id: 6, name: '刪除訪視紀錄', url: '/visitation/DeleteVisitRecord' },
   { id: 7, name: '老師查詢訪視紀錄', url: `/visitation/VisitationCheck/${user.value ? user.value.id : ''}` },
   { id: 8, name: '管理員查詢訪視紀錄', url: '/visitation/VisitCheckAdmin' },
