@@ -1,14 +1,16 @@
 <template>
   <div class="delete-account-container">
-    <h1>學生清單</h1>
-    <div v-if="students">
-      <ul>
-        <li v-for="student in students" :key=student.id>
-          <VisitationTitleCard :student="student" />
-
-        </li>
-      </ul>
-    </div>
+    <h1>選擇學生填寫訪視時間</h1>
+    <div v-if="loading">加載學生中...</div>
+    <div v-else>
+      <div v-if="students">
+        <ul>
+          <li v-for="student in students" :key=student.id>
+            <VisitationTitleCard :student="student" />
+          </li>
+        </ul>
+      </div>
+    </div> 
   </div>
 </template>
 
@@ -21,6 +23,7 @@ const route = useRoute();
 const router = useRouter();
 const students = ref(null);
 // const numberOfstudents = ref(null);
+const loading = ref(true);
 const currentPage = ref(1);
 
 const user = useState('user');
@@ -63,13 +66,13 @@ onMounted(async () => {
     const responseData = await responseStudents.json();
     if (responseData.statusCode === 200) {
       students.value = responseData.body;
-      console.log("gggg", students.value);
     } else {
       console.error("Failed to fetch posts:", responseData);
     }
   } else {
     console.error("Failed to fetch posts: HTTP status", responseStudents.status);
   }
+  loading.value = false;
 
   // const responseNumberOfstudents = await fetch("/api/visitation/get-number-of-visits-table", {
   //   method: "POST",
