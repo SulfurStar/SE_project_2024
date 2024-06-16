@@ -60,7 +60,7 @@
       <div class="form-section">
         <h2>住宿安全自主管理檢視資料（學生填寫）</h2>
         <div class="form-group houseType">
-          <label class="groupEnd">木造隔間或鐵皮加蓋:</label>
+          <label>木造隔間或鐵皮加蓋:</label>
           <div class="content">
             <label>
               <input v-model="formData.safety.woodenPartition" type="radio" value="是" /> 是
