@@ -3,22 +3,32 @@
     <h1>刪除帳號</h1>
     <div v-if="loading">Loading users...</div>
     <div v-else>
+      <el-checkbox v-model="isAllSelected" @change="toggleAll">
+        全選
+      </el-checkbox>
       <ul>
         <li v-for="user in users" :key="user.id">
-          <strong>Name:</strong> {{ user.name }} <br />
-          <strong>Email:</strong> {{ user.email }}
-          <el-button type="danger" @click="deleteUser(user.id)"
-            >Delete</el-button
-          >
+          <el-checkbox v-model="selectedUsers" :label="user.id">
+            <strong>Name:</strong> {{ user.name }} <br />
+            <strong>Email:</strong> {{ user.email }}
+          </el-checkbox>
         </li>
       </ul>
+      <el-button
+        type="danger"
+        :disabled="selectedUsers.length === 0"
+        @click="deleteSelectedUsers"
+      >
+        刪除所選
+      </el-button>
     </div>
   </div>
 </template>
-
 <script setup>
 const users = ref([]);
 const loading = ref(true);
+const selectedUsers = ref([]);
+const isAllSelected = ref(false);
 const router = useRouter();
 const user = useState("user");
 const params = ref({ adminId: "" });
@@ -32,7 +42,7 @@ watch(
   },
   { immediate: true }
 );
-console.log(params);
+
 const fetchUsers = async () => {
   try {
     const response = await fetch("/api/users", {
@@ -51,22 +61,46 @@ const fetchUsers = async () => {
   }
 };
 
-const deleteUser = async (userId) => {
-  if (confirm("Are you sure you want to delete this user?")) {
-    try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-      });
+const toggleAll = () => {
+  if (isAllSelected.value) {
+    selectedUsers.value = users.value.map((user) => user.id);
+  } else {
+    selectedUsers.value = [];
+  }
+};
 
-      if (!response.ok) {
-        throw new Error("Failed to delete user");
+watch(selectedUsers, (newSelected) => {
+  if (newSelected.length === users.value.length) {
+    isAllSelected.value = true;
+  } else {
+    isAllSelected.value = false;
+  }
+});
+
+const deleteSelectedUsers = async () => {
+  if (confirm("Are you sure you want to delete the selected users?")) {
+    try {
+      const promises = selectedUsers.value.map((userId) =>
+        fetch(`/api/users/${userId}`, {
+          method: "DELETE",
+        })
+      );
+
+      const results = await Promise.all(promises);
+      const success = results.every((response) => response.ok);
+
+      if (!success) {
+        throw new Error("Failed to delete some users");
       }
 
-      users.value = users.value.filter((user) => user.id !== userId);
-      alert("User deleted successfully");
+      users.value = users.value.filter(
+        (user) => !selectedUsers.value.includes(user.id)
+      );
+      alert("Selected users deleted successfully");
+      selectedUsers.value = [];
     } catch (error) {
-      console.error("Error deleting user:", error);
-      alert("Error deleting user");
+      console.error("Error deleting users:", error);
+      alert("Error deleting users");
     }
   }
 };
@@ -76,7 +110,6 @@ definePageMeta({
   middleware: ["auth", "admin"],
 });
 </script>
-
 <style scoped>
 .delete-account-container {
   max-width: 600px;
