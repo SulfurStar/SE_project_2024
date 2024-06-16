@@ -647,14 +647,23 @@ const submitForm = async () => {
       body: JSON.stringify(params),
     });
     const responseData = await response.json();
-    if (response.ok && responseData.statusCode === 200) {
+    if (response.ok) {
       console.log("成功創建新廣告:", responseData.body);
       success.value = true;
       showAlert.value = true;
+      ElMessage({
+        message: "成功創建新廣告",
+        type: "success",
+      });
+      router.push("/");
     } else {
       console.error("創建廣告失敗:", responseData.body || responseData);
       success.value = false;
       showAlert.value = true;
+      ElMessage({
+        message: "創建廣告失敗",
+        type: "error",
+      });
     }
   } catch (error) {
     console.error("請求失敗:", error);
