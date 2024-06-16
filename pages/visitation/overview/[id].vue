@@ -1,14 +1,16 @@
 <template>
   <div class="delete-account-container">
-    <h1>選擇學生填寫訪視時間</h1>
+    <h1 class="page-title">選擇學生填寫訪視時間</h1>
     <div v-if="loading">加載學生中...</div>
     <div v-else>
       <div v-if="students">
-        <ul>
-          <li v-for="student in students" :key=student.id>
-            <VisitationTitleCard :student="student" />
-          </li>
-        </ul>
+          <ul>
+            <el-scrollbar height="400px">
+              <li v-for="student in students" :key=student.id>
+                <VisitationTitleCard :student="student" />
+              </li>
+            </el-scrollbar>
+          </ul>
       </div>
     </div> 
   </div>
@@ -92,6 +94,12 @@ definePageMeta({
 </script>
 
 <style scoped>
+.page-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
 .delete-account-container {
   max-width: 600px;
   margin: 0 auto;

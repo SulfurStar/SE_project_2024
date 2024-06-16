@@ -28,14 +28,24 @@
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+// import { useRouter } from 'vue-router';
 
-const user = useState("user");
-const router = useRouter();
+// const router = useRouter();
 const loading = ref(true);
 const error = ref(null);
+const user = useState('user');
+const userRole = ref("");
+watch(
+  () => user.value,
+  (newUser) => {
+    if (newUser) {
+      userRole.value = newUser.role;
+    }
+  },
+  { immediate: true }
+);
 
 // 定义按钮列表
 const buttons = ref([
@@ -59,19 +69,19 @@ onMounted(() => {
     loading.value = false;
 
     // 根据角色筛选按钮
-    if (user.value.role === 'ADMIN') {
+    if (userRole.value === 'ADMIN') {
       mainButtons.value = buttons.value.filter(button => button.id === 1 || button.id === 2);
       otherButtons.value = buttons.value.filter(button => button.id !== 1 && button.id !== 2);
     }
-    else if(user.value.role === 'STUDENT'){
+    else if(userRole.value === 'STUDENT'){
       mainButtons.value = buttons.value.filter(button => button.id === 1 );
       otherButtons.value = buttons.value.filter(button => button.id === 3 ||button.id === 4||button.id === 5);
     }
-    else if(user.value.role === 'TEACHER'){
+    else if(userRole.value === 'TEACHER'){
       mainButtons.value = buttons.value.filter(button => button.id === 2 );
       otherButtons.value = buttons.value.filter(button => button.id === 3 ||button.id === 4||button.id === 5);
     }
-    else if (user.value.role === 'LANDLORD') {
+    else if (userRole.value === 'LANDLORD') {
       mainButtons.value = [];
       otherButtons.value = [];
     }
