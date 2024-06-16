@@ -14,12 +14,12 @@
         <div  class="feature-title">租屋廣告</div>
         </template>
             <div class="feature-description">找你的下一個家，從這裡開始。</div>
-          </el-card>
+          </el-card> 
         </el-col>
-        <el-col :span="8">
+        <el-col v-if="userRole !== 'LANDLORD'" :span="8">
           <el-card class="feature-card" @click="goToPage('/visitation')">
             <template #header>
-        <div  class="feature-title">訪視調查</div>
+        <div class="feature-title" >訪視調查</div>
         </template>
             <div class="feature-description">每一次交流都值得信賴。</div>
           </el-card>
@@ -39,9 +39,25 @@
 
 <script>
 export default {
+  setup() {
+    const user = useState('user');
+    const userRole = ref("");
+    watch(
+      () => user.value,
+      (newUser) => {
+        if (newUser) {
+          userRole.value = newUser.role;
+        }
+      },
+      { immediate: true }
+    );
+    console.log(userRole);
+    return {
+      userRole
+    };
+  },
   methods: {
     goToPage(path) {
-      // 這裡可以使用Nuxt.js的路由功能跳轉到指定的路徑
       this.$router.push(path);
     }
   }
