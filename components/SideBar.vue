@@ -24,12 +24,12 @@
 
         <!-- 以下@click 後的路徑可能須做更動 -->
         <!-- 佈告欄審核(總)Bd_verify 管理員限定頁面 -->
-        <el-menu-item
+        <!-- <el-menu-item
           v-if="user && user.role === 'ADMIN'"
           index="1-2"
           @click="navigateTo('/Bd/Bd_check')"
           >佈告欄審核
-        </el-menu-item>
+        </el-menu-item> -->
 
         <!-- 廣告審核(總)Ad_verify 管理員限定頁面 -->
         <el-menu-item
