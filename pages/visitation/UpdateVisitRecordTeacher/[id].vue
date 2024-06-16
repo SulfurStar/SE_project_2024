@@ -70,7 +70,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label>訪視情況:</label>
+          <label>主客相處:</label>
           <div class="form-options">
             <label>
               <input v-model="formData.environment.visitSituation" type="radio" value="和諧" /> 和諧
@@ -140,6 +140,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const props = defineProps({
   initialData: {
@@ -174,6 +175,10 @@ const formData = ref({
 
 const loading = ref(true)
 const error = ref<string | null>(null)
+const router = useRouter()
+const route = useRoute()
+
+const user = useState("user")
 
 onMounted(() => {
   if (props.initialData) {
@@ -191,7 +196,7 @@ const submitForm = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: user.value.id,
+        Id: route.params.id,
         info_teacher: formString,
         date_update: new Date().toISOString()
       }),
@@ -239,21 +244,21 @@ const generateFormString = (data) => {
   const result = data.result;
   const concernPoints = data.concernPoints;
   return `
-    打掃衛生: ${environment.cleaning}
+    押金要求: ${environment.cleaning}
     水電費表: ${environment.utilityBills}
-    房東提供: ${environment.landlordProvides}
-    生活條件: ${environment.livingConditions}
-    聯絡方式: ${environment.contactMethod}
-    訪視情況: ${environment.visitSituation}
+    居家環境: ${environment.landlordProvides}
+    生活設施: ${environment.livingConditions}
+    訪視現況: ${environment.contactMethod}
+    主客相處: ${environment.visitSituation}
     
     訪視結果: ${result.status}
     說明: ${result.explanation}
     其他記載或建議事項: ${result.otherNotes}
     
     交通安全: ${concernPoints.trafficSafety}
-    身體狀況: ${concernPoints.healthCondition}
-    生活習慣: ${concernPoints.livingHabits}
-    交往情況: ${concernPoints.socialInteraction}
+    拒絕菸害: ${concernPoints.healthCondition}
+    拒絕毒品: ${concernPoints.livingHabits}
+    登革熱防治: ${concernPoints.socialInteraction}
   `;
 };
 </script>

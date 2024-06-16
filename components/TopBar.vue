@@ -83,7 +83,7 @@ const handleConfirm = () => {
         <template v-else>
           <NuxtLink to="/login" class="login-link">
             <el-button size="large" type="primary" class="login-btn">
-              登入
+              Login
             </el-button>
           </NuxtLink>
         </template>
@@ -145,6 +145,17 @@ const handleConfirm = () => {
 
 .login-btn {
   font-size: 23px;
+}
+.login-btn:hover {
+  @apply bg-blue-400;
+}
+
+.login-btn:active {
+  @apply bg-blue-500;
+}
+
+.login-btn:focus {
+  @apply outline-none ring-2 ring-blue-300;
 }
 
 .logout-button {
