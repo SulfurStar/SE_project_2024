@@ -1,320 +1,261 @@
 <template>
   <div class="page-container">
-    <div v-if="loading">Loading...</div>
-    <div v-else-if="error">{{ error }}</div>
-    <div v-else>
-      <form @submit.prevent="submitForm">
-        <!-- 校外住宿資料 -->
-        <div class="form-section">
-          <h2>校外住宿資料（學生填寫）</h2>
-          <div class="form-group">
-            <label for="address">房東住址:</label>
-            <input id="address" v-model="formData['房東住址']" type="text" />
-          </div>
-          <div class="form-group">
-            <label for="phone">房東電話:</label>
-            <input id="phone" v-model="formData['房東電話']" type="text" />
-          </div>
-          <div class="form-group">
-            <label>住宿型態:</label>
-            <div>
-              <label>
-                <input v-model="formData['住宿型態']" type="radio" value="獨棟透天" /> 獨棟透天
-              </label>
-              <label>
-                <input v-model="formData['住宿型態']" type="radio" value="公寓(五樓以下)" /> 公寓(五樓以下)
-              </label>
-              <label>
-                <input v-model="formData['住宿型態']" type="radio" value="大樓(六樓以上)" /> 大樓(六樓以上)
-              </label>
-              <label>
-                <input v-model="formData['住宿型態']" type="radio" value="大型學舍(為學生提供的宿舍)" /> 大型學舍(為學生提供的宿舍)
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="monthlyRent">每月租金:</label>
-            <input id="monthlyRent" v-model="formData['每月租金']" type="text" />
-          </div>
-          <div class="form-group">
-            <label for="deposit">押金:</label>
-            <input id="deposit" v-model="formData['押金']" type="text" />
-          </div>
-          <div class="form-group">
-            <label>是否簽訂租賃契約:</label>
-            <div>
-              <label>
-                <input v-model="formData['是否簽訂租賃契約']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['是否簽訂租賃契約']" type="radio" value="否" /> 否
-              </label>
-            </div>
+    <h1 class="page-title">訪視紀錄</h1>
+    <form @submit.prevent="submitForm">
+      <!-- 環境及作息評估 -->
+      <div class="form-section">
+        <h2>環境及作息評估（導師填寫）</h2>
+        <div class="form-group">
+          <label>押金要求:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.cleaning" type="radio" value="合理" /> 合理
+            </label>
+            <label>
+              <input v-model="formData.environment.cleaning" type="radio" value="不合理" /> 不合理 (2個月以上之租金)
+            </label>
           </div>
         </div>
+        <div class="form-group">
+          <label>水電費表:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.utilityBills" type="radio" value="合理" /> 合理
+            </label>
+            <label>
+              <input v-model="formData.environment.utilityBills" type="radio" value="不合理" /> 不合理
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>居家環境:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.landlordProvides" type="radio" value="佳" /> 佳
+            </label>
+            <label>
+              <input v-model="formData.environment.landlordProvides" type="radio" value="適中" /> 適中
+            </label>
+            <label>
+              <input v-model="formData.environment.landlordProvides" type="radio" value="欠佳" /> 欠佳
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>生活設施:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.livingConditions" type="radio" value="佳" /> 佳
+            </label>
+            <label>
+              <input v-model="formData.environment.livingConditions" type="radio" value="適中" /> 適中
+            </label>
+            <label>
+              <input v-model="formData.environment.livingConditions" type="radio" value="欠佳" /> 欠佳
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>訪視現況:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.contactMethod" type="radio" value="生活規律" /> 生活規律
+            </label>
+            <label>
+              <input v-model="formData.environment.contactMethod" type="radio" value="適中" /> 適中
+            </label>
+            <label>
+              <input v-model="formData.environment.contactMethod" type="radio" value="得加強" /> 得加強
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>訪視情況:</label>
+          <div class="form-options">
+            <label>
+              <input v-model="formData.environment.visitSituation" type="radio" value="和諧" /> 和諧
+            </label>
+            <label>
+              <input v-model="formData.environment.visitSituation" type="radio" value="欠佳" /> 欠佳
+            </label>
+          </div>
+        </div>
+      </div>
 
-        <!-- 住宿安全自主管理檢視資料 -->
-        <div class="form-section">
-          <h2>住宿安全自主管理檢視資料（學生填寫）</h2>
-          <div class="form-group">
-            <label>木造隔間或鐵皮加蓋:</label>
-            <div>
-              <label>
-                <input v-model="formData['木造隔間或鐵皮加蓋']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['木造隔間或鐵皮加蓋']" type="radio" value="否" /> 否
-              </label>
-            </div>
+      <!-- 訪視結果 -->
+      <div class="form-section">
+        <h2>訪視結果（導師填寫）</h2>
+        <div class="form-group">
+          <div class="form-options">
+            <label>
+              <input v-model="formData.result.status" type="radio" value="整體實居狀況良好" /> 整體實居狀況良好
+            </label>
+            <label>
+              <input v-model="formData.result.status" type="radio" value="聯繫家長關注" /> 聯繫家長關注
+            </label>
+            <label>
+              <input v-model="formData.result.status" type="radio" value="安全隱患請協助" /> 安全隱患請協助
+            </label>
           </div>
-          <div class="form-group">
-            <label>有火警警報器及滅火器:</label>
-            <div>
-              <label>
-                <input v-model="formData['有火警警報器及滅火器']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['有火警警報器及滅火器']" type="radio" value="否" /> 否
-              </label>
-            </div>
+          <div>
+            <label for="explanation">說明:</label>
+            <input id="explanation" v-model="formData.result.explanation" type="text" />
           </div>
-          <div class="form-group">
-            <label>逃生通道暢通且標示清楚:</label>
-            <div>
-              <label>
-                <input v-model="formData['逃生通道暢通且標示清楚']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['逃生通道暢通且標示清楚']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>門窗及鎖具良好:</label>
-            <div>
-              <label>
-                <input v-model="formData['門窗及鎖具良好']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['門窗及鎖具良好']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>有安裝照明設備（停電備用）:</label>
-            <div>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>租賃物為合法安全及符合消防規範:</label>
-            <div>
-              <label>
-                <input v-model="formData['租賃物為合法安全及符合消防規範']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['租賃物為合法安全及符合消防規範']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>熱水供應正常（如電鍋、清淨機、學校採暖設備）:</label>
-            <div>
-              <label>
-                <input v-model="formData['熱水供應正常（如電鍋、清淨機、學校採暖設備）']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['熱水供應正常（如電鍋、清淨機、學校採暖設備）']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>使用多種電器（高耗能），是否同時插在同一條延長線上:</label>
-            <div>
-              <label>
-                <input v-model="formData['使用多種電器（高耗能），是否同時插在同一條延長線上']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['使用多種電器（高耗能），是否同時插在同一條延長線上']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>有流水號且功能正常:</label>
-            <div>
-              <label>
-                <input v-model="formData['有流水號且功能正常']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['有流水號且功能正常']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮:</label>
-            <div>
-              <label>
-                <input v-model="formData['煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>分間6個以上房間數10個以上床位:</label>
-            <div>
-              <label>
-                <input v-model="formData['分間6個以上房間數10個以上床位']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['分間6個以上房間數10個以上床位']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>有安裝照明設備（停電備用）:</label>
-            <div>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['有安裝照明設備（停電備用）']" type="radio" value="否" /> 否
-              </label>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>使用低故障率或變化度低的電子鎖:</label>
-            <div>
-              <label>
-                <input v-model="formData['使用低故障率或變化度低的電子鎖']" type="radio" value="是" /> 是
-              </label>
-              <label>
-                <input v-model="formData['使用低故障率或變化度低的電子鎖']" type="radio" value="否" /> 否
-              </label>
-            </div>
+          <div>
+            <label for="otherNotes">其他記載或建議事項:</label>
+            <input id="otherNotes" v-model="formData.result.otherNotes" type="text" />
           </div>
         </div>
+      </div>
 
-        <!-- 按鈕組 -->
-        <div class="button-group">
-          <button type="submit" class="confirm-button">確認</button>
-          <button type="button" class="delete-button" @click="resetForm">取消</button>
+      <!-- 關懷重點項目 -->
+      <div class="form-section">
+        <h2>關懷宣導項目（懇請導師訪視時多予關懷叮嚀）</h2>
+        <div class="form-group">
+          <div class="form-options">
+            <label>
+              <input v-model="formData.concernPoints.trafficSafety" type="checkbox" /> 交通安全
+            </label>
+            <label>
+              <input v-model="formData.concernPoints.healthCondition" type="checkbox" /> 拒絕菸害
+            </label>
+            <label>
+              <input v-model="formData.concernPoints.livingHabits" type="checkbox" /> 拒絕毒品
+            </label>
+            <label>
+              <input v-model="formData.concernPoints.socialInteraction" type="checkbox" /> 登革熱防治
+            </label>
+          </div>
         </div>
-      </form>
-    </div>
+      </div>
+
+      <!-- 按鈕組 -->
+      <div class="button-group">
+        <button type="submit" class="confirm-button">確認</button>
+        <button type="button" class="delete-button" @click="resetForm">取消</button>
+      </div>
+    </form>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+
+const props = defineProps({
+  initialData: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
 const formData = ref({
-  '房東住址': '',
-  '房東電話': '',
-  '住宿型態': '',
-  '每月租金': '',
-  '押金': '',
-  '是否簽訂租賃契約': '',
-  '木造隔間或鐵皮加蓋': '',
-  '有火警警報器及滅火器': '',
-  '逃生通道暢通且標示清楚': '',
-  '門窗及鎖具良好': '',
-  '有安裝照明設備（停電備用）': '',
-  '租賃物為合法安全及符合消防規範': '',
-  '熱水供應正常（如電鍋、清淨機、學校採暖設備）': '',
-  '使用多種電器（高耗能），是否同時插在同一條延長線上': '',
-  '有流水號且功能正常': '',
-  '煤氣罐（或熱水器、瓦斯爐）安全良好，無一氧化碳中毒疑慮': '',
-  '分間6個以上房間數10個以上床位': '',
-  '有安裝照明設備（停電備用）': '',
-  '使用低故障率或變化度低的電子鎖': ''
-})
+  environment: {
+    cleaning: '',
+    utilityBills: '',
+    landlordProvides: '',
+    livingConditions: '',
+    contactMethod: '',
+    visitSituation: ''
+  },
+  result: {
+    status: '',
+    explanation: '',
+    otherNotes: ''
+  },
+  concernPoints: {
+    trafficSafety: false,
+    healthCondition: false,
+    livingHabits: false,
+    socialInteraction: false,
+    other: false,
+    explanation: ''
+  }
+});
 
 const loading = ref(true)
 const error = ref<string | null>(null)
-const route = useRoute()
 
-const parseInfoString = (infoString: string) => {
-  const lines = infoString.split('\n').map(line => line.trim())
-  const data: { [key: string]: string } = {}
-
-  lines.forEach(line => {
-    const [key, value] = line.split(':')
-    if (key && value !== undefined) {
-      data[key.trim()] = value.trim()
-    }
-  })
-
-  Object.keys(formData.value).forEach(key => {
-    formData.value[key] = data[key] || ''
-  })
-}
-
-const fetchVisitRecord = async () => {
-  try {
-    const response = await fetch(`/api/visitation/get-visit-record/${route.params.id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    const result = await response.json()
-    if (result.success) {
-      parseInfoString(result.data.info_student)
-    } else {
-      error.value = '無法獲取訪視記錄'
-    }
-  } catch (err) {
-    error.value = '請求失敗'
-  } finally {
-    loading.value = false
+onMounted(() => {
+  if (props.initialData) {
+    formData.value = { ...formData.value, ...props.initialData }
   }
-}
+  loading.value = false
+})
 
 const submitForm = async () => {
   const formString = generateFormString(formData.value)
-  const currentDate = new Date().toISOString()
   try {
-    const response = await fetch('/api/visitation/update-visit-record-student', {
+    const response = await fetch('/api/visitation/update-visit-record-teacher', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userId: route.params.id,
-        info_student: formString,
-        date_update: currentDate
+        userId: user.value.id,
+        info_teacher: formString,
+        date_update: new Date().toISOString()
       }),
-    })
-    const result = await response.json()
+    });
+    const result = await response.json();
     if (result.success) {
-      alert('更新成功')
+      alert('更新成功');
+      router.push('/visitation');
     } else {
-      alert('更新失敗')
+      alert('更新失敗');
     }
   } catch (error) {
-    alert('更新時出錯: ' + error.message)
+    alert('更新時出錯: ' + error.message);
   }
-  router.push('/visitation')
-}
+};
 
 const resetForm = () => {
-  
-  router.push('/visitation')
+  formData.value = {
+    environment: {
+      cleaning: '',
+      utilityBills: '',
+      landlordProvides: '',
+      livingConditions: '',
+      contactMethod: '',
+      visitSituation: ''
+    },
+    result: {
+      status: '',
+      explanation: '',
+      otherNotes: ''
+    },
+    concernPoints: {
+      trafficSafety: false,
+      healthCondition: false,
+      livingHabits: false,
+      socialInteraction: false,
+      other: false,
+      explanation: ''
+    }
+  }
 }
 
 const generateFormString = (data) => {
-  return Object.entries(data).map(([key, value]) => `${key}: ${value}`).join('\n')
-}
-
-onMounted(fetchVisitRecord)
+  const environment = data.environment;
+  const result = data.result;
+  const concernPoints = data.concernPoints;
+  return `
+    打掃衛生: ${environment.cleaning}
+    水電費表: ${environment.utilityBills}
+    房東提供: ${environment.landlordProvides}
+    生活條件: ${environment.livingConditions}
+    聯絡方式: ${environment.contactMethod}
+    訪視情況: ${environment.visitSituation}
+    
+    訪視結果: ${result.status}
+    說明: ${result.explanation}
+    其他記載或建議事項: ${result.otherNotes}
+    
+    交通安全: ${concernPoints.trafficSafety}
+    身體狀況: ${concernPoints.healthCondition}
+    生活習慣: ${concernPoints.livingHabits}
+    交往情況: ${concernPoints.socialInteraction}
+  `;
+};
 </script>
 
 <style scoped>
@@ -330,9 +271,19 @@ onMounted(fetchVisitRecord)
   margin: 40px auto;
 }
 
+.page-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
 .form-section {
   margin-bottom: 20px;
   width: 100%;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  background-color: #ffffff;
 }
 
 .form-section h2 {
@@ -341,16 +292,20 @@ onMounted(fetchVisitRecord)
   margin-bottom: 10px;
   border-bottom: 2px solid #333;
   padding-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  background-color: #f1f1f1;
 }
 
 .form-group label {
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
 .form-group input,
@@ -364,6 +319,16 @@ onMounted(fetchVisitRecord)
 
 .form-group textarea {
   height: 100px;
+}
+
+.form-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.form-options label {
+  margin-right: 10px;
 }
 
 .button-group {
