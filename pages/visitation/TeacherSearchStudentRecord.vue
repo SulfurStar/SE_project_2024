@@ -6,7 +6,7 @@
     <div v-else>
       <ul>
         <li v-for="student in students" :key="student.id">
-          <router-link :to="{ name: 'CreateRecord', params: { id: student.id }}">{{ student.name }}</router-link>
+          <router-link :to="{ name: 'CreateRecord', params: { id: student.id } }">{{ student.name }}</router-link>
         </li>
       </ul>
     </div>
@@ -67,6 +67,10 @@ li {
 
 a {
   color: blue;
+  text-decoration: none;
+}
+
+a:hover {
   text-decoration: underline;
 }
 </style>
