@@ -17,7 +17,7 @@
 
     import { useRoute } from "vue-router";
     import { ref, onMounted } from "vue";
-    // import Advertise from "../Advertise.vue";  //*
+    // import Advertise from "../overview/[id].vue";  //*
     // import { User } from "lucide-vue-next";
 
     export default {
