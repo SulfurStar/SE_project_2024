@@ -11,8 +11,10 @@
         </NuxtLink>
       </div>
       <div v-else :style="{ color: 'red' }">
-        <el-icon :style="{ color: 'red' }"><CircleCloseFilled /></el-icon>
-      <strong>未填寫</strong>
+        <NuxtLink :to="'/visitation/CreateRecord/' + student.id">
+          <el-icon :style="{ color: 'red' }"><CircleCloseFilled /></el-icon>
+          <strong>未填寫</strong>
+        </NuxtLink>
       </div>
   </div>
 

@@ -88,7 +88,7 @@ onMounted(() => {
     }
     else if(userRole.value === 'TEACHER'){
       mainButtons.value = buttons.value.filter(button => button.id === 2 || button.id === 11);
-      otherButtons.value = buttons.value.filter(button => button.id === 9 ||button.id === 10||button.id === 7);
+      otherButtons.value = buttons.value.filter(button => button.id === 10||button.id === 7);
     }
     else if (userRole.value === 'LANDLORD') {
       mainButtons.value = [];
