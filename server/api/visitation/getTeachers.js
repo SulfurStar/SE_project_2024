@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
   try {
     const teachers = await prisma.user.findMany({
-      where: { role: 'Teacher' },
+      where: { role: 'TEACHER' },
     });
 
     return teachers;
