@@ -166,13 +166,23 @@
             >修改使用者資料</NuxtLink
           >
         </el-menu-item>
+        <el-menu-item
+          index="5-4"
+          class="hover-item"
+          @click="navigateTo('/Ad/Ad_verify')"
+        >
+          <el-icon><PopcornIcon /></el-icon>
+          <NuxtLink to="/Ad/Ad_verify" class="menu-link"
+            >廣告審查</NuxtLink
+          >
+        </el-menu-item>
       </el-sub-menu>
     </el-menu>
   </div>
 </template>
 
 <script setup>
-import { DeleteIcon, PenBoxIcon } from "lucide-vue-next";
+import { DeleteIcon, PenBoxIcon, PopcornIcon } from "lucide-vue-next";
 
 // 定義組件的 props
 const props = defineProps({
