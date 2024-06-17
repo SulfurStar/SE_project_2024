@@ -5,7 +5,7 @@ const teamMembers = [
   { name: "蘇柏諺", github: "https://github.com/yayyaysu" },
   { name: "王世華", github: "https://github.com/forgefkcode" },
   { name: "白柔心", github: "https://github.com/a5514" },
-  { name: "由若薰", github: "" },
+  { name: "游若薰", github: "" },
 ];
 </script>
 
