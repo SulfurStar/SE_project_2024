@@ -29,9 +29,9 @@
           </el-input>
           <template #footer>
             <div class="dialog-footer">
-              <el-button @click="dialogVisible2 = false">取消</el-button>
+              <el-button @click="dialogVisible2 = false">Cancel</el-button>
               <el-button type="primary" @click="updateComment">
-                確認
+                Confirm
               </el-button>
             </div>
           </template>
@@ -58,9 +58,9 @@
           </el-input>
           <template #footer>
             <div class="dialog-footer">
-              <el-button @click="dialogVisible1 = false">取消</el-button>
+              <el-button @click="dialogVisible1 = false">Cancel</el-button>
               <el-button type="primary" @click="addComment">
-                確認
+                Confirm
               </el-button>
             </div>
           </template>
@@ -119,15 +119,7 @@ const dialogVisible2 = ref(false);
 const textarea1 = ref("");
 const textarea2 = ref("");
 const user = useState("user");
-const userId = ref("");
-watch(
-  () => user.value,
-  (newUser) => {
-    if (newUser) {
-      userId.value = newUser.id;
-    }
-  }
-);
+const userId = user.value.id;
 
 const route = useRoute();
 const router = useRouter();
@@ -158,7 +150,7 @@ const deleteCommentReq = async (commentId) => {
     });
     const data = await response.json();
     if (data.success) {
-      ElMessage.success("刪除留言成功");
+      ElMessage.success("Comment deleted successfully");
       const responseComment = await fetch("/api/posts/get-comment-by-Id", {
         method: "POST",
         headers: {
@@ -170,8 +162,8 @@ const deleteCommentReq = async (commentId) => {
     } else {
       ElMessage.error("Failed to delete comment");
     }
-  }else{
-    ElMessage.error("留言刪除失敗");
+  } else {
+    ElMessage.error("Failed to delete comment yee");
   }
 };
 
@@ -189,7 +181,7 @@ const updateComment = async () => {
   const data = await response.json();
   dialogVisible2.value = false;
   if (data.success) {
-    ElMessage.success("留言更新成功");
+    ElMessage.success("Comment added successfully");
     textarea1.value = "";
     const responseComment = await fetch("/api/posts/get-comment-by-Id", {
       method: "POST",
@@ -200,7 +192,7 @@ const updateComment = async () => {
     });
     comments.value = await responseComment.json();
   } else {
-    ElMessage.error("留言更新失敗");
+    ElMessage.error("Failed to add comment");
   }
   dialogVisible2.value = false;
 };
@@ -227,7 +219,7 @@ const addComment = async () => {
   const data = await response.json();
   dialogVisible1.value = false;
   if (data.success) {
-    ElMessage.success("新增留言成功");
+    ElMessage.success("Comment added successfully");
     textarea1.value = "";
     const responseComment = await fetch("/api/posts/get-comment-by-Id", {
       method: "POST",
@@ -238,7 +230,7 @@ const addComment = async () => {
     });
     comments.value = await responseComment.json();
   } else {
-    ElMessage.error("新增留言失敗");
+    ElMessage.error("Failed to add comment");
   }
   dialogVisible1.value = false;
 };
@@ -263,9 +255,9 @@ const reportComment = async (commentId) => {
     });
     const data = await response.json();
     if (data.success) {
-      ElMessage.success("刪除留言成功");
+      ElMessage.success("Comment reported successfully");
     } else {
-      ElMessage.error("刪除貼文失敗");
+      ElMessage.error("Failed to report comment");
     }
   }
 };
@@ -281,10 +273,10 @@ const deletePost = async () => {
   });
   const data = await response.json();
   if (data.success) {
-    ElMessage.success("刪除貼文成功");
+    ElMessage.success("Post deleted successfully");
     router.push("/my/posts/1");
   } else {
-    ElMessage.error("刪除貼文失敗");
+    ElMessage.error("Failed to delete post");
   }
 };
 
@@ -308,9 +300,9 @@ const reportPost = async () => {
     });
     const data = await response.json();
     if (data.success) {
-      ElMessage.success("檢舉貼文成功");
+      ElMessage.success("Post reported successfully");
     } else {
-      ElMessage.error("檢舉貼文失敗");
+      ElMessage.error("Failed to report post");
     }
   }
 };
