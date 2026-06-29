@@ -51,5 +51,8 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.1",
     "prisma": "^5.13.0"
+  },
+  "overrides": {
+    "axios": "^1.18.1"
   }
 }
